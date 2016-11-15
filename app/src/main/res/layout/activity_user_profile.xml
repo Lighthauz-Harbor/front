@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.dvidr_000.lighthauzproject.UserProfile">
+
+    <TextView
+        android:text="@string/DisplayName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvUserProfileDisplayName"
+        android:layout_alignTop="@+id/ProfilePicture"
+        android:layout_toEndOf="@+id/ProfilePicture"
+        android:layout_marginStart="16dp" />
+
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        app:srcCompat="@drawable/ic_people_outline_white_24dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/ProfilePicture"
+        android:layout_marginStart="13dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUserProfileDisplayName"
+        android:layout_alignStart="@+id/tvUserProfileDisplayName"
+        android:layout_marginTop="13dp"
+        android:id="@+id/tvUserProfileNama" />
+
+    <TextView
+        android:text="@string/Interest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUserProfileOccupationFill"
+        android:layout_alignStart="@+id/tvUserProfileOccupationFill"
+        android:layout_marginTop="12dp"
+        android:id="@+id/tvUserProfileInterest" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvUserProfileInterestFill"
+        android:layout_alignBottom="@+id/ProfilePicture"
+        android:layout_alignStart="@+id/tvUserProfileInterest"
+        android:layout_marginBottom="11dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:id="@+id/tvUserProfileOccupationFill"
+        android:layout_below="@+id/tvUserProfileOccupation"
+        android:layout_alignStart="@+id/tvUserProfileOccupation" />
+
+    <TextView
+        android:text="@string/Occupation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:id="@+id/tvUserProfileOccupation"
+        android:layout_below="@+id/tvUserProfileNama"
+        android:layout_alignStart="@+id/tvUserProfileNama" />
+
+    <TextView
+        android:text="@string/AboutMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/ProfilePicture"
+        android:layout_marginStart="21dp"
+        android:id="@+id/tvUserProfileAboutMe" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/tvUserProfileAboutMeFIll"
+        android:layout_below="@+id/tvUserProfileAboutMe"
+        android:layout_alignStart="@+id/tvUserProfileAboutMe" />
+
+    <TextView
+        android:text="@string/Connections"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUserProfileEmail"
+        android:layout_alignStart="@+id/tvUserProfileEmail"
+        android:layout_marginTop="17dp"
+        android:id="@+id/textView12" />
+
+    <TextView
+        android:text="@string/ViewMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView12"
+        android:layout_toEndOf="@+id/tvUserProfileInterestFill"
+        android:id="@+id/tvUserProfileViewMoreConnections" />
+
+    <TextView
+        android:text="@string/ViewMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView14"
+        android:layout_alignEnd="@+id/tvUserProfileViewMoreConnections"
+        android:id="@+id/tvUserProfileViewMoreIdeas" />
+
+    <TextView
+        android:text="@string/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:id="@+id/tvUserProfileEmail"
+        android:layout_below="@+id/tvUserProfileAboutMeFIll"
+        android:layout_alignStart="@+id/tvUserProfileAboutMeFIll" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:id="@+id/tvUserProfileEmailFill"
+        android:layout_above="@+id/textView12"
+        android:layout_alignEnd="@+id/ProfilePicture" />
+
+    <TextView
+        android:text="@string/Ideas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="58dp"
+        android:id="@+id/textView14"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/textView12" />
+</RelativeLayout>

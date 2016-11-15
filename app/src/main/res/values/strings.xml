@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">LightHauz</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="VerificationNotice">
+        We have sent you a\n
+verification code\n\n
+
+Please kindly check your\n
+messaging app and enter the code here</string>
+
+    <string name="Verify">Verify</string>
+    <string name="ResendCOde">Click here To Resend Code</string>
+    <string name="Login">Log in</string>
+    <string name="Register">Register</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="Confirmpass">Confirm Password</string>
+    <string name="InputYourName">Input Your Name</string>
+    <string name="InputYourNumber">Input Your Phone Number</string>
+    <string name="Birthday">Birth Date dd/mm/yyyy</string>
+
+    <string name="newIdeaInstruction">Step by step add new idea:\n
+	1. Add business name, \n
+		  background, problem, and\n
+		solution\n
+	2. Make Business Model Canvas\n
+	3. Arrange SWOT</string>
+    <string name="next">Next</string>
+
+    <string name="IdeaDetail">Idea Detail</string>
+    <string name="Category">Category</string>
+    <string name="CreatedBy">Created By</string>
+    <string name="LastEdited">Last Edited</string>
+    <string name="Description">Description</string>
+    <string name="Problem">Problem</string>
+    <string name="Title">Idea Title</string>
+    <string name="Background">Background</string>
+    <string name="Solution">Solution</string>
+    <string name="ValueProposition">ValueProposition</string>
+    <string name="CustomerSegment">CustomerSegment</string>
+    <string name="CustomerRelationship">CustomerRelationship</string>
+    <string name="Channel">Channel</string>
+    <string name="KeyActivities">KeyActivities</string>
+    <string name="KeyResources">KeyResources</string>
+    <string name="KeyPartner">KeyPartner</string>
+    <string name="CostStructure">CostStructure</string>
+    <string name="RevenueStream">RevenueStream</string>
+    <string name="Strength">Strength</string>
+    <string name="Weakness">Weakness</string>
+    <string name="Opportuniities">Opportuniities</string>
+    <string name="Threat">Threat</string>
+
+
+    <string name="DisplayName">Display Name</string>
+    <string name="ViewMore">View More</string>
+    <string name="Occupation">Occupation</string>
+    <string name="Interest">Interest</string>
+    <string name="AboutMe">About Me</string>
+    <string name="Connections">Connections</string>
+    <string name="Ideas">Ideas</string>
+
+    <string name="CreatedByfill"></string>
+    <string name="LastEditedfill"></string>
+    <string name="Categoryfill"></string>
+    <string name="Descriptionfill"></string>
+    <string name="Problemfill"></string>
+    <string name="Backgroundfill"></string>
+    <string name="Solutionfill"></string>
+
+
+    <string name="emailindo">Alamat email</string>
+    <string name="passwordindo">Katasandi</string>
+    <string name="konfirmasipassindo">Konfirmasi Password</string>
+    <string name="MasukanNamaindo">Masukan Nama</string>
+    <string name="MasukanNohpindo">Masukan No Handphone</string>
+    <string name="Birthdayindo">Tanggal Lahir dd/mm/yyyy</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
+
