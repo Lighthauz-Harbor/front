@@ -1,13 +1,44 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context="com.example.dvidr_000.lighthauzproject.BackgroundFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <Button
+        android:text="@string/next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btnNextIdeaBackground"
+        android:background="@color/white"
+        android:elevation="2dp"
+        style="@style/Widget.AppCompat.Button.Borderless" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:textColor="@color/white"
+        android:layout_below="@+id/tvIdeaBackground"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:id="@+id/etIdeaBackgroundFill" />
+
+    <TextView
+        android:text="@string/IdeaBackground"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:id="@+id/tvIdeaBackground"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>

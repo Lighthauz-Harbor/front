@@ -10,15 +10,47 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.dvidr_000.lighthauzproject.LoginActivity">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/etEmail"
+        android:hint="@string/email"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/tvLogin"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/etPassword"
+        android:hint="@string/password"
+        android:layout_below="@+id/etEmail"
+        android:layout_alignStart="@+id/etEmail"
+        android:layout_marginTop="12dp" />
+
+    <Button
+        android:text="@string/Login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogin"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:layout_below="@+id/etPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp" />
+
     <TextView
         android:text="Haven't sign up yet? "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:id="@+id/tvInvite"
         android:layout_below="@+id/btnLogin"
-        android:layout_alignEnd="@+id/btnLogin"
-        android:layout_marginEnd="17dp" />
+        android:layout_alignStart="@+id/btnLogin"
+        android:layout_marginTop="25dp" />
 
     <TextView
         android:text="Register"
@@ -27,37 +59,7 @@
         android:id="@+id/tvRegister"
         android:layout_alignBaseline="@+id/tvInvite"
         android:layout_alignBottom="@+id/tvInvite"
-        android:layout_toEndOf="@+id/btnLogin" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/etEmail"
-        android:hint="Email"
-        android:layout_marginTop="94dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/etPassword"
-        android:hint="Password"
-        android:layout_below="@+id/etEmail"
-        android:layout_alignStart="@+id/etEmail"
-        android:layout_marginTop="12dp" />
-
-    <Button
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnLogin"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignEnd="@+id/btnLogin" />
 
     <TextView
         android:text="@string/Login"
@@ -66,7 +68,9 @@
         android:textSize="35sp"
         android:id="@+id/tvLogin"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/btnLogin"
-        android:layout_marginTop="20dp" />
+        android:layout_toStartOf="@+id/tvRegister"
+        android:layout_marginTop="56dp" />
+
+
 
 </RelativeLayout>

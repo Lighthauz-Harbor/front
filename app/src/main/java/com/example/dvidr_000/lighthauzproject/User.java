@@ -11,23 +11,27 @@ import java.util.Vector;
  */
 
 public class User {
-    private String id;
+    private int id;
     private String email;
     private String password;
     private String name;
+    private String occupation;
     private String bio;
     private String dob;
-    private String profilePic;
+    private int profilePic;
+    private String interest;
 
-    private List<Integer> idea = new ArrayList<>();
+    private  List<Integer> idea = new ArrayList<>();
 
-    public List<Integer> getIdea() {
+    public  List<Integer> getIdea() {
         return idea;
     }
 
-    public static List<User> users = new ArrayList<>();
+    private static List<User> users = new ArrayList<>();
 
-
+    public static List<User> getUsers() {
+        return users;
+    }
 
     public String getPhone() {
         return phone;
@@ -46,13 +50,31 @@ public class User {
         setPassword(password);
         setPhone(phone);
 
+        setId(users.size());
+
     }
 
-    public String getId() {
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -96,11 +118,11 @@ public class User {
         this.dob = dob;
     }
 
-    public String getProfilePic() {
+    public int getProfilePic() {
         return profilePic;
     }
 
-    public void setProfilePic(String profilePic) {
+    public void setProfilePic(int profilePic) {
         this.profilePic = profilePic;
     }
 }

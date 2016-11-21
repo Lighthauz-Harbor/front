@@ -9,15 +9,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.dvidr_000.lighthauzproject.UserProfile">
+    tools:context="com.example.dvidr_000.lighthauzproject.ViewProfileFragment">
 
     <TextView
         android:text="@string/DisplayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvUserProfileDisplayName"
-        android:layout_alignTop="@+id/ProfilePicture"
-        android:layout_toEndOf="@+id/ProfilePicture"
+        android:layout_alignTop="@+id/profilePicture"
+        android:layout_toEndOf="@+id/profilePicture"
         android:layout_marginStart="16dp" />
 
     <ImageView
@@ -25,7 +25,8 @@
         android:layout_height="180dp"
         app:srcCompat="@drawable/ic_people_outline_white_24dp"
         android:layout_marginTop="20dp"
-        android:id="@+id/ProfilePicture"
+        android:scaleType="centerInside"
+        android:id="@+id/profilePicture"
         android:layout_marginStart="13dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
@@ -37,7 +38,7 @@
         android:layout_below="@+id/tvUserProfileDisplayName"
         android:layout_alignStart="@+id/tvUserProfileDisplayName"
         android:layout_marginTop="13dp"
-        android:id="@+id/tvUserProfileNama" />
+        android:id="@+id/tvUserProfileName" />
 
     <TextView
         android:text="@string/Interest"
@@ -47,15 +48,6 @@
         android:layout_alignStart="@+id/tvUserProfileOccupationFill"
         android:layout_marginTop="12dp"
         android:id="@+id/tvUserProfileInterest" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvUserProfileInterestFill"
-        android:layout_alignBottom="@+id/ProfilePicture"
-        android:layout_alignStart="@+id/tvUserProfileInterest"
-        android:layout_marginBottom="11dp" />
 
     <TextView
         android:text="TextView"
@@ -72,17 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
         android:id="@+id/tvUserProfileOccupation"
-        android:layout_below="@+id/tvUserProfileNama"
-        android:layout_alignStart="@+id/tvUserProfileNama" />
-
-    <TextView
-        android:text="@string/AboutMe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/ProfilePicture"
-        android:layout_marginStart="21dp"
-        android:id="@+id/tvUserProfileAboutMe" />
+        android:layout_below="@+id/tvUserProfileName"
+        android:layout_alignStart="@+id/tvUserProfileName" />
 
     <TextView
         android:text="TextView"
@@ -100,21 +83,15 @@
         android:layout_below="@+id/tvUserProfileEmail"
         android:layout_alignStart="@+id/tvUserProfileEmail"
         android:layout_marginTop="17dp"
-        android:id="@+id/textView12" />
+        android:id="@+id/tvUserProfileConnections" />
 
     <TextView
         android:text="@string/ViewMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView12"
-        android:layout_toEndOf="@+id/tvUserProfileInterestFill"
-        android:id="@+id/tvUserProfileViewMoreConnections" />
-
-    <TextView
-        android:text="@string/ViewMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView14"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:layout_alignTop="@+id/tvUserProfileIdeas"
         android:layout_alignEnd="@+id/tvUserProfileViewMoreConnections"
         android:id="@+id/tvUserProfileViewMoreIdeas" />
 
@@ -128,20 +105,49 @@
         android:layout_alignStart="@+id/tvUserProfileAboutMeFIll" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="14dp"
-        android:id="@+id/tvUserProfileEmailFill"
-        android:layout_above="@+id/textView12"
-        android:layout_alignEnd="@+id/ProfilePicture" />
-
-    <TextView
         android:text="@string/Ideas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="58dp"
-        android:id="@+id/textView14"
+        android:id="@+id/tvUserProfileIdeas"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/textView12" />
+        android:layout_alignStart="@+id/tvUserProfileConnections" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvUserProfileInterestFill"
+        android:layout_below="@+id/tvUserProfileInterest"
+        android:layout_alignStart="@+id/tvUserProfileInterest"
+        android:layout_marginTop="11dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvUserProfileEmailFill"
+        android:layout_above="@+id/tvUserProfileConnections"
+        android:layout_toEndOf="@+id/tvUserProfileConnections" />
+
+    <TextView
+        android:text="@string/AboutMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:id="@+id/tvUserProfileAboutMe"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/profilePicture"
+        android:layout_alignStart="@+id/profilePicture" />
+
+    <TextView
+        android:text="@string/ViewMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:id="@+id/tvUserProfileViewMoreConnections"
+        android:layout_alignBaseline="@+id/tvUserProfileConnections"
+        android:layout_alignBottom="@+id/tvUserProfileConnections"
+        android:layout_toEndOf="@+id/tvUserProfileInterest" />
 </RelativeLayout>

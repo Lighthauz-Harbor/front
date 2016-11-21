@@ -1,5 +1,6 @@
 package com.example.dvidr_000.lighthauzproject;
 
+
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
@@ -7,11 +8,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class DetailActivity extends AppCompatActivity {
+
+    int loginIndex = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,14 +27,19 @@ public class DetailActivity extends AppCompatActivity {
 
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
+        getIntent().getIntExtra("LOGIN_INDEX",loginIndex);
+
         String content= getIntent().getStringExtra("EXTRA_CONTENT");
+
+        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
 
         switch (content){
             case "IDEA_DETAIL":
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_detail,new IdeaDetailFragment()).commit();
+                tr.replace(R.id.fragment_container_detail,new IdeaDetailFragment());
+                tr.addToBackStack(null);
+                tr.commit();
                 break;
             case "CREATE_IDEA":
-                FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
                 tr.replace(R.id.fragment_container_detail,new CreateIdeaFragment());
                 tr.addToBackStack(null);
                 tr.commit();
@@ -54,7 +66,41 @@ public class DetailActivity extends AppCompatActivity {
                     return true;
                 }
 
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void createIdea(Bundle idea){
+        String title = idea.getString("TITLE");
+        String category  = idea.getString("CATEGORY");
+        String  description = idea.getString("DESCRIPTION");
+        int  publicity=0;
+        String  background = idea.getString("BACKGROUND");
+        String  problem = idea.getString("PROBLEM");
+        String  solution = idea.getString("SOLUTION");
+        String  valueProposition = idea.getString("VP");
+        String  customerSegment = idea.getString("CS");
+        String  customerRelationship = idea.getString("CR");
+        String  channel = idea.getString("CH");
+        String  keyActivities = idea.getString("KA");
+        String  keyResources = idea.getString("KR");
+        String  keyPartner = idea.getString("KP");
+        String  costStructure = idea.getString("COST");
+        String  revenueStream = idea.getString("RS");
+        String  strength = idea.getString("STRENGTH");
+        String  weakness = idea.getString("WEAKNESS");
+        String  opportuniities = idea.getString("OPPORTUNITY");
+        String  threat = idea.getString("THREAT");
+
+        Idea newIdea = new Idea(title,category,description,publicity,background,problem,solution,valueProposition,customerSegment,customerRelationship,channel,keyActivities,keyResources,keyPartner,costStructure,revenueStream,strength,weakness,opportuniities,threat);
+
+        Idea.getIdeas().add(newIdea);
+        User.getUsers().get(loginIndex).getIdea().add(Idea.getIdeas().size()-1);
+
+        Toast.makeText(this,"New Idea Added",Toast.LENGTH_SHORT).show();
+
+    }
+
+
 }

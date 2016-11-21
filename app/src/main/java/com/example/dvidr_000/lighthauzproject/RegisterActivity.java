@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }else {
                 User newUser = new User(email,password,name,dob,phone);
-                User.users.add(newUser);
+                User.getUsers().add(newUser);
 
                 Intent proceed = new Intent(RegisterActivity.this,LoginActivity.class);
                 RegisterActivity.this.startActivity(proceed);

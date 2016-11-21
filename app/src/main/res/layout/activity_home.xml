@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.dvidr_000.lighthauzproject.HomeActivity">
 
+
     <FrameLayout
         android:id="@+id/fragment_container_home"
         android:layout_width="match_parent"
@@ -17,10 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:foregroundGravity=""
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@drawable/nav_item_color_state"
         app:itemTextColor="@drawable/nav_item_color_state"
-        app:menu="@menu/menu_navbar"
-        android:layout_alignParentStart="true" />
+        app:menu="@menu/menu_navbar"/>
 </RelativeLayout>

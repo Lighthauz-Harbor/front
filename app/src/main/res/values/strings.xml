@@ -29,6 +29,7 @@ messaging app and enter the code here</string>
 	2. Make Business Model Canvas\n
 	3. Arrange SWOT</string>
     <string name="next">Next</string>
+    <string name="insertHere">Insert Here</string>
 
     <string name="IdeaDetail">Idea Detail</string>
     <string name="Category">Category</string>
@@ -39,20 +40,43 @@ messaging app and enter the code here</string>
     <string name="Title">Idea Title</string>
     <string name="Background">Background</string>
     <string name="Solution">Solution</string>
-    <string name="ValueProposition">ValueProposition</string>
-    <string name="CustomerSegment">CustomerSegment</string>
-    <string name="CustomerRelationship">CustomerRelationship</string>
+    <string name="ValueProposition">Value Proposition</string>
+    <string name="CustomerSegment">Customer Segment</string>
+    <string name="CustomerRelationship">Customer Relationship</string>
     <string name="Channel">Channel</string>
-    <string name="KeyActivities">KeyActivities</string>
-    <string name="KeyResources">KeyResources</string>
-    <string name="KeyPartner">KeyPartner</string>
-    <string name="CostStructure">CostStructure</string>
-    <string name="RevenueStream">RevenueStream</string>
+    <string name="KeyActivities">Key Activities</string>
+    <string name="KeyResources">Key Resources</string>
+    <string name="KeyPartner">Key Partner</string>
+    <string name="CostStructure">Cost Structure</string>
+    <string name="RevenueStream">Revenue Stream</string>
     <string name="Strength">Strength</string>
     <string name="Weakness">Weakness</string>
-    <string name="Opportuniities">Opportuniities</string>
+    <string name="Opportunities">Opportunities</string>
     <string name="Threat">Threat</string>
+    <string name="BusinessName">Business Name</string>
+    <string name="BusinessCategory">Business Category</string>
+    <string name="BusinessDescription">Description</string>
+    <string name="addphoto">Add Photo</string>
+    <string name="IdeaBackground">The reason why you think your idea is brilliant?</string>
+    <string name="IdeaProblem">What problems are solved by your idea?</string>
+    <string name="IdeaSolution">How does your Idea solve the problem?</string>
+    <string name="BMCInfo">Now it’s time to make your business plan.</string>
+        <string name="SWOTInfo">Strengths and weaknesses are often internal to your
+                organization, while opportunities and threats generally relate to
+                external factors. </string>
+    <string name="KnowYourSwot">Know your SWOT</string>
+    <string name="report">Report</string>
+    <string name="suggestion">Suggestion</string>
+    <string name="search">Search</string>
+    <string name="addUser">Add User</string>
+    <string name="contact">Contact</string>
 
+
+
+
+<string name="BMCInfo2">Business Model Canvas is a
+strategic management and
+entrepreneurial tool. It allows you to describe, design, challenge, invent, and pivot your business model.</string>
 
     <string name="DisplayName">Display Name</string>
     <string name="ViewMore">View More</string>
@@ -61,14 +85,6 @@ messaging app and enter the code here</string>
     <string name="AboutMe">About Me</string>
     <string name="Connections">Connections</string>
     <string name="Ideas">Ideas</string>
-
-    <string name="CreatedByfill"></string>
-    <string name="LastEditedfill"></string>
-    <string name="Categoryfill"></string>
-    <string name="Descriptionfill"></string>
-    <string name="Problemfill"></string>
-    <string name="Backgroundfill"></string>
-    <string name="Solutionfill"></string>
 
 
     <string name="emailindo">Alamat email</string>

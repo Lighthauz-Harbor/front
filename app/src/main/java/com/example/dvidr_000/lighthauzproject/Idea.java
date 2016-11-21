@@ -10,6 +10,7 @@ import java.util.List;
 public class Idea {
 
     private String title;
+    private String category;
     private String  description;
     private int  publicity;
     private String  background;
@@ -30,10 +31,11 @@ public class Idea {
     private String  threat;
     private String  optLink;
 
-    public static List<Idea> ideas = new ArrayList<>();
+    private static List<Idea> ideas = new ArrayList<>();
 
     public Idea(
             String title,
+            String category,
             String  description,
              int  publicity,
              String  background,
@@ -53,6 +55,7 @@ public class Idea {
              String  opportuniities,
              String  threat){
         this.setTitle(title);
+        this.setCategory(category);
         this.setBackground(background);
         this.setChannel(channel);
         this.setCostStructure(costStructure);
@@ -83,6 +86,14 @@ public class Idea {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getDescription() {

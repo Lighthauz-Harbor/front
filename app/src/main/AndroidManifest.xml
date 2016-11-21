@@ -29,7 +29,6 @@
         <activity
             android:name=".DetailActivity"
             android:parentActivityName=".HomeActivity" />
-        <activity android:name=".UserProfile" />
     </application>
 
 </manifest>

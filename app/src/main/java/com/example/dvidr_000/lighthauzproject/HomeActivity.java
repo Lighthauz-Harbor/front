@@ -10,12 +10,12 @@ import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-       // getSupportFragmentManager().beginTransaction().replace(R.id.home_activity_fragment,new NewsFeedFragment()).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_home,new NewsFeedFragment()).commit();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)

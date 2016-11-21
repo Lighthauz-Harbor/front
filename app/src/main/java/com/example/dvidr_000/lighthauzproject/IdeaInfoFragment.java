@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 
 /**
@@ -43,8 +44,22 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         if(view.getId()==R.id.btnNextIdeaInfo){
 
+            Bundle args = new Bundle();
+            View v = getView();
+
+            EditText title = (EditText) v.findViewById(R.id.etIdeaInfoBusinessNameFill);
+            EditText category = (EditText) v.findViewById(R.id.etIdeaInforBusinessCategoryFill);
+            EditText description = (EditText) v.findViewById(R.id.etIdeaInfoDescriptionFill);
+
+            args.putString("TITLE",title.getText().toString());
+            args.putString("CATEGORY",category.getText().toString());
+            args.putString("DESCRIPTION",description.getText().toString());
+
+            BackgroundFragment fragment = new BackgroundFragment();
+            fragment.setArguments(args);
+
             FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
-            tr.replace(R.id.fragment_container_detail,new BackgroundFragment());
+            tr.replace(R.id.fragment_container_detail,fragment);
             tr.addToBackStack(null);
             tr.commit();
         }
