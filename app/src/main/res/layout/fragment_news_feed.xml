@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
     tools:context="com.example.dvidr_000.lighthauzproject.NewsFeedFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:textSize="24sp"
         android:textColor="@color/colorPrimary"
-        android:text="NEWS FEED"
+        android:text="@string/newsFeed"
         android:id="@+id/tvNewsFeed"/>
 
     <View
@@ -22,21 +24,30 @@
         android:background="@color/colorPrimary"
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
         android:id="@+id/hr_idea_detail"
         android:layout_below="@+id/tvNewsFeed"
         android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        app:srcCompat="@drawable/newsfeed"
-        android:scaleType="fitCenter"
-        android:id="@+id/imageView3"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="17dp"
         android:layout_below="@+id/hr_idea_detail"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rec_list_news">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+
 
 </RelativeLayout>

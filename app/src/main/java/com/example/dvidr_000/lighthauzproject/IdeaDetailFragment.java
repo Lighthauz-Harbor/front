@@ -72,7 +72,8 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         TextView solution = (TextView) v.findViewById(R.id.tv_idea_detail_solution_text);
         TextView edit = (TextView) v.findViewById(R.id.tv_idea_detail_lastedited_text);
 
-        Idea idea = Idea.getIdeas().get(User.getUsers().get(loginIndex).getIdea().get(ideaId));
+        Idea idea = Idea.getIdeas().get(ideaId);
+
 
         title.setText(idea.getTitle());
         desc.setText(idea.getDescription());
@@ -88,7 +89,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
 
-        Idea idea = Idea.getIdeas().get(User.getUsers().get(loginIndex).getIdea().get(ideaId));
+        Idea idea = Idea.getIdeas().get(ideaId);
         Bundle args = new Bundle();
 
         switch (view.getId()){

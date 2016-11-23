@@ -1,6 +1,8 @@
 package com.example.dvidr_000.lighthauzproject;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +32,8 @@ public class Idea {
     private String  opportuniities;
     private String  threat;
     private String  optLink;
+    private Date createDate;
+    private Date lastEdited;
 
     private static List<Idea> ideas = new ArrayList<>();
 
@@ -37,6 +41,7 @@ public class Idea {
             String title,
             String category,
             String  description,
+            Date createDate,
              int  publicity,
              String  background,
              String  problem,
@@ -74,10 +79,23 @@ public class Idea {
         this.setStrength(strength);
         this.setSolution(solution);
         this.setRevenueStream(revenueStream);
+        this.createDate=createDate;
     }
 
     public static List<Idea> getIdeas() {
         return ideas;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public Date getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(Date lastEdited) {
+        this.lastEdited = lastEdited;
     }
 
     public String getTitle() {

@@ -41,7 +41,12 @@ public class ViewProfileFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_view_profile, container, false);
 
-        id = getArguments().getInt("ID");
+        try {
+            id = getArguments().getInt("USER_ID");
+        }
+        catch (Exception e){
+            id = getActivity().getIntent().getIntExtra("USER_ID",0);
+        }
         getActivity().setTitle("User Profile");
         setHasOptionsMenu(true);
 

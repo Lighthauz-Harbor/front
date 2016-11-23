@@ -70,6 +70,9 @@ messaging app and enter the code here</string>
     <string name="search">Search</string>
     <string name="addUser">Add User</string>
     <string name="contact">Contact</string>
+    <string name="newsFeed">NEWS FEED</string>
+
+    <string name="eventNewIdea">posted a new idea.</string>
 
 
 

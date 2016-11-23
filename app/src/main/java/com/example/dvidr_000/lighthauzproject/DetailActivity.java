@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+
 public class DetailActivity extends AppCompatActivity {
 
     int loginIndex = 0;
@@ -41,6 +43,11 @@ public class DetailActivity extends AppCompatActivity {
                 break;
             case "CREATE_IDEA":
                 tr.replace(R.id.fragment_container_detail,new CreateIdeaFragment());
+                tr.addToBackStack(null);
+                tr.commit();
+                break;
+            case "VIEW_PROFILE":
+                tr.replace(R.id.fragment_container_detail,new ViewProfileFragment());
                 tr.addToBackStack(null);
                 tr.commit();
                 break;
@@ -93,7 +100,7 @@ public class DetailActivity extends AppCompatActivity {
         String  opportuniities = idea.getString("OPPORTUNITY");
         String  threat = idea.getString("THREAT");
 
-        Idea newIdea = new Idea(title,category,description,publicity,background,problem,solution,valueProposition,customerSegment,customerRelationship,channel,keyActivities,keyResources,keyPartner,costStructure,revenueStream,strength,weakness,opportuniities,threat);
+        Idea newIdea = new Idea(title,category,description,new Date(),publicity,background,problem,solution,valueProposition,customerSegment,customerRelationship,channel,keyActivities,keyResources,keyPartner,costStructure,revenueStream,strength,weakness,opportuniities,threat);
 
         Idea.getIdeas().add(newIdea);
         User.getUsers().get(loginIndex).getIdea().add(Idea.getIdeas().size()-1);

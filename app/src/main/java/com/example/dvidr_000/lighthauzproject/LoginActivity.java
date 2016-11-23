@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,29 +34,35 @@ public class LoginActivity extends AppCompatActivity {
         newUser = new User("admin@admin.com","admin","Admin","01/01/1970","0123456789");
         users.add(newUser);
 
-        newUser = new User("david@lighthauz.com","David Long","david","01/01/1970","0123456789");
+        newUser = new User("david@lighthauz.com","david","David Long","01/01/1970","0123456789");
         newUser.setOccupation("Student");
         newUser.setInterest("Food & Beverage");
         imgRes = R.drawable.man1;
         newUser.setProfilePic(imgRes);
         users.add(newUser);
 
-        newUser = new User("bryan@lighthauz.com","Bryan Tyler","bryan","01/01/1970","0123456789");
+        newUser = new User("bryan@lighthauz.com","bryan","Bryan Tyler","01/01/1970","0123456789");
         newUser.setOccupation("Entrepreneur");
         newUser.setInterest("Restaurant");
         imgRes = R.drawable.man2;
         newUser.setProfilePic(imgRes);
         users.add(newUser);
 
-        newUser = new User("andrew@lighthauz.com","Andrew Jason","andrew","01/01/1970","0123456789");
+        newUser = new User("andrew@lighthauz.com","andrew","Andrew Jason","01/01/1970","0123456789");
         newUser.setOccupation("Programmer");
         newUser.setInterest("Tech");
         imgRes = R.drawable.man3;
         newUser.setProfilePic(imgRes);
         users.add(newUser);
 
-        Idea newIdea = new Idea("MyIdea","Some cateegory","Some description",2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
+        Idea newIdea = new Idea("asd","Some category","Some description\n2\n3\n4asddsadasadadadadasadsad",new Date(),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
         ideas.add(newIdea);
+        ideas.add(newIdea);
+        newIdea = new Idea("MyIdea1","Some category1","Some description1",new Date(116,8,21,6,37,28),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
+        ideas.add(newIdea);
+        newIdea = new Idea("MyIdea2","Some category2","Some description2",new Date(115,10,2,17,51,33),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
+        ideas.add(newIdea);
+
 
         users.get(0).getIdea().add(ideas.size()-1);
 

@@ -28,6 +28,12 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+
+        populate();
+        super.onResume();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,8 +42,6 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
         View v = inflater.inflate(R.layout.fragment_idea_list, container, false);
 
         loginIndex = getActivity().getIntent().getIntExtra("LOGIN_INDEX",0);
-
-        populate(v);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,11 +58,12 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
     }
 
     @Override
-    public void onItemClick(int p) {
+    public void onItemClick(int p,View view) {
         //buka detail idea
+        int index = User.getUsers().get(loginIndex).getIdea().get(p);
         Intent intent = new Intent(getActivity(),DetailActivity.class);
         intent.putExtra("EXTRA_CONTENT","IDEA_DETAIL");
-        intent.putExtra("IDEA_ID",p);
+        intent.putExtra("IDEA_ID",index);
         intent.putExtra("LOGIN_INDEX",loginIndex);
 
 
@@ -69,7 +74,9 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
 
 
 
-    public void populate(View view){
+    public void populate(){
+
+        View view = getView();
 
         ArrayList<Idea> ideas = (ArrayList) Idea.getIdeas();
         ArrayList<Idea> selected = new ArrayList<>();
