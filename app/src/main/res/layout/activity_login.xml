@@ -44,7 +44,7 @@
         android:layout_marginTop="23dp" />
 
     <TextView
-        android:text="Haven't sign up yet? "
+        android:text="@string/signUpQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvInvite"
@@ -53,10 +53,11 @@
         android:layout_marginTop="25dp" />
 
     <TextView
-        android:text="Register"
+        android:text="@string/Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvRegister"
+        android:clickable="true"
         android:layout_alignBaseline="@+id/tvInvite"
         android:layout_alignBottom="@+id/tvInvite"
         android:layout_alignEnd="@+id/btnLogin" />

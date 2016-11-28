@@ -2,6 +2,7 @@ package com.example.dvidr_000.lighthauzproject;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.DateFormat;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+
 import java.util.Date;
 import java.util.List;
+
+import static com.android.volley.VolleyLog.TAG;
 
 /**
  * Created by richentra on 12-Nov-16.
@@ -22,6 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     private List listData;
     private LayoutInflater inflater;
     private String content;
+    private Context context;
 
     private ItemClickCallback itemClickCallback;
 
@@ -46,6 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     }
 
     public MyAdapter(Context c, String content, List<NewsFeedFragment.News> listData){
+        this.context=c;
         inflater = LayoutInflater.from(c);
         this.listData = listData;
         this.content=content;
@@ -66,7 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         public MyHolder(View itemView) {
             super(itemView);
 
-            if(content.equals("NEW_IDEA")){
+            if(content.equals("NEWS")){
                 name = (TextView)itemView.findViewById(R.id.tv_title_list_news);
                 icon = (ImageView)itemView.findViewById(R.id.ic_list_news);
                 datetime = (TextView)itemView.findViewById(R.id.tv_time_list_news);
@@ -101,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     @Override
     public MyAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(content.equals("NEW_IDEA")){
+        if(content.equals("NEWS")){
             view = inflater.inflate(R.layout.list_news, parent, false);
 
             FrameLayout inside = (FrameLayout) view.findViewById(R.id.wrapper_content_news);
@@ -132,25 +139,39 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 holder.icon.setImageResource(user.getProfilePic());
                 break;
 
-            case "NEW_IDEA":
+            case "NEWS":
+
+                String url;
+                String type;
 
                 NewsFeedFragment.News news = (NewsFeedFragment.News) listData.get(position);
-                User user1 = User.getUsers().get(news.getUserId());
-                Idea idea1 = Idea.getIdeas().get(news.getIdeaId());
+
+                holder.name.setText(news.getName());
+                holder.title.setText(news.getTitle());
+                holder.description.setText(news.getDescription());
+                holder.datetime.setText(setDate(news.getTime()));
+                holder.category.setText(news.getCategory());
+
+                url = news.getPic();
+                imageLoader(url,holder.contentPic);
+
+                url = news.getProfPic();
+                imageLoader(url,holder.icon);
+
+                type = news.getType();
+
+                if(type.equals("create")){
+                    holder.event.setText(R.string.newsNewIdea);
+                }
+                else if(type.equals("update")) {
+                    holder.event.setText(R.string.newsUpdateIdea);
+                }
+
+                //dummy
+                //User user1 = User.getUsers().get(news.getUserId());
+                //Idea idea1 = Idea.getIdeas().get(news.getIdeaId());
 
 
-
-
-
-
-                holder.name.setText(user1.getName());
-                holder.icon.setImageResource(user1.getProfilePic());
-
-                holder.title.setText(idea1.getTitle());
-                holder.description.setText(idea1.getDescription());
-                holder.datetime.setText(setDate(idea1));
-                holder.category.setText(idea1.getCategory());
-                holder.event.setText(R.string.eventNewIdea);
                 break;
         }
 
@@ -161,10 +182,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         return listData.size();
     }
 
-    public String setDate(Idea idea){
+    public String setDate(Long dateparam){
 
         String dateString;
-        Date date = idea.getCreateDate();
+        Date date = new Date(dateparam);
         android.text.format.DateFormat df = new android.text.format.DateFormat();
 
         Date now = new Date();
@@ -172,7 +193,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             dateString = df.format("MMM dd, yyyy HH:mm", date).toString();
         }
         else if(now.getDate()-date.getDate()==1){
-            dateString = df.format("Yesterday at HH:mm", date).toString();
+            dateString = "Yesterday at " + df.format("HH:mm", date).toString();
         }
         else if (date.getDate()-now.getDate()==0){
             if (date.getHours()-now.getHours()==0){
@@ -198,6 +219,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         }
 
         return dateString;
+    }
+
+    public void imageLoader(String url,final ImageView img){
+
+        ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
+
+// If you are using normal ImageView
+        imageLoader.get(url, new ImageLoader.ImageListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Image Load Error: " + error.getMessage());
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    img.setImageBitmap(response.getBitmap());
+                }
+            }
+        });
+
     }
 
 

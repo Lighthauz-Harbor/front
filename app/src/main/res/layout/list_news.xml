@@ -41,7 +41,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/cardview_dark_background"
-                android:layout_marginStart="48dp"
+                android:layout_marginStart="40dp"
                 android:text="@string/insertHere"/>
 
             <TextView
@@ -61,7 +61,7 @@
                 android:textSize="12sp"
                 android:textColor="@color/lightGrey"
                 android:layout_below="@+id/tv_title_list_news"
-                android:layout_marginStart="48dp"
+                android:layout_alignStart="@id/tv_title_list_news"
                 android:text="@string/insertHere"/>
 
             <FrameLayout
