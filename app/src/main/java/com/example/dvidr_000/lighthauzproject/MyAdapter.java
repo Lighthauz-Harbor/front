@@ -89,6 +89,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 icon.setOnClickListener(this);
                 container.setOnClickListener(this);
             }
+            else if(content.equals("IDEA_DETAIL")){
+                contentPic = (ImageView)itemView.findViewById(R.id.ic_content_idea);
+                title = (TextView)itemView.findViewById(R.id.tv_title_content_idea);
+                description = (TextView)itemView.findViewById(R.id.tv_desc_content_idea);
+                category = (TextView)itemView.findViewById(R.id.tv_category_fill_content_idea);
+                container = itemView.findViewById(R.id.card_item_plain);
+
+                container.setOnClickListener(this);
+            }
             else {
                 name = (TextView)itemView.findViewById(R.id.tv_title_list_simple);
                 icon = (ImageView)itemView.findViewById(R.id.ic_list_simple);
@@ -112,9 +121,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             view = inflater.inflate(R.layout.list_news, parent, false);
 
             FrameLayout inside = (FrameLayout) view.findViewById(R.id.wrapper_content_news);
-            View view1 = inflater.inflate(R.layout.content_news_idea,null,false);
+            View view1 = inflater.inflate(R.layout.content_idea,null,false);
             inside.addView(view1);
 
+        }
+        else if (content.equals("IDEA_DETAIL")){
+            view = inflater.inflate(R.layout.list_plain, parent, false);
+
+            FrameLayout inside = (FrameLayout) view.findViewById(R.id.wrapper_content_plain);
+            View view1 = inflater.inflate(R.layout.content_idea,null,false);
+            inside.addView(view1);
         }
         else {
             view = inflater.inflate(R.layout.list_simple, parent, false);
@@ -132,11 +148,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 holder.name.setText(idea.getTitle());
                 break;
 
+            case "IDEA_DETAIL":
+
+                Idea idea1 =  (Idea) listData.get(position);
+                holder.title.setText(idea1.getTitle());
+                holder.description.setText(idea1.getDescription());
+                holder.category.setText(idea1.getCategory());
+                imageLoader(idea1.getPic(),holder.contentPic);
+                break;
+
             case "USER":
 
                 User user =  (User) listData.get(position);
                 holder.name.setText(user.getName());
                 holder.icon.setImageResource(user.getProfilePic());
+                break;
+
+            case "USER_DETAIL":
+                User user1 =  (User) listData.get(position);
+                holder.name.setText(user1.getName());
+                imageLoader(user1.getProfPic(),holder.icon);
                 break;
 
             case "NEWS":

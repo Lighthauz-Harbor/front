@@ -57,12 +57,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Idea newIdea = new Idea("asd","Some category","Some description\n2\n3\n4asddsadasadadadadasadsad",new Date(),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
         ideas.add(newIdea);
-        ideas.add(newIdea);
-        newIdea = new Idea("MyIdea1","Some category1","Some description1",new Date(116,8,21,6,37,28),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
-        ideas.add(newIdea);
-        newIdea = new Idea("MyIdea2","Some category2","Some description2",new Date(115,10,2,17,51,33),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
-        ideas.add(newIdea);
-
 
         users.get(0).getIdea().add(ideas.size()-1);
 

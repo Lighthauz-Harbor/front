@@ -11,9 +11,11 @@ import java.util.List;
 
 public class Idea {
 
+    private String id;
     private String title;
     private String category;
-    private String  description;
+    private String description;
+    private String pic;
     private int  publicity;
     private String  background;
     private String  problem;
@@ -36,6 +38,14 @@ public class Idea {
     private Date lastEdited;
 
     private static List<Idea> ideas = new ArrayList<>();
+
+    public Idea(String id, String title, String description, String pic, String category){
+        this.id=id;
+        this.title=title;
+        this.description=description;
+        this.pic=pic;
+        this.category=category;
+    }
 
     public Idea(
             String title,
@@ -85,6 +95,14 @@ public class Idea {
     public static List<Idea> getIdeas() {
         return ideas;
     }
+
+    public String getId() {return id;}
+
+    public void setId(String id) {this.id = id;}
+
+    public String getPic() {return pic;}
+
+    public void setPic(String pic) {this.pic = pic;}
 
     public Date getCreateDate() {
         return createDate;

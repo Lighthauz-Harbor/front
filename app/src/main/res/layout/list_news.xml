@@ -17,7 +17,7 @@
         android:paddingEnd="8dp"
 
         card_view:cardUseCompatPadding="true"
-        card_view:contentPadding="16dp"
+        card_view:contentPadding="12dp"
         card_view:cardElevation="2dp"
         card_view:cardBackgroundColor="@color/white"
         card_view:cardCornerRadius="4dp">

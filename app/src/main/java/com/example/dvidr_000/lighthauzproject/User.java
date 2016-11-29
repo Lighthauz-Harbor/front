@@ -18,8 +18,10 @@ public class User {
     private String occupation;
     private String bio;
     private String dob;
+    private String profPic;
     private int profilePic;
     private String interest;
+    private Long createdAt;
 
     private  List<Integer> idea = new ArrayList<>();
 
@@ -43,7 +45,15 @@ public class User {
 
     private String phone;
 
-    public User(String email,String password, String name, String dob, String phone){
+    public String getProfPic() {return profPic;}
+
+    public void setProfPic(String profPic) {this.profPic = profPic;}
+
+    public Long getCreatedAt() {return createdAt;}
+
+    public void setCreatedAt(Long createdAt) {this.createdAt = createdAt;}
+
+    public User(String email, String password, String name, String dob, String phone){
         setDob(dob);
         setEmail(email);
         setName(name);
@@ -52,6 +62,12 @@ public class User {
 
         setId(users.size());
 
+    }
+    public User(String email, String name, Long createdAt, String profPic){
+        this.email=email;
+        this.name=name;
+        this.createdAt=createdAt;
+        this.profPic=profPic;
     }
 
     public String getInterest() {

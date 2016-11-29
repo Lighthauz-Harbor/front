@@ -30,7 +30,7 @@
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".DetailActivity"
-            android:parentActivityName=".HomeActivity" />
+            android:parentActivityName=".HomeActivity" />\
         <activity android:name=".VerificationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

@@ -9,8 +9,7 @@
     <string name="password">Password</string>
     <string name="passwordHint">Password(8-12 characters)</string>
     <string name="Confirmpass">Confirm Password</string>
-    <string name="InputYourName">Input Your Name</string>
-    <string name="InputYourNumber">Input Your Phone Number</string>
+    <string name="nameHint">Full Name</string>
     <string name="Birthday">Birth Date dd/mm/yyyy</string>
     <string name="signUpQuestion">Haven\'t sign up yet?</string>
 
@@ -22,6 +21,7 @@
 	3. Arrange SWOT</string>
     <string name="next">Next</string>
     <string name="insertHere">Insert Here</string>
+    <string name="backToLogin">Back to Login</string>
 
     <string name="IdeaDetail">Idea Detail</string>
     <string name="Category">Category</string>
@@ -82,13 +82,9 @@ entrepreneurial tool. It allows you to describe, design, challenge, invent, and 
     <string name="Connections">Connections</string>
     <string name="Ideas">Ideas</string>
 
-
-    <string name="emailindo">Alamat email</string>
-    <string name="passwordindo">Katasandi</string>
-    <string name="konfirmasipassindo">Konfirmasi Password</string>
-    <string name="MasukanNamaindo">Masukan Nama</string>
-    <string name="MasukanNohpindo">Masukan No Handphone</string>
-    <string name="Birthdayindo">Tanggal Lahir dd/mm/yyyy</string>
+    <string name="byTitle">by title</string>
+    <string name="byCategory">by category</string>
+    <string name="noResultsFound">No results found</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

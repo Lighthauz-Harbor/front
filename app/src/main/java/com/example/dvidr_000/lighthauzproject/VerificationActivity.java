@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class VerificationActivity extends AppCompatActivity {
 
     TextView notice;
     TextView link;
+    Button backToLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,14 @@ public class VerificationActivity extends AppCompatActivity {
 
         notice = (TextView) findViewById(R.id.tvVerifNotice);
         link = (TextView) findViewById(R.id.tvVerifLink);
+        backToLogin = (Button) findViewById(R.id.btnBackToLogin);
+
+        backToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         request();
 
@@ -56,8 +66,6 @@ public class VerificationActivity extends AppCompatActivity {
                         String feedback;
 
                         try {
-                            VolleyLog.v("Response:%n %s", response.toString(4));
-
                             if (response.isNull("message")){
                                 feedback = response.getString("fail");
 
@@ -75,6 +83,7 @@ public class VerificationActivity extends AppCompatActivity {
 
                             notice.setText(feedback);
                             notice.setVisibility(View.VISIBLE);
+                            backToLogin.setVisibility(View.VISIBLE);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -36,7 +36,6 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
     private RecyclerView recView;
     private MyAdapter adapter;
-    private int loginIndex;
     private List<News> news;
     private ProgressBar pb;
 
@@ -51,24 +50,12 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
-        loginIndex = getActivity().getIntent().getIntExtra("LOGIN_INDEX",0);
-        news = new ArrayList();
-
-        /*News newNews = new News(1,1,"NEW_IDEA");
-        news.add(newNews);
-
-        newNews = new News(2,2,"NEW_IDEA");
-        news.add(newNews);
-
-        newNews = new News(3,3,"NEW_IDEA");
-        news.add(newNews);*/
+        news = new ArrayList<>();
 
         pb = (ProgressBar) v.findViewById(R.id.pBarNewsFeed);
         recView = (RecyclerView) v.findViewById(R.id.rec_list_news);
         //Check out GridLayoutManager and StaggeredGridLayoutManager for more options
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        recView.setVisibility(View.GONE);
 
         requestNews(0,10);
 

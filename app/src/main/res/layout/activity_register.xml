@@ -4,12 +4,12 @@
     android:id="@+id/activity_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context="com.example.dvidr_000.lighthauzproject.RegisterActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         >
 
     <TextView
@@ -23,7 +23,7 @@
     <EditText
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="32dp"
         android:id="@+id/etEmailReg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,29 +38,18 @@
         android:ems="10"
         android:layout_below="@+id/etEmailReg"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/etPasswordReg"
         android:hint="@string/passwordHint" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:layout_below="@+id/etYourname"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp"
-        android:id="@+id/etMobileNumber"
-        android:hint="@string/InputYourNumber" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/etYourname"
-        android:hint="@string/InputYourName"
+        android:hint="@string/nameHint"
         android:layout_below="@+id/etConfPassword"
         android:layout_alignParentStart="true" />
 
@@ -69,7 +58,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/etConfPassword"
         android:hint="@string/Confirmpass"
         android:layout_below="@+id/etPasswordReg"
@@ -82,8 +71,8 @@
             android:hint="@string/Birthday"
             android:ems="10"
             android:id="@+id/etDate"
-            android:layout_marginTop="11dp"
-            android:layout_below="@+id/etMobileNumber"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/etYourname"
             android:layout_alignParentStart="true" />
 
     </RelativeLayout>
@@ -95,7 +84,6 @@
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
         android:id="@+id/btnRegister"
-        android:visibility="visible"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

@@ -33,7 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     String msg=" ";
     String emailStr;
-    String phoneStr;
     String passwordStr;
     String confirmStr;
     String dobStr;
@@ -42,7 +41,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText name;
     EditText confirm;
     EditText dob;
-    EditText phone;
     EditText email;
     EditText password ;
 
@@ -62,7 +60,6 @@ public class RegisterActivity extends AppCompatActivity {
         confirm = (EditText) findViewById(R.id.etConfPassword);
         dob = (EditText) findViewById(R.id.etDate);
         dob.setInputType(InputType.TYPE_NULL);
-        phone = (EditText) findViewById(R.id.etMobileNumber);
         email = (EditText) findViewById(R.id.etEmailReg);
         password = (EditText) findViewById(R.id.etPasswordReg);
         submit = (Button) findViewById(R.id.btnRegister);
@@ -118,15 +115,17 @@ public class RegisterActivity extends AppCompatActivity {
         nameStr = name.getText().toString().trim();
         confirmStr = confirm.getText().toString().trim();
         dobStr = dob.getText().toString().trim();
-        phoneStr = phone.getText().toString().trim();
 
 
-        if (emailStr.isEmpty()) {
-            fail =true;
-            msg="Please enter email";
-        } else {
-            fail= !android.util.Patterns.EMAIL_ADDRESS.matcher(emailStr).matches();
-            if(fail)msg="Invalid email";
+        if(dobStr.isEmpty()){
+            fail=true;
+            msg="Please enter date of birth";
+        }
+
+
+        if(nameStr.isEmpty()){
+            fail=true;
+            msg="Please enter name";
         }
 
         if (passwordStr.isEmpty()){
@@ -141,19 +140,12 @@ public class RegisterActivity extends AppCompatActivity {
             msg="Passwords don't match";
         }
 
-        if(nameStr.isEmpty()){
-            fail=true;
-            msg="Please enter name";
-        }
-
-        if(dobStr.isEmpty()){
-            fail=true;
-            msg="Please enter date of birth";
-        }
-
-        if(phoneStr.isEmpty()){
-            fail=true;
-            msg="Please enter phone number";
+        if (emailStr.isEmpty()) {
+            fail =true;
+            msg="Please enter email";
+        } else {
+            fail= !android.util.Patterns.EMAIL_ADDRESS.matcher(emailStr).matches();
+            if(fail)msg="Invalid email";
         }
 
         return fail;

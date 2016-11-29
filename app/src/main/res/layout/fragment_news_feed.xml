@@ -28,16 +28,12 @@
         android:layout_below="@+id/tvNewsFeed"
         android:layout_alignParentStart="true" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/hr_idea_detail"
-        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/hr_idea_detail"
             android:orientation="vertical" >
 
             <ProgressBar
@@ -49,13 +45,13 @@
             </ProgressBar>
 
             <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/rec_list_news">
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-    </ScrollView>
 
 
 </RelativeLayout>
