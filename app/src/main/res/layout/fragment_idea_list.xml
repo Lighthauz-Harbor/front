@@ -9,20 +9,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-
+        android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/rec_list_idea"
-            >
-
+            android:id="@+id/rec_list_idea">
         </android.support.v7.widget.RecyclerView>
-
-
-
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -30,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/ic_add_white_36dp" />
 
 </FrameLayout>

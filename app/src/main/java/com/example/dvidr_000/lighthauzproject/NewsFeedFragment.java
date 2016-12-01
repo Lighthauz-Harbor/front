@@ -4,6 +4,7 @@ package com.example.dvidr_000.lighthauzproject;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.android.volley.VolleyLog.TAG;
@@ -38,6 +39,12 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
     private MyAdapter adapter;
     private List<News> news;
     private ProgressBar pb;
+    private int previousTotal=0;
+    private int retrieve=5;
+    private boolean loading = true;
+
+    SessionManager sessionManager;
+    HashMap<String,String> user;
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -50,17 +57,86 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
+        sessionManager = new SessionManager(getContext());
+        user = sessionManager.getUserDetails();
+
         news = new ArrayList<>();
 
         pb = (ProgressBar) v.findViewById(R.id.pBarNewsFeed);
         recView = (RecyclerView) v.findViewById(R.id.rec_list_news);
         //Check out GridLayoutManager and StaggeredGridLayoutManager for more options
-        recView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        final SwipeRefreshLayout srl = (SwipeRefreshLayout) v.findViewById(R.id.news_feed_swipe_refresh_layout);
 
-        requestNews(0,10);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                previousTotal=0;
+                refreshItems();
+            }
+            void refreshItems() {
+                // Load items
+                requestNews(previousTotal,retrieve);
+
+                // Load complete
+                onItemsLoadComplete();
+            }
+
+            void onItemsLoadComplete() {
+                // Update the adapter and notify data set changed
+                adapter.notifyDataSetChanged();
+
+                // Stop refresh animation
+                srl.setRefreshing(false);
+            }
+
+
+        });
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recView.setLayoutManager(layoutManager);
+
+        recView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                int firstVisibleItem, visibleItemCount, totalItemCount;
+                visibleItemCount = recView.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + retrieve)) {
+                    // End has been reached
+
+                    Log.i("Yaeye!", "end of list");
+
+                    // Do something
+                    requestNews(previousTotal,retrieve);
+
+                    loading = true;
+                }
+            }
+
+        });
+
+
+        requestNews(previousTotal,retrieve);
 
         adapter = new MyAdapter(getActivity(),"NEWS",news);
         adapter.setItemClickCallback(this);
+
 
         // Inflate the layout for this fragment
         return v;
@@ -156,13 +232,16 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
         String url = "http://lighthauz.herokuapp.com/api/news/";
 
-        JsonObjectRequest req = new JsonObjectRequest(url + Integer.toString(skip) + "/" + Integer.toString(num),null,
+        JsonObjectRequest req = new JsonObjectRequest(url + user.get(SessionManager.KEY_ID) + "/" + Integer.toString(skip) + "/" + Integer.toString(num),null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
                         JSONArray myArray;
                         try{
+                            if (previousTotal==0){
+                                news.clear();
+                            }
 
                             myArray = response.getJSONArray("news");
                             for(int i=0;i<myArray.length();i++){
@@ -174,7 +253,12 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
                             }
 
-                            recView.setAdapter(adapter);
+                            if(previousTotal==0){
+                                recView.setAdapter(adapter);
+                            } else {
+                                adapter.swap(news);
+                            }
+
                             pb.setVisibility(View.GONE);
                             recView.setVisibility(View.VISIBLE);
 

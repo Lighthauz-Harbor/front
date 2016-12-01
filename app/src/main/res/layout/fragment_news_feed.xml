@@ -24,24 +24,27 @@
         android:background="@color/colorPrimary"
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/hr_idea_detail"
+        android:id="@+id/hr_news_feed"
         android:layout_below="@+id/tvNewsFeed"
         android:layout_alignParentStart="true" />
 
 
-        <LinearLayout
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/news_feed_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/hr_idea_detail"
-            android:orientation="vertical" >
+            android:layout_below="@+id/hr_news_feed">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <ProgressBar
                 android:id="@+id/pBarNewsFeed"
                 android:progressDrawable="@drawable/loading_spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_gravity="center_horizontal">
             </ProgressBar>
 
             <android.support.v7.widget.RecyclerView
@@ -51,7 +54,8 @@
                 android:id="@+id/rec_list_news">
 
             </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </RelativeLayout>

@@ -10,6 +10,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.dvidr_000.lighthauzproject.LoginActivity">
 
+    <TextView
+        android:text="@string/Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:id="@+id/tvLogin"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +44,7 @@
 
     <Button
         android:text="@string/Login"
-        android:layout_width="200dp"
+        android:layout_width="216dp"
         android:layout_height="wrap_content"
         android:id="@+id/btnLogin"
         android:background="@color/colorPrimary"
@@ -62,15 +72,16 @@
         android:layout_alignBottom="@+id/tvInvite"
         android:layout_alignEnd="@+id/btnLogin" />
 
-    <TextView
-        android:text="@string/Login"
+    <ProgressBar
+        android:id="@+id/pBarLogin"
+        android:progressDrawable="@drawable/loading_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="35sp"
-        android:id="@+id/tvLogin"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/tvRegister"
-        android:layout_marginTop="56dp" />
+        android:layout_below="@id/tvInvite"
+        android:layout_marginTop="32dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone">
+    </ProgressBar>
 
 
 

@@ -172,8 +172,6 @@ public class RegisterActivity extends AppCompatActivity {
                         String feedback;
 
                         try {
-                            VolleyLog.v("Response:%n %s", response.toString(4));
-
                             if (response.isNull("message")){
                                 feedback = response.getString("fail");
                             }

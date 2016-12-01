@@ -58,6 +58,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         this.content=content;
     }
 
+    public void swap(List<NewsFeedFragment.News> data){
+        this.listData=data;
+        notifyDataSetChanged();
+    }
+
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView name;
