@@ -53,7 +53,7 @@
     <string name="IdeaProblem">What problems are solved by your idea?</string>
     <string name="IdeaSolution">How does your Idea solve the problem?</string>
     <string name="BMCInfo">Now it’s time to make your business plan.</string>
-        <string name="SWOTInfo">Strengths and weaknesses are often internal to your
+    <string name="SWOTInfo">Strengths and weaknesses are often internal to your
                 organization, while opportunities and threats generally relate to
                 external factors. </string>
     <string name="KnowYourSwot">Know your SWOT</string>
@@ -68,7 +68,8 @@
     <string name="newsUpdateIdea">updated an idea.</string>
 
 
-
+    <string name="showbmc">Show BMC</string>
+    <string name="showswot">Show SWOT</string>
 
 <string name="BMCInfo2">Business Model Canvas is a
 strategic management and
@@ -81,6 +82,7 @@ entrepreneurial tool. It allows you to describe, design, challenge, invent, and 
     <string name="AboutMe">About Me</string>
     <string name="Connections">Connections</string>
     <string name="Ideas">Ideas</string>
+    <string name="profilePicture">Profile Picture</string>
 
     <string name="byTitle">by title</string>
     <string name="byCategory">by category</string>

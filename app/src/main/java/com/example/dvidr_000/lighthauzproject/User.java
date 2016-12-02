@@ -15,7 +15,6 @@ public class User {
     private String email;
     private String password;
     private String name;
-    private String occupation;
     private String bio;
     private String dob;
     private String profPic;
@@ -76,14 +75,6 @@ public class User {
 
     public void setInterest(String interest) {
         this.interest = interest;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
     }
 
     public int getId() {

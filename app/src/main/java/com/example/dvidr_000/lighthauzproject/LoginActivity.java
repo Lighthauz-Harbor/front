@@ -61,27 +61,24 @@ public class LoginActivity extends AppCompatActivity {
         users.add(newUser);
 
         newUser = new User("david@lighthauz.com","david","David Long","01/01/1970","0123456789");
-        newUser.setOccupation("Student");
         newUser.setInterest("Food & Beverage");
         imgRes = R.drawable.man1;
         newUser.setProfilePic(imgRes);
         users.add(newUser);
 
         newUser = new User("bryan@lighthauz.com","bryan","Bryan Tyler","01/01/1970","0123456789");
-        newUser.setOccupation("Entrepreneur");
         newUser.setInterest("Restaurant");
         imgRes = R.drawable.man2;
         newUser.setProfilePic(imgRes);
         users.add(newUser);
 
         newUser = new User("andrew@lighthauz.com","andrew","Andrew Jason","01/01/1970","0123456789");
-        newUser.setOccupation("Programmer");
         newUser.setInterest("Tech");
         imgRes = R.drawable.man3;
         newUser.setProfilePic(imgRes);
         users.add(newUser);
 
-        Idea newIdea = new Idea("asd","Some category","Some description\n2\n3\n4asddsadasadadadadasadsad",new Date(),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats");
+        Idea newIdea = new Idea("asd","Some category","Some description\n2\n3\n4asddsadasadadadadasadsad",new Date().getTime(),2,"Some background","Some problem","Some solution","VP","CS","CR","CH","KA","KR","KP","COST","RS","Some strength","Some weakness","Some opportunities","Some threats","","");
         ideas.add(newIdea);
 
         users.get(0).getIdea().add(ideas.size()-1);
@@ -104,12 +101,10 @@ public class LoginActivity extends AppCompatActivity {
         {
             public void onClick(View v)
             {
-                pb.setVisibility(View.VISIBLE);
                 emailStr = email.getText().toString().trim();
                 passwordStr = password.getText().toString().trim();
 
                 validate();
-                pb.setVisibility(View.GONE);
 
             }
 
@@ -149,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
 
+
         /*int index=0;
         fail=true;
         do{
@@ -179,6 +175,7 @@ public class LoginActivity extends AppCompatActivity {
         params.put("username", emailStr);
         params.put("password", passwordStr);
 
+        pb.setVisibility(View.VISIBLE);
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,URL, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
@@ -197,10 +194,12 @@ public class LoginActivity extends AppCompatActivity {
                                 String id = response.getString("id");
 
                                 sessionManager.createLoginSession(id,username,token);
+
+
                                 proceed();
 
                             }
-
+                            pb.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -211,6 +210,7 @@ public class LoginActivity extends AppCompatActivity {
                 VolleyLog.e("Error: ", error.getMessage());
                 msg = "Error occured. Please try again.";
                 Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                pb.setVisibility(View.GONE);
             }
         });
 

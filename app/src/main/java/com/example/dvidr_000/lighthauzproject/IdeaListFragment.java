@@ -7,12 +7,25 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import static com.android.volley.VolleyLog.TAG;
 
 
 /**
@@ -23,6 +36,11 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
     private RecyclerView recView;
     private MyAdapter adapter;
     int loginIndex=0;
+    private String idStr;
+    SessionManager sessionManager;
+    HashMap<String,String> user;
+    ArrayList<Idea> ideas;
+
 
     public IdeaListFragment() {
         // Required empty public constructor
@@ -31,7 +49,7 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
     @Override
     public void onResume() {
 
-        populate();
+        request();
         super.onResume();
     }
 
@@ -42,6 +60,7 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
         View v = inflater.inflate(R.layout.fragment_idea_list, container, false);
 
         loginIndex = getActivity().getIntent().getIntExtra("LOGIN_INDEX",0);
+        ideas = new ArrayList<>();
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,48 +72,71 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
             }
         });
 
+        sessionManager = new SessionManager(getContext());
+        user = sessionManager.getUserDetails();
+        idStr = user.get(SessionManager.KEY_ID);
+
+        recView = (RecyclerView) v.findViewById(R.id.rec_list_idea);
+        recView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        adapter = new MyAdapter(ideas, "IDEA", getActivity());
+        adapter.setItemClickCallback(this);
+
         // Inflate the layout for this fragment
         return v;
     }
 
     @Override
     public void onItemClick(int p,View view) {
-        //buka detail idea
-        int index = User.getUsers().get(loginIndex).getIdea().get(p);
+        //Open idea detail
         Intent intent = new Intent(getActivity(),DetailActivity.class);
         intent.putExtra("EXTRA_CONTENT","IDEA_DETAIL");
-        intent.putExtra("IDEA_ID",index);
-        intent.putExtra("LOGIN_INDEX",loginIndex);
+        intent.putExtra("IDEA_ID",ideas.get(p).getId());
 
 
         startActivity(intent);
     }
 
+    public void request(){
 
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
 
+        String url = "http://lighthauz.herokuapp.com/api/ideas/list/";
 
+        JsonObjectRequest req = new JsonObjectRequest(url + idStr,null,
+                new Response.Listener<JSONObject>() {
 
-    public void populate(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        VolleyLog.d(response.toString());
+                        JSONArray myArray;
+                        ideas.clear();
+                        try{
+                            myArray = response.getJSONArray("ideas");
+                            for(int i=0;i<myArray.length();i++){
 
-        View view = getView();
+                                JSONObject idea = myArray.getJSONObject(i);
+                                Idea newIdea = new Idea(idea.getString("id"),idea.getString("title"));
+                                ideas.add(newIdea);
+                            }
 
-        ArrayList<Idea> ideas = (ArrayList) Idea.getIdeas();
-        ArrayList<Idea> selected = new ArrayList<>();
+                            recView.setAdapter(adapter);
 
-        //sementara pake admin (array 0)
-        ArrayList<Integer> userIdea = (ArrayList) User.getUsers().get(loginIndex).getIdea();
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
 
-        for(int i=0;i<userIdea.size();i++){
-            selected.add(ideas.get(userIdea.get(i)));
-        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
 
-        recView = (RecyclerView) view.findViewById(R.id.rec_list_idea);
-        //Check out GridLayoutManager and StaggeredGridLayoutManager for more options
-        recView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        adapter = new MyAdapter(selected, "IDEA", getActivity());
-        recView.setAdapter(adapter);
-        adapter.setItemClickCallback(this);
-
+// Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 }

@@ -97,10 +97,10 @@ public class DetailActivity extends AppCompatActivity {
         String  revenueStream = idea.getString("RS");
         String  strength = idea.getString("STRENGTH");
         String  weakness = idea.getString("WEAKNESS");
-        String  opportuniities = idea.getString("OPPORTUNITY");
+        String  opportunities = idea.getString("OPPORTUNITY");
         String  threat = idea.getString("THREAT");
 
-        Idea newIdea = new Idea(title,category,description,new Date(),publicity,background,problem,solution,valueProposition,customerSegment,customerRelationship,channel,keyActivities,keyResources,keyPartner,costStructure,revenueStream,strength,weakness,opportuniities,threat);
+        Idea newIdea = new Idea(title,category,description,new Date().getTime(),publicity,background,problem,solution,valueProposition,customerSegment,customerRelationship,channel,keyActivities,keyResources,keyPartner,costStructure,revenueStream,strength,weakness,opportunities,threat,"","");
 
         Idea.getIdeas().add(newIdea);
         User.getUsers().get(loginIndex).getIdea().add(Idea.getIdeas().size()-1);

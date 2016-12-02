@@ -36,11 +36,13 @@
             android:layout_marginTop="8dp"
             android:layout_below="@+id/hr_news_feed">
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             <ProgressBar
                 android:id="@+id/pBarNewsFeed"
+                android:visibility="gone"
                 android:progressDrawable="@drawable/loading_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

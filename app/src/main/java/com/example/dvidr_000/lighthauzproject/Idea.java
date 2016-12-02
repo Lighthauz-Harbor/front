@@ -31,11 +31,11 @@ public class Idea {
     private String  revenueStream;
     private String  strength;
     private String  weakness;
-    private String  opportuniities;
+    private String  opportunities;
     private String  threat;
-    private String  optLink;
-    private Date createDate;
-    private Date lastEdited;
+    private String  extraLink;
+    private Long createDate;
+    private Long lastEdited;
 
     private static List<Idea> ideas = new ArrayList<>();
 
@@ -47,11 +47,16 @@ public class Idea {
         this.category=category;
     }
 
+    public Idea(String id, String title){
+        this.id=id;
+        this.title=title;
+    }
+
     public Idea(
             String title,
             String category,
             String  description,
-            Date createDate,
+            Long createDate,
              int  publicity,
              String  background,
              String  problem,
@@ -67,8 +72,10 @@ public class Idea {
              String  revenueStream,
              String  strength,
              String  weakness,
-             String  opportuniities,
-             String  threat){
+             String  opportunities,
+             String  threat,
+            String extraLink,
+             String pic){
         this.setTitle(title);
         this.setCategory(category);
         this.setBackground(background);
@@ -80,7 +87,7 @@ public class Idea {
         this.setKeyActivities(keyActivities);
         this.setKeyPartner(keyPartner);
         this.setKeyResources(keyResources);
-        this.setOpportuniities(opportuniities);
+        this.setOpportunities(opportunities);
         this.setProblem(problem);
         this.setPublicity(publicity);
         this.setWeakness(weakness);
@@ -90,6 +97,8 @@ public class Idea {
         this.setSolution(solution);
         this.setRevenueStream(revenueStream);
         this.createDate=createDate;
+        this.extraLink=extraLink;
+        this.pic=pic;
     }
 
     public static List<Idea> getIdeas() {
@@ -104,15 +113,15 @@ public class Idea {
 
     public void setPic(String pic) {this.pic = pic;}
 
-    public Date getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public Date getLastEdited() {
+    public Long getLastEdited() {
         return lastEdited;
     }
 
-    public void setLastEdited(Date lastEdited) {
+    public void setLastEdited(Long lastEdited) {
         this.lastEdited = lastEdited;
     }
 
@@ -260,12 +269,12 @@ public class Idea {
         this.weakness = weakness;
     }
 
-    public String getOpportuniities() {
-        return opportuniities;
+    public String getOpportunities() {
+        return opportunities;
     }
 
-    public void setOpportuniities(String opportuniities) {
-        this.opportuniities = opportuniities;
+    public void setOpportunities(String opportuniities) {
+        this.opportunities = opportuniities;
     }
 
     public String getThreat() {
@@ -276,11 +285,7 @@ public class Idea {
         this.threat = threat;
     }
 
-    public String getOptLink() {
-        return optLink;
-    }
+    public String getExtraLink() {return extraLink;}
 
-    public void setOptLink(String optLink) {
-        this.optLink = optLink;
-    }
+    public void setExtraLink(String extraLink) {this.extraLink = extraLink;}
 }

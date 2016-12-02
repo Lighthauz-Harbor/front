@@ -27,7 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     private List listData;
     private LayoutInflater inflater;
     private String content;
-    private Context context;
+    private static Context context;
 
     private ItemClickCallback itemClickCallback;
 
@@ -218,7 +218,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         return listData.size();
     }
 
-    public String setDate(Long dateparam){
+    public static String setDate(Long dateparam){
 
         String dateString;
         Date date = new Date(dateparam);
@@ -257,7 +257,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         return dateString;
     }
 
-    public void imageLoader(String url,final ImageView img){
+    public static void imageLoader(String url,final ImageView img){
 
         ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
 

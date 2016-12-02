@@ -2,6 +2,7 @@ package com.example.dvidr_000.lighthauzproject;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -49,7 +50,6 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
     public NewsFeedFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,18 +106,16 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
                 int firstVisibleItem, visibleItemCount, totalItemCount;
-                visibleItemCount = recView.getChildCount();
+                visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = layoutManager.getItemCount();
-                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-
+                firstVisibleItem = layoutManager.findFirstCompletelyVisibleItemPosition();
                 if (loading) {
                     if (totalItemCount > previousTotal) {
                         loading = false;
                         previousTotal = totalItemCount;
                     }
                 }
-                if (!loading && (totalItemCount - visibleItemCount)
-                        <= (firstVisibleItem + retrieve)) {
+                if (!loading && (visibleItemCount + firstVisibleItem) > totalItemCount) {
                     // End has been reached
 
                     Log.i("Yaeye!", "end of list");
@@ -131,8 +129,9 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
         });
 
-
+        pb.setVisibility(View.VISIBLE);
         requestNews(previousTotal,retrieve);
+
 
         adapter = new MyAdapter(getActivity(),"NEWS",news);
         adapter.setItemClickCallback(this);
@@ -149,25 +148,18 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
             case R.id.ic_list_news:
 
-
-
-                /*Intent intent1 = new Intent(getActivity(),DetailActivity.class);
+                Intent intent1 = new Intent(getActivity(),DetailActivity.class);
                 intent1.putExtra("EXTRA_CONTENT","VIEW_PROFILE");
-                intent1.putExtra("USER_ID",p+1);
-                intent1.putExtra("LOGIN_INDEX",loginIndex);
-
-                startActivity(intent1);*/
-
+                intent1.putExtra("USER_ID",news.get(p).getUserId());
+                startActivity(intent1);
                 break;
 
             case R.id.wrapper_content_news:
 
-                /*Intent intent = new Intent(getActivity(),DetailActivity.class);
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
                 intent.putExtra("EXTRA_CONTENT","IDEA_DETAIL");
-                intent.putExtra("IDEA_ID",p+1);
-                intent.putExtra("LOGIN_INDEX",loginIndex);
-
-                startActivity(intent);*/
+                intent.putExtra("IDEA_ID",news.get(p).getIdeaId());
+                startActivity(intent);
                 break;
         }
 
@@ -234,6 +226,7 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 
         JsonObjectRequest req = new JsonObjectRequest(url + user.get(SessionManager.KEY_ID) + "/" + Integer.toString(skip) + "/" + Integer.toString(num),null,
                 new Response.Listener<JSONObject>() {
+
                     @Override
                     public void onResponse(JSONObject response) {
 

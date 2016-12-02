@@ -94,7 +94,7 @@ public class BMCContentFragment extends Fragment implements View.OnClickListener
         if(view.getId()==R.id.QuestionMarkVP){
             AlertDialog.Builder hint = new AlertDialog.Builder(getActivity());
             hint.setMessage("Value Proposition\n\nWhat value do you offer?")
-                    .setNeutralButton("CLOSE",new DialogInterface.OnClickListener() {
+                    .setPositiveButton("CLOSE",new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
