@@ -51,6 +51,12 @@ public class DetailActivity extends AppCompatActivity {
                 tr.addToBackStack(null);
                 tr.commit();
                 break;
+            case "FIRST_LOGIN":
+                tr.replace(R.id.fragment_container_detail,new FirstLoginFragment());
+                tr.addToBackStack(null);
+                tr.commit();
+                break;
+
         }
 
 

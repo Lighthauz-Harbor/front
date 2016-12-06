@@ -66,7 +66,7 @@ public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickC
     public void onItemClick(int p, View view) {
         Bundle args = new Bundle();
 
-        args.putInt("USER_ID",selected.get(p).getId());
+        args.putInt("USER_ID",Integer.getInteger(selected.get(p).getId()));
 
         ViewProfileFragment fragment = new ViewProfileFragment();
         fragment.setArguments(args);

@@ -35,7 +35,6 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
 
     private RecyclerView recView;
     private MyAdapter adapter;
-    int loginIndex=0;
     private String idStr;
     SessionManager sessionManager;
     HashMap<String,String> user;
@@ -58,8 +57,6 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_idea_list, container, false);
-
-        loginIndex = getActivity().getIntent().getIntExtra("LOGIN_INDEX",0);
         ideas = new ArrayList<>();
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);

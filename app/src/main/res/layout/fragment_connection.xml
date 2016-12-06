@@ -1,13 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dvidr_000.lighthauzproject.ConnectionFragment">
+    tools:context="com.example.dvidr_000.lighthauzproject.IdeaListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Connection" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingStart="24dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/Connections"
+            android:id="@+id/tvMyConnections"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="-16dp"
+            android:layout_toStartOf="@id/tvMyConnections"
+            android:src="@drawable/ic_link1"
+            android:tint="@color/colorPrimary"
+            android:id="@+id/ic_connections"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@id/tvMyConnections"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rec_list_connection">
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
 
 </FrameLayout>

@@ -1,6 +1,7 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -43,10 +44,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     private RecyclerView recView;
     private MyAdapter adapter;
-    private int loginIndex;
     private List<User> users;
     private List<Idea> ideas;
     private ProgressBar pb;
+    private TextView notice;
     private TabHost host;
     private RadioGroup myRadioGroup;
 
@@ -91,30 +92,32 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         spec.setIndicator("Idea");
         host.addTab(spec);
 
-        setTabView(v,R.id.pBarSearchUser,R.id.rec_list_search_user);
+        setTabView(v,R.id.pBarSearchUser,R.id.rec_list_search_user,R.id.searchUserNotice);
 
         host.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
             @Override
             public void onTabChanged(String tabId) {
                 if(tabId.equals("Tab User")) {
-                    setTabView(v,R.id.pBarSearchUser,R.id.rec_list_search_user);
+                    setTabView(v,R.id.pBarSearchUser,R.id.rec_list_search_user,R.id.searchUserNotice);
                 }
                 if(tabId.equals("Tab Idea")) {
-                    setTabView(v,R.id.pBarSearchIdea,R.id.rec_list_search_idea);
+                    setTabView(v,R.id.pBarSearchIdea,R.id.rec_list_search_idea,R.id.searchIdeaNotice);
                 }
             }});
 
         return v;
     }
 
-    protected void setTabView(View v, int pbId, int recViewId){
+    public void setTabView(View v, int pbId, int recViewId, int guideId){
         pb = (ProgressBar) v.findViewById(pbId);
+        notice = (TextView) v.findViewById(guideId);
         recView = (RecyclerView) v.findViewById(recViewId);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        notice.setVisibility(View.GONE);
         pb.setVisibility(View.VISIBLE);
         request(query);
 
@@ -174,35 +177,33 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                             for(int i=0;i<myArray.length();i++){
                                 switch(code){
                                     case 1:
-
+                                        String userId = myArray.getJSONObject(i).getString("id");
                                         String name = myArray.getJSONObject(i).getString("name");
                                         String username = myArray.getJSONObject(i).getString("username");
                                         Long createdAt = myArray.getJSONObject(i).getLong("createdAt");
                                         String profilePic = myArray.getJSONObject(i).getString("profilePic");
 
-                                        User newUser = new User(username,name,createdAt,profilePic);
+                                        User newUser = new User(userId,username,name,createdAt,profilePic);
                                         users.add(newUser);
 
                                         break;
                                     case 2:
-                                        String id = myArray.getJSONObject(i).getString("id");
+                                        String ideaId = myArray.getJSONObject(i).getString("id");
                                         String title = myArray.getJSONObject(i).getString("title");
                                         String description = myArray.getJSONObject(i).getString("description");
                                         String pic = myArray.getJSONObject(i).getString("pic");
                                         String category = myArray.getJSONObject(i).getString("category");
 
-                                        Idea newIdea = new Idea(id,title,description,pic,category);
+                                        Idea newIdea = new Idea(ideaId,title,description,pic,category);
                                         ideas.add(newIdea);
 
                                         break;
                                 }
                             }
 
-                            TextView notice;
-
                             if(host.getCurrentTab()==0){
-                                notice = (TextView) getView().findViewById(R.id.searchUserNotice);
                                 if (users.isEmpty()){
+                                    notice.setText(R.string.noResultsFound);
                                     notice.setVisibility(View.VISIBLE);
                                 }
                                 else {
@@ -210,8 +211,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                                 }
                             }
                             else {
-                                notice = (TextView) getView().findViewById(R.id.searchIdeaNotice);
                                 if (ideas.isEmpty()){
+                                    notice.setText(R.string.noResultsFound);
                                     notice.setVisibility(View.VISIBLE);
                                 }
                                 else {
@@ -242,6 +243,24 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public void onItemClick(int p, View view) {
+        switch (view.getId()){
+            //Idea
+            case R.id.card_item_plain:
 
+                Intent intent1 = new Intent(getActivity(),DetailActivity.class);
+                intent1.putExtra("EXTRA_CONTENT","IDEA_DETAIL");
+                intent1.putExtra("IDEA_ID",ideas.get(p).getId());
+                startActivity(intent1);
+                break;
+
+            //User
+            case R.id.card_item_simple:
+
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
+                intent.putExtra("EXTRA_CONTENT","VIEW_PROFILE");
+                intent.putExtra("USER_ID",users.get(p).getId());
+                startActivity(intent);
+                break;
+        }
     }
 }

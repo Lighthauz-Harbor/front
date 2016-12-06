@@ -4,6 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="Login">Log in</string>
     <string name="Register">Register</string>
+    <string name="Logout">Logout</string>
     <string name="action_settings">Settings</string>
     <string name="email">E-mail</string>
     <string name="password">Password</string>
@@ -12,7 +13,10 @@
     <string name="nameHint">Full Name</string>
     <string name="Birthday">Birth Date dd/mm/yyyy</string>
     <string name="signUpQuestion">Haven\'t sign up yet?</string>
+    <string name="welcomeToLighthauz">Welcome to LightHauz</string>
+    <string name="firstIntro">Since this is your first time using the app, we need your help to tell us your interests.\n\n </string>
 
+    <string name="chooseCategoryTip">You can choose more than one category to represent your interests.</string>
     <string name="newIdeaInstruction">Step by step add new idea:\n
 	1. Add business name, \n
 		  background, problem, and\n
@@ -20,8 +24,10 @@
 	2. Make Business Model Canvas\n
 	3. Arrange SWOT</string>
     <string name="next">Next</string>
+    <string name="submit">Submit</string>
     <string name="insertHere">Insert Here</string>
     <string name="backToLogin">Back to Login</string>
+    <string name="getStarted">Get Started</string>
 
     <string name="IdeaDetail">Idea Detail</string>
     <string name="Category">Category</string>
@@ -82,11 +88,13 @@ entrepreneurial tool. It allows you to describe, design, challenge, invent, and 
     <string name="AboutMe">About Me</string>
     <string name="Connections">Connections</string>
     <string name="Ideas">Ideas</string>
+    <string name="MyIdeas">My Ideas</string>
     <string name="profilePicture">Profile Picture</string>
 
     <string name="byTitle">by title</string>
     <string name="byCategory">by category</string>
     <string name="noResultsFound">No results found</string>
+    <string name="searchGuide">Click on the search icon at the top right corner to start searching</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

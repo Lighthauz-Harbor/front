@@ -3,7 +3,8 @@ package com.example.dvidr_000.lighthauzproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.test.InstrumentationTestRunner;
+
+import java.util.HashMap;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -12,24 +13,22 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Thread myThread = new Thread()
-        {
-          public void run()
-          {
-              try
-              {
-                  sleep(3000);
-                  Intent startMainScreen = new Intent(getApplicationContext(),LoginActivity.class);
-                  startActivity(startMainScreen);
-                  finish();
+        SessionManager sessionManager;
+        sessionManager = new SessionManager(getApplicationContext());
+
+        HashMap<String,String> user = sessionManager.getUserDetails();
+
+        if (user.get(SessionManager.KEY_TOKEN).isEmpty()){
+            Intent startMainScreen = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(startMainScreen);
+            finish();
+        }
+        else {
+            Intent in = new Intent(SplashActivity.this,HomeActivity.class);
+            startActivity(in);
+            finish();
+        }
 
 
-              } catch (InterruptedException e)
-              {
-               e.printStackTrace();
-              }
-          }
-        };
-    myThread.start();
     }
 }

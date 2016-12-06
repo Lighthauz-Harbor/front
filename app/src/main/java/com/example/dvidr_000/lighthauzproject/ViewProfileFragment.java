@@ -75,11 +75,9 @@ public class ViewProfileFragment extends Fragment {
         layout = (RelativeLayout) v.findViewById(R.id.view_profile_layout);
 
         try {
-            //id = getArguments().getInt("USER_ID");
             idStr = getArguments().getString("USER_ID");
         }
         catch (Exception e){
-            //id = getActivity().getIntent().getIntExtra("USER_ID",0);
             idStr = getActivity().getIntent().getStringExtra("USER_ID");
         }
 
@@ -96,20 +94,10 @@ public class ViewProfileFragment extends Fragment {
     }
 
     public void setDetails(){
-
-        /*name.setText(user.getName());
-        occupation.setText(user.getOccupation());
-        interest.setText(user.getInterest());
-        about.setText(user.getBio());
-        email.setText(user.getEmail());
-        profilePic.setImageResource(User.getUsers().get(id).getProfilePic());*/
-
         name.setText(nameStr);
         about.setText(aboutStr);
         email.setText(emailStr);
         MyAdapter.imageLoader(profilePicStr,profilePic);
-
-
     }
 
     @Override

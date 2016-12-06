@@ -44,8 +44,8 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
     private int retrieve=5;
     private boolean loading = true;
 
-    SessionManager sessionManager;
-    HashMap<String,String> user;
+    private SessionManager sessionManager;
+    private HashMap<String,String> user;
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -271,6 +271,5 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
 // Adding request to request queue
         MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
-
 
 }

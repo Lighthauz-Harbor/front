@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,6 +59,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         this.content=content;
     }
 
+    public MyAdapter(Context c, List<CategoryPickFragment.Category> listData, String content){
+        inflater = LayoutInflater.from(c);
+        this.content=content;
+        this.listData=listData;
+    }
+
     public void swap(List<NewsFeedFragment.News> data){
         this.listData=data;
         notifyDataSetChanged();
@@ -74,6 +81,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         private TextView category;
         private TextView event;
         private TextView datetime;
+        private CheckBox check;
 
         public MyHolder(View itemView) {
             super(itemView);
@@ -92,7 +100,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
                 name.setOnClickListener(this);
                 icon.setOnClickListener(this);
-                container.setOnClickListener(this);
             }
             else if(content.equals("IDEA_DETAIL")){
                 contentPic = (ImageView)itemView.findViewById(R.id.ic_content_idea);
@@ -100,17 +107,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 description = (TextView)itemView.findViewById(R.id.tv_desc_content_idea);
                 category = (TextView)itemView.findViewById(R.id.tv_category_fill_content_idea);
                 container = itemView.findViewById(R.id.card_item_plain);
-
-                container.setOnClickListener(this);
+            }
+            else if (content.equals("CATEGORY_LIST")) {
+                title = (TextView) itemView.findViewById(R.id.tv_title_list_category);
+                check = (CheckBox) itemView.findViewById(R.id.checkBox_list_category);
+                container = itemView.findViewById(R.id.list_category_root);
+                check.setOnClickListener(this);
             }
             else {
                 name = (TextView)itemView.findViewById(R.id.tv_title_list_simple);
                 icon = (ImageView)itemView.findViewById(R.id.ic_list_simple);
                 container = itemView.findViewById(R.id.card_item_simple);
-                container.setOnClickListener(this);
             }
-
-
+            container.setOnClickListener(this);
         }
 
         @Override
@@ -122,6 +131,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     @Override
     public MyAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
+
         if(content.equals("NEWS")){
             view = inflater.inflate(R.layout.list_news, parent, false);
 
@@ -136,6 +146,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             FrameLayout inside = (FrameLayout) view.findViewById(R.id.wrapper_content_plain);
             View view1 = inflater.inflate(R.layout.content_idea,null,false);
             inside.addView(view1);
+        }
+        else if (content.equals("CATEGORY_LIST")){
+            view = inflater.inflate(R.layout.list_category, parent, false);
         }
         else {
             view = inflater.inflate(R.layout.list_simple, parent, false);
@@ -203,14 +216,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                     holder.event.setText(R.string.newsUpdateIdea);
                 }
 
-                //dummy
-                //User user1 = User.getUsers().get(news.getUserId());
-                //Idea idea1 = Idea.getIdeas().get(news.getIdeaId());
-
+                break;
+            case "CATEGORY_LIST":
+                CategoryPickFragment.Category category = (CategoryPickFragment.Category) listData.get(position);
+                holder.title.setText(category.getName());
+                holder.check.setChecked(category.isSelected());
 
                 break;
         }
 
+    }
+
+    public List getListData() {
+        return listData;
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.Vector;
  */
 
 public class User {
-    private int id;
+    private String id;
     private String email;
     private String password;
     private String name;
@@ -34,16 +34,6 @@ public class User {
         return users;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    private String phone;
-
     public String getProfPic() {return profPic;}
 
     public void setProfPic(String profPic) {this.profPic = profPic;}
@@ -52,20 +42,26 @@ public class User {
 
     public void setCreatedAt(Long createdAt) {this.createdAt = createdAt;}
 
-    public User(String email, String password, String name, String dob, String phone){
+    public User(String email, String password, String name, String dob){
         setDob(dob);
         setEmail(email);
         setName(name);
         setPassword(password);
-        setPhone(phone);
 
-        setId(users.size());
+        setId(Integer.toString(users.size()));
 
     }
-    public User(String email, String name, Long createdAt, String profPic){
+    public User(String id, String email, String name, Long createdAt, String profPic){
+        this.id=id;
         this.email=email;
         this.name=name;
         this.createdAt=createdAt;
+        this.profPic=profPic;
+    }
+
+    public User(String id, String name, String profPic){
+        this.id=id;
+        this.name=name;
         this.profPic=profPic;
     }
 
@@ -77,11 +73,11 @@ public class User {
         this.interest = interest;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
