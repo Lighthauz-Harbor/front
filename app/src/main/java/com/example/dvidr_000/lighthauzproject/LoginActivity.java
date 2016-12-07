@@ -17,11 +17,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.android.volley.VolleyLog.TAG;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -100,9 +103,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void validate(){
-
-        ArrayList<User> users = (ArrayList) User.getUsers();
-
         boolean fail=false;
         msg="";
 
@@ -161,9 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String id = response.getString("id");
 
                                 sessionManager.createLoginSession(id,username,token);
-
-
-                                proceed();
+                                requestCategoryPref();
 
                             }
                             pb.setVisibility(View.GONE);
@@ -186,15 +184,52 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    protected void proceed(){
-        /*Intent in = new Intent(LoginActivity.this,HomeActivity.class);
-        startActivity(in);
-        finish();*/
+    public void requestCategoryPref(){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
 
-        Intent in = new Intent(LoginActivity.this,DetailActivity.class);
-        in.putExtra("EXTRA_CONTENT","FIRST_LOGIN");
-        startActivity(in);
-        finish();
+        String url = "http://lighthauz.herokuapp.com/api/category/prefer/list";
+        HashMap<String,String> params = new HashMap<>();
+        SessionManager sessionManager = new SessionManager(getApplicationContext());
+        HashMap<String,String> user = sessionManager.getUserDetails();
+        params.put("userId",user.get(SessionManager.KEY_ID));
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,url,new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        VolleyLog.d(response.toString());
+                        try{
+                            if (response.isNull("list")){
+                                Toast.makeText(getApplicationContext(), response.getString("fail"), Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                JSONArray myArray = response.getJSONArray("list");
+                                Intent in;
+                                if (myArray.length()==0){
+                                    in = new Intent(LoginActivity.this,DetailActivity.class);
+                                    in.putExtra("EXTRA_CONTENT","FIRST_LOGIN");
+                                }
+                                else {
+                                    in = new Intent(LoginActivity.this,HomeActivity.class);
+                                }
+                                startActivity(in);
+                                finish();
+                            }
+                        }
+                        catch (JSONException e){
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req, tag_json);
     }
 
 

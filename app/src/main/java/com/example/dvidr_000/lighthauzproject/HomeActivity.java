@@ -8,6 +8,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+
 public class HomeActivity extends AppCompatActivity {
 
     private int pos;
@@ -23,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId()==R.id.menuLogout){
+            requestLogout();
             sessionManager.logoutUser();
             finish();
         }
@@ -81,6 +89,29 @@ public class HomeActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+    }
+
+    public void requestLogout(){
+
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/user/auth/logout";
+
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,url,null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req, tag_json);
     }
 
 

@@ -71,7 +71,7 @@ public class ConnectionFragment extends Fragment implements MyAdapter.ItemClickC
 
         String url = "http://lighthauz.herokuapp.com/api/connections/";
 
-        JsonObjectRequest req = new JsonObjectRequest(url + idStr,null,
+        JsonObjectRequest req = new JsonObjectRequest(url + idStr + "/1",null,
                 new Response.Listener<JSONObject>() {
 
                     @Override

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,8 +22,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +37,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
     private RecyclerView recView;
     private MyAdapter adapter;
     private List<Category> categoryList;
+    private List<String> selectedList;
     private SessionManager sessionManager;
     private HashMap<String,String> user;
 
@@ -58,6 +56,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
 
         getActivity().setTitle("Choose Category");
         categoryList = new ArrayList<>();
+        selectedList = new ArrayList<>();
         recView = (RecyclerView) v.findViewById(R.id.rec_list_category);
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -68,8 +67,8 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                 postCategory();
             }
         });
-
-        requestCategory();
+        requestCategoryPref();
+        requestCategoryList();
 
         adapter = new MyAdapter(getActivity(),categoryList,"CATEGORY_LIST");
         adapter.setItemClickCallback(this);
@@ -78,7 +77,52 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         return v;
     }
 
-    public void requestCategory(){
+    public void requestCategoryPref(){
+
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+
+        String url = "http://lighthauz.herokuapp.com/api/category/prefer/list";
+        HashMap<String,String> params = new HashMap<>();
+        params.put("userId",user.get(SessionManager.KEY_ID));
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,url,new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray myArray;
+                        VolleyLog.d(response.toString());
+
+                        try{
+                            if (response.isNull("list")){
+                                Toast.makeText(getContext(), response.getString("fail"), Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                myArray = response.getJSONArray("list");
+                                for(int i=0;i<myArray.length();i++){
+                                    String selected = myArray.get(i).toString();
+                                    selectedList.add(selected);
+
+                                }
+                            }
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
+
+    public void requestCategoryList(){
 
         // Tag used to cancel the request
         String tag_json = "json_object_req";
@@ -95,6 +139,12 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                             myArray = response.getJSONArray("list");
                             for(int i=0;i<myArray.length();i++){
                                 Category newCat = new Category(myArray.get(i).toString(),false);
+                                for (int j=0;j<selectedList.size();j++){
+                                    if (selectedList.get(j).equals(newCat.getName())){
+                                        newCat.setSelected(true);
+                                        break;
+                                    }
+                                }
                                 categoryList.add(newCat);
 
                             }
@@ -112,7 +162,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
             }
         });
 
-// Adding request to request queue
+        // Adding request to request queue
         MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 

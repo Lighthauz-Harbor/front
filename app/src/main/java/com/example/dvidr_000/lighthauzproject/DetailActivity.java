@@ -1,17 +1,14 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -20,20 +17,19 @@ public class DetailActivity extends AppCompatActivity {
 
     int loginIndex = 0;
 
-
+    FragmentTransaction tr;
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
         getIntent().getIntExtra("LOGIN_INDEX",loginIndex);
-
         String content= getIntent().getStringExtra("EXTRA_CONTENT");
 
-        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+        fm = getSupportFragmentManager();
+        tr = fm.beginTransaction();
 
         switch (content){
             case "IDEA_DETAIL":
@@ -52,22 +48,32 @@ public class DetailActivity extends AppCompatActivity {
                 tr.commit();
                 break;
             case "FIRST_LOGIN":
+
                 tr.replace(R.id.fragment_container_detail,new FirstLoginFragment());
                 tr.addToBackStack(null);
                 tr.commit();
+                ActionBar actionBar = getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.setHomeButtonEnabled(false); // disable the button
+                    actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+                    actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+                }
                 break;
-
         }
-
-
-
     }
 
-// biar balik ke fragment idea list
+    @Override
+    public void onBackPressed() {
+        if (fm.getBackStackEntryCount() == 1) {
+            finish();
+        }
+        super.onBackPressed();
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //up button management
             case android.R.id.home:
-                FragmentManager fm = getSupportFragmentManager();
                 if (fm.getBackStackEntryCount() > 1) {
                     fm.popBackStack();
                     return true;
