@@ -1,6 +1,7 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,8 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +35,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.android.volley.VolleyLog.TAG;
+import static com.android.volley.VolleyLog.v;
 
 
 /**
@@ -49,7 +54,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private ProgressBar pb;
     private TextView notice;
     private TabHost host;
-    private RadioGroup myRadioGroup;
+    private Spinner category;
+    private List<String> categoryList;
+    private ArrayAdapter<String> categoryAdapter;
+    private String categoryDefault;
+    private ProgressDialog pDialog;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -75,7 +84,15 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         ideas= new ArrayList<>();
         users= new ArrayList<>();
 
-        myRadioGroup = (RadioGroup) v.findViewById(R.id.rgSearch);
+        pDialog = new ProgressDialog(getContext());
+        categoryList = new ArrayList<>();
+        categoryDefault = "All";
+        categoryList.add(categoryDefault);
+        requestCategoryList();
+        category = (Spinner) v.findViewById(R.id.spinner_search);
+        categoryAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,categoryList);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category.setAdapter(categoryAdapter);
 
         host = (TabHost)v.findViewById(R.id.tabHost);
         host.setup();
@@ -119,19 +136,17 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public boolean onQueryTextSubmit(String query) {
         notice.setVisibility(View.GONE);
         pb.setVisibility(View.VISIBLE);
-        request(query);
 
         if(host.getCurrentTab()==0){
-            adapter = new MyAdapter(users,getActivity(),"USER_DETAIL");
-
+            searchUser(query);
+            adapter = new MyAdapter(users,getActivity(),"USER");
         }
         else {
+            searchIdea(query);
             adapter = new MyAdapter(ideas,"IDEA_DETAIL",getActivity());
-
         }
 
         adapter.setItemClickCallback(this);
-
         return false;
     }
 
@@ -140,31 +155,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         return false;
     }
 
-    public void request(String query){
-
+    public void searchUser(String query){
         // Tag used to cancel the request
         final int code;
         String tag_json = "json_object_req";
-        String url = "http://lighthauz.herokuapp.com/api/";
-        int index = myRadioGroup.indexOfChild(getView().findViewById(myRadioGroup.getCheckedRadioButtonId()));
-
-        if(host.getCurrentTab()==0){
-            url = url + "users/search/";
-            code=1;
-            users.clear();
-        }
-        else if (index==0){
-            url = url + "ideas/search/title/";
-            code=2;
-            ideas.clear();
-        }
-        else {
-            url = url + "ideas/search/category/";
-            code=2;
-            ideas.clear();
-        }
-
-        url = url + query;
+        String url = "http://lighthauz.herokuapp.com/api/users/search/" + query;
+        users.clear();
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,url,null,
                 new Response.Listener<JSONObject>() {
@@ -175,55 +171,26 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                         try{
                             myArray = response.getJSONArray("results");
                             for(int i=0;i<myArray.length();i++){
-                                switch(code){
-                                    case 1:
-                                        String userId = myArray.getJSONObject(i).getString("id");
-                                        String name = myArray.getJSONObject(i).getString("name");
-                                        String username = myArray.getJSONObject(i).getString("username");
-                                        Long createdAt = myArray.getJSONObject(i).getLong("createdAt");
-                                        String profilePic = myArray.getJSONObject(i).getString("profilePic");
+                                String userId = myArray.getJSONObject(i).getString("id");
+                                String name = myArray.getJSONObject(i).getString("name");
+                                String username = myArray.getJSONObject(i).getString("username");
+                                Long createdAt = myArray.getJSONObject(i).getLong("createdAt");
+                                String profilePic = myArray.getJSONObject(i).getString("profilePic");
 
-                                        User newUser = new User(userId,username,name,createdAt,profilePic);
-                                        users.add(newUser);
-
-                                        break;
-                                    case 2:
-                                        String ideaId = myArray.getJSONObject(i).getString("id");
-                                        String title = myArray.getJSONObject(i).getString("title");
-                                        String description = myArray.getJSONObject(i).getString("description");
-                                        String pic = myArray.getJSONObject(i).getString("pic");
-                                        String category = myArray.getJSONObject(i).getString("category");
-
-                                        Idea newIdea = new Idea(ideaId,title,description,pic,category);
-                                        ideas.add(newIdea);
-
-                                        break;
-                                }
+                                User newUser = new User(userId,username,name,createdAt,profilePic);
+                                users.add(newUser);
                             }
 
-                            if(host.getCurrentTab()==0){
-                                if (users.isEmpty()){
-                                    notice.setText(R.string.noResultsFound);
-                                    notice.setVisibility(View.VISIBLE);
-                                }
-                                else {
-                                    notice.setVisibility(View.GONE);
-                                }
+                            if (users.isEmpty()){
+                                notice.setText(R.string.noResultsFound);
+                                notice.setVisibility(View.VISIBLE);
                             }
                             else {
-                                if (ideas.isEmpty()){
-                                    notice.setText(R.string.noResultsFound);
-                                    notice.setVisibility(View.VISIBLE);
-                                }
-                                else {
-                                    notice.setVisibility(View.GONE);
-                                }
+                                notice.setVisibility(View.GONE);
                             }
-
                             recView.setAdapter(adapter);
                             pb.setVisibility(View.GONE);
                             recView.setVisibility(View.VISIBLE);
-
                         }
                         catch (JSONException e){
                             Log.e("MYAPP", "unexpected JSON exception", e);
@@ -234,10 +201,126 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
+                pb.setVisibility(View.GONE);
             }
         });
 
-// Adding request to request queue
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
+
+    public void searchIdea(String query){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/api/ideas/search";
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("title",query);
+        JSONObject obj = new JSONObject(params);
+
+        JSONArray list = new JSONArray();
+        String categoryStr = category.getSelectedItem().toString();
+        if (categoryStr.equals("All")){
+
+        }
+        else {
+            list.put(categoryStr);
+            try {
+                obj.putOpt("categories",list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        ideas.clear();
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,url,obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray myArray;
+                        try{
+                            if (response.isNull("fail")) {
+                                myArray = response.getJSONArray("results");
+                                for (int i = 0; i < myArray.length(); i++) {
+                                    JSONObject idea = myArray.getJSONObject(i).getJSONObject("idea");
+                                    String ideaId = idea.getString("id");
+                                    String title = idea.getString("title");
+                                    String description = idea.getString("description");
+                                    String pic = idea.getString("pic");
+                                    String category = myArray.getJSONObject(i).getString("category");
+
+                                    Idea newIdea = new Idea(ideaId, title, description, pic, category);
+                                    ideas.add(newIdea);
+                                }
+
+                                if (ideas.isEmpty()) {
+                                    notice.setText(R.string.noResultsFound);
+                                    notice.setVisibility(View.VISIBLE);
+                                } else {
+                                    notice.setVisibility(View.GONE);
+                                }
+                                recView.setAdapter(adapter);
+                                pb.setVisibility(View.GONE);
+                                recView.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                Toast.makeText(getContext(), response.getString("fail"), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                pb.setVisibility(View.GONE);
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
+
+    public void requestCategoryList(){
+        pDialog.setMessage("Please wait...");
+        pDialog.show();
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+
+        String url = "http://lighthauz.herokuapp.com/api/category/list";
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,url,null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray myArray;
+                        VolleyLog.d(response.toString());
+                        try{
+                            myArray = response.getJSONArray("list");
+                            for(int i=0;i<myArray.length();i++){
+                                categoryList.add(myArray.get(i).toString());
+                            }
+                            categoryAdapter.notifyDataSetChanged();
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+                        pDialog.dismiss();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                pDialog.dismiss();
+            }
+        });
+
+        // Adding request to request queue
         MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 

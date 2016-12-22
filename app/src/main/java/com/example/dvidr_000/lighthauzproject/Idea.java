@@ -47,9 +47,10 @@ public class Idea {
         this.category=category;
     }
 
-    public Idea(String id, String title){
+    public Idea(String id, String title, String pic){
         this.id=id;
         this.title=title;
+        this.pic=pic;
     }
 
     public Idea(

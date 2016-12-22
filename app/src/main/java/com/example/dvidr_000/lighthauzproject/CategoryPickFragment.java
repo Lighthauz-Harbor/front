@@ -1,7 +1,9 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +42,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
     private List<String> selectedList;
     private SessionManager sessionManager;
     private HashMap<String,String> user;
+    private ProgressDialog pDialog;
 
     public CategoryPickFragment() {
         // Required empty public constructor
@@ -57,6 +60,9 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         getActivity().setTitle("Choose Category");
         categoryList = new ArrayList<>();
         selectedList = new ArrayList<>();
+        pDialog = new ProgressDialog(getContext());
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(false);
         recView = (RecyclerView) v.findViewById(R.id.rec_list_category);
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -64,11 +70,28 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postCategory();
+                JSONArray list = new JSONArray();
+                List<Category> catList = adapter.getListData();
+                Category c;
+
+                for (int i=0;i<catList.size();i++){
+                    c = catList.get(i);
+                    if (c.isSelected()){
+                        try {
+                            list.put(c.getName());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if (list.length()==0){
+                    Toast.makeText(getContext(), R.string.EmptyCategory, Toast.LENGTH_SHORT).show();
+                }
+                else postCategory(list);
             }
         });
+
         requestCategoryPref();
-        requestCategoryList();
 
         adapter = new MyAdapter(getActivity(),categoryList,"CATEGORY_LIST");
         adapter.setItemClickCallback(this);
@@ -104,6 +127,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                                     selectedList.add(selected);
 
                                 }
+                                requestCategoryList();
                             }
                         }
                         catch (JSONException e){
@@ -166,7 +190,8 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
-    public void postCategory(){
+    public void postCategory(JSONArray list){
+        pDialog.show();
 
         // Tag used to cancel the request
         String tag_json = "json_object_req";
@@ -176,20 +201,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         HashMap<String,String> params = new HashMap<>();
         params.put("userId",user.get(SessionManager.KEY_ID));
         JSONObject obj = new JSONObject(params);
-        JSONArray list = new JSONArray();
-        List<Category> catList = adapter.getListData();
-        Category c;
 
-        for (int i=0;i<catList.size();i++){
-            c = catList.get(i);
-            if (c.isSelected()){
-                try {
-                    list.put(c.getName());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }
 
         try {
             obj.putOpt("categories",list);
@@ -215,12 +227,16 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                         catch (JSONException e){
                             Log.e("MYAPP", "unexpected JSON exception", e);
                         }
+                        pDialog.dismiss();
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.getMessage().contains("OK"))proceed();
+                if (error.getMessage().contains("OK")){
+                    pDialog.dismiss();
+                    proceed();
+                }
             }
         });
 

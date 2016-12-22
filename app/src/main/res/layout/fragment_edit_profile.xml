@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.dvidr_000.lighthauzproject.EditProfileFragment">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/pBarEditProfile"
+            android:progressDrawable="@drawable/loading_spinner"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+        </ProgressBar>
+
+        <RelativeLayout
+            android:id="@+id/edit_profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/edit_profile_second"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:contentDescription="@string/profilePicture"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/ic_edit_profile"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"/>
+
+                <EditText
+                    android:text="@string/insertHere"
+                    android:textColor="@android:color/primary_text_light"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ic_edit_profile"
+                    android:layout_marginTop="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/etEditProfileName" />
+
+                <TextView
+                    android:text="@string/AboutMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvEditProfileAboutMe"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/etEditProfileName"
+                    android:layout_alignParentStart="true"/>
+
+                <EditText
+                    android:text="@string/insertHere"
+                    android:textColor="@android:color/primary_text_light"
+                    android:textSize="14sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/etEditProfileAboutMe"
+                    android:layout_below="@+id/tvEditProfileAboutMe"
+                    android:layout_alignStart="@+id/tvEditProfileAboutMe" />
+
+                <TextView
+                    android:text="@string/email"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvEditProfileEmail"
+                    android:layout_marginTop="16dp"
+                    android:layout_below="@id/etEditProfileAboutMe"
+                    android:layout_alignParentStart="true" />
+
+                <EditText
+                    android:text="@string/insertHere"
+                    android:textColor="@android:color/primary_text_light"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/etEditProfileEmail"
+                    android:layout_alignBaseline="@id/tvEditProfileEmail"
+                    android:layout_toEndOf="@id/tvEditProfileEmail"
+                    android:layout_marginStart="8dp"/>
+
+                <TextView
+                    android:text="@string/NewPassword"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvEditProfilePassword"
+                    android:layout_marginTop="16dp"
+                    android:layout_below="@id/tvEditProfileEmail"
+                    android:layout_alignParentStart="true" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:inputType="textPassword"
+                    android:ems="10"
+                    android:layout_toEndOf="@+id/tvEditProfilePassword"
+                    android:layout_alignBaseline="@id/tvEditProfilePassword"
+                    android:layout_marginStart="8dp"
+                    android:id="@+id/etEditProfilePass"
+                    android:hint="@string/passwordHint" />
+
+                <TextView
+                    android:text="@string/Confirmpass"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvEditProfileConfirmPassword"
+                    android:layout_marginTop="16dp"
+                    android:layout_below="@id/tvEditProfilePassword"
+                    android:layout_alignParentStart="true" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:inputType="textPassword"
+                    android:ems="10"
+                    android:layout_toEndOf="@+id/tvEditProfileConfirmPassword"
+                    android:layout_alignBaseline="@id/tvEditProfileConfirmPassword"
+                    android:layout_marginStart="8dp"
+                    android:id="@+id/etEditProfileConfirmPass"
+                    android:hint="@string/passwordHint" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:textSize="14sp"
+                    android:hint="@string/Birthday"
+                    android:ems="10"
+                    android:id="@+id/etEditProfileDate"
+                    android:layout_below="@+id/etEditProfileConfirmPass"
+                    android:layout_marginTop="16dp"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
+            <Button
+                android:text="@string/Save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:id="@+id/btnSaveEditProfile"
+                android:layout_marginTop="16dp"
+                android:layout_below="@+id/edit_profile_second"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

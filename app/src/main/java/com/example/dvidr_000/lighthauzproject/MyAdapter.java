@@ -1,6 +1,7 @@
 package com.example.dvidr_000.lighthauzproject;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,11 +115,31 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 container = itemView.findViewById(R.id.list_category_root);
                 check.setOnClickListener(this);
             }
+            else if (content.equals("USER_HORIZONTAL")||content.equals("IDEA_HORIZONTAL")){
+                name = (TextView)itemView.findViewById(R.id.tv_title_list_simple_horizontal);
+                icon = (ImageView)itemView.findViewById(R.id.ic_list_simple_horizontal);
+                container = itemView.findViewById(R.id.card_item_simple_horizontal);
+
+                String tag;
+
+                if (content.equals("IDEA_HORIZONTAL")){
+                    tag = "IDEA_HORIZONTAL";
+
+                }
+                else {
+                    tag = "USER_HORIZONTAL";
+                }
+                container.setTag(tag);
+
+            }
             else {
                 name = (TextView)itemView.findViewById(R.id.tv_title_list_simple);
                 icon = (ImageView)itemView.findViewById(R.id.ic_list_simple);
                 container = itemView.findViewById(R.id.card_item_simple);
             }
+
+
+
             container.setOnClickListener(this);
         }
 
@@ -150,6 +171,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         else if (content.equals("CATEGORY_LIST")){
             view = inflater.inflate(R.layout.list_category, parent, false);
         }
+        else if (content.equals("USER_HORIZONTAL")||content.equals("IDEA_HORIZONTAL")){
+            view = inflater.inflate(R.layout.list_simple_horizontal, parent, false);
+        }
         else {
             view = inflater.inflate(R.layout.list_simple, parent, false);
         }
@@ -160,10 +184,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     @Override
     public void onBindViewHolder(MyAdapter.MyHolder holder, int position) {
         switch(content){
+            case "IDEA_HORIZONTAL":
             case "IDEA":
 
                 Idea idea =  (Idea) listData.get(position);
                 holder.name.setText(idea.getTitle());
+                imageLoader(idea.getPic(),holder.icon);
                 break;
 
             case "IDEA_DETAIL":
@@ -175,14 +201,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 imageLoader(idea1.getPic(),holder.contentPic);
                 break;
 
+            case "USER_HORIZONTAL":
             case "USER":
-
-                User user =  (User) listData.get(position);
-                holder.name.setText(user.getName());
-                holder.icon.setImageResource(user.getProfilePic());
-                break;
-
-            case "USER_DETAIL":
                 User user1 =  (User) listData.get(position);
                 holder.name.setText(user1.getName());
                 imageLoader(user1.getProfPic(),holder.icon);

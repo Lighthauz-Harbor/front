@@ -68,29 +68,15 @@ android:layout_height="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <RadioGroup
-                    android:id="@+id/rgSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center_horizontal">
-                    <RadioButton
-                        android:id="@+id/rbSearchIdeaTitle"
+                    <Spinner
+                        android:id="@+id/spinner_search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:checked="true"
-                        android:text="@string/byTitle"/>
+                        android:layout_margin="8dp"
+                        android:layout_gravity="end">
 
-                    <RadioButton
-                        android:id="@+id/rbSearchIdeaCategory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/byCategory"/>
+                    </Spinner>
 
-                </RadioGroup>
                     <ProgressBar
                         android:id="@+id/pBarSearchIdea"
                         android:visibility="gone"
@@ -118,8 +104,6 @@ android:layout_height="match_parent"
                         android:text="@string/searchGuide"/>
 
                 </LinearLayout>
-
-
             </FrameLayout>
         </LinearLayout>
     </TabHost>

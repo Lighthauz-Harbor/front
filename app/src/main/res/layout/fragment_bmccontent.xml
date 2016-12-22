@@ -1,341 +1,328 @@
-<LinearLayout
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fillViewport="true"
+    android:background="@color/colorPrimary"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary"
     tools:context="com.example.dvidr_000.lighthauzproject.BMCContentFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        >
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/bmc_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+            <TextView
+                android:text="@string/ValueProposition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvBMCVP"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
 
-            <RelativeLayout
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkVP"
+                android:layout_alignTop="@+id/tvBMCVP"
+                android:layout_toEndOf="@+id/tvBMCVP"
+                android:layout_marginStart="8dp" />
+
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp"
+                android:id="@+id/etBMCVPfill"
+                android:hint="@string/insertHere"
+                android:layout_below="@+id/tvBMCVP"
+                android:layout_alignStart="@+id/tvBMCVP" />
 
-                <TextView
-                    android:text="@string/ValueProposition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginTop="25dp"
-                    android:id="@+id/tvBMCVP"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
+            <TextView
+                android:text="@string/CustomerSegment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etBMCVPfill"
+                android:layout_alignStart="@+id/etBMCVPfill"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvBMCCS" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:layout_marginStart="18dp"
-                    android:id="@+id/QuestionMarkVP"
-                    android:layout_alignBottom="@+id/tvBMCVP"
-                    android:layout_toEndOf="@+id/tvBMCVP" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp"
+                android:id="@+id/etBMCCSfill"
+                android:layout_below="@+id/tvBMCCS"
+                android:layout_alignStart="@+id/tvBMCCS" />
 
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkCS"
+                android:layout_alignTop="@+id/tvBMCCS"
+                android:layout_toEndOf="@+id/tvBMCCS"
+                android:layout_marginStart="8dp" />
 
-                <TextView
-                    android:text="@string/CustomerSegment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/etBMCVPfill"
-                    android:layout_alignStart="@+id/etBMCVPfill"
-                    android:layout_marginTop="15dp"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:id="@+id/tvBMCCS" />
+            <TextView
+                android:text="@string/KeyPartner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:id="@+id/tvBMCKP"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_below="@+id/etBMCCSfill"
+                android:layout_alignStart="@+id/etBMCCSfill" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/insertHere"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="12dp"
-                    android:id="@+id/etBMCCSfill"
-                    android:layout_below="@+id/tvBMCCS"
-                    android:layout_alignStart="@+id/tvBMCCS" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkKP"
+                android:layout_alignTop="@+id/tvBMCKP"
+                android:layout_toEndOf="@+id/tvBMCKP"
+                android:layout_marginStart="8dp"/>
 
-                <TextView
-                    android:text="@string/KeyPartner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:id="@+id/tvBMCKP"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:layout_below="@+id/etBMCCSfill"
-                    android:layout_alignStart="@+id/etBMCCSfill" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp"
+                android:id="@+id/etBMCKPfill"
+                android:layout_below="@+id/tvBMCKP"
+                android:layout_alignStart="@+id/tvBMCKP" />
 
+            <TextView
+                android:text="@string/CostStructure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/TVBMCCOST"
+                android:layout_below="@+id/etBMCKPfill"
+                android:layout_alignStart="@+id/etBMCKPfill"
+                android:layout_marginTop="16dp" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/insertHere"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="13dp"
-                    android:id="@+id/etBMCKPfill"
-                    android:layout_below="@+id/tvBMCKP"
-                    android:layout_alignStart="@+id/tvBMCKP" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkCost"
+                android:layout_alignTop="@+id/TVBMCCOST"
+                android:layout_toEndOf="@+id/TVBMCCOST"
+                android:layout_marginStart="8dp"/>
 
-
-                <TextView
-                    android:text="@string/CostStructure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:id="@+id/TVBMCCOST"
-                    android:layout_below="@+id/etBMCKPfill"
-                    android:layout_alignStart="@+id/etBMCKPfill"
-                    android:layout_marginTop="12dp" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/insertHere"
-                    android:textColor="@color/white"
-                    android:ems="10"
-                    android:layout_marginTop="17dp"
-                    android:id="@+id/etBMCCOSTfill"
-                    android:layout_below="@+id/TVBMCCOST"
-                    android:layout_alignStart="@+id/TVBMCCOST" />
-
-
-                <TextView
-                    android:text="@string/RevenueStream"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:id="@+id/tvBMCRS"
-                    android:layout_below="@+id/etBMCCOSTfill"
-                    android:layout_alignStart="@+id/etBMCCOSTfill" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/insertHere"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:layout_below="@+id/tvBMCRS"
-                    android:layout_alignStart="@+id/tvBMCRS"
-                    android:layout_marginTop="16dp"
-                    android:id="@+id/etBMCRSfill" />
-
-                <TextView
-                    android:text="@string/KeyActivities"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:id="@+id/tvBMCKA"
-                    android:layout_below="@+id/etBMCRSfill"
-                    android:layout_alignStart="@+id/etBMCRSfill" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/insertHere"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:id="@+id/etBMCKAfill"
-                    android:layout_marginTop="15dp"
-                    android:layout_below="@+id/tvBMCKA"
-                    android:layout_alignStart="@+id/tvBMCKA" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/insertHere"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:layout_below="@+id/tvBMCChannel"
-                    android:layout_alignEnd="@+id/etBMCKAfill"
-                    android:layout_marginTop="16dp"
-                    android:id="@+id/etBMCChannelfill" />
-
-                <TextView
-                    android:text="@string/CustomerRelationship"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:id="@+id/tvBMCCR"
-                    android:layout_below="@+id/etBMCChannelfill"
-                    android:layout_alignStart="@+id/etBMCChannelfill"
-                    android:layout_marginTop="12dp" />
-
-                <TextView
-                    android:text="@string/KeyResources"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:id="@+id/tvBMCKR"
-                    android:layout_below="@+id/etBMCCRfill"
-                    android:layout_alignStart="@+id/etBMCCRfill"
-                    android:layout_marginTop="15dp" />
-
-                <TextView
-                    android:text="@string/Channel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:id="@+id/tvBMCChannel"
-                    android:layout_below="@+id/etBMCKAfill"
-                    android:layout_alignStart="@+id/etBMCKAfill" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="17dp"
-                    android:hint="@string/insertHere"
-                    android:id="@+id/etBMCKRfill"
-                    android:layout_below="@+id/tvBMCKR"
-                    android:layout_alignStart="@+id/tvBMCKR" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp"
+                android:id="@+id/etBMCCOSTfill"
+                android:layout_below="@+id/TVBMCCOST"
+                android:layout_alignStart="@+id/TVBMCCOST" />
 
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="15dp"
-                    android:id="@+id/etBMCVPfill"
-                    android:hint="@string/insertHere"
-                    android:layout_below="@+id/tvBMCVP"
-                    android:layout_alignStart="@+id/tvBMCVP" />
+            <TextView
+                android:text="@string/RevenueStream"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvBMCRS"
+                android:layout_below="@+id/etBMCCOSTfill"
+                android:layout_alignStart="@+id/etBMCCOSTfill" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkKA"
-                    android:layout_above="@+id/etBMCKAfill"
-                    android:layout_alignStart="@+id/QuestionMarkRS" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkRS"
+                android:layout_alignTop="@+id/tvBMCRS"
+                android:layout_toEndOf="@+id/tvBMCRS"
+                android:layout_marginStart="8dp" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkChannel"
-                    android:layout_alignTop="@+id/tvBMCChannel"
-                    android:layout_alignStart="@+id/QuestionMarkKA" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_below="@+id/tvBMCRS"
+                android:layout_alignStart="@+id/tvBMCRS"
+                android:layout_marginTop="12dp"
+                android:id="@+id/etBMCRSfill" />
 
+            <TextView
+                android:text="@string/KeyActivities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvBMCKA"
+                android:layout_below="@+id/etBMCRSfill"
+                android:layout_alignStart="@+id/etBMCRSfill" />
 
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkKA"
+                android:layout_alignTop="@+id/tvBMCKA"
+                android:layout_toEndOf="@+id/tvBMCKA"
+                android:layout_marginStart="8dp" />
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:id="@+id/etBMCKAfill"
+                android:layout_marginTop="12dp"
+                android:layout_below="@+id/tvBMCKA"
+                android:layout_alignStart="@+id/tvBMCKA" />
 
+            <TextView
+                android:text="@string/Channel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvBMCChannel"
+                android:layout_below="@+id/etBMCKAfill"
+                android:layout_alignStart="@+id/etBMCKAfill" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkCR"
-                    android:layout_alignBottom="@+id/tvBMCCR"
-                    android:layout_toEndOf="@+id/QuestionMarkChannel"
-                    android:layout_marginStart="15dp" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkChannel"
+                android:layout_alignTop="@+id/tvBMCChannel"
+                android:layout_toEndOf="@+id/tvBMCChannel"
+                android:layout_marginStart="8dp" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkKR"
-                    android:layout_alignTop="@+id/tvBMCKR"
-                    android:layout_toStartOf="@+id/QuestionMarkCR" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_below="@+id/tvBMCChannel"
+                android:layout_alignEnd="@+id/etBMCKAfill"
+                android:layout_marginTop="12dp"
+                android:id="@+id/etBMCChannelfill" />
 
+            <TextView
+                android:text="@string/CustomerRelationship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvBMCCR"
+                android:layout_below="@+id/etBMCChannelfill"
+                android:layout_alignStart="@+id/etBMCChannelfill"
+                android:layout_marginTop="16dp" />
 
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkCR"
+                android:layout_alignTop="@+id/tvBMCCR"
+                android:layout_toEndOf="@+id/tvBMCCR"
+                android:layout_marginStart="8dp" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:ems="10"
-                    android:textColor="@color/white"
-                    android:hint="@string/insertHere"
-                    android:layout_marginTop="17dp"
-                    android:id="@+id/etBMCCRfill"
-                    android:layout_below="@+id/tvBMCCR"
-                    android:layout_alignStart="@+id/tvBMCCR" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textColor="@color/white"
+                android:hint="@string/insertHere"
+                android:layout_marginTop="12dp"
+                android:id="@+id/etBMCCRfill"
+                android:layout_below="@+id/tvBMCCR"
+                android:layout_alignStart="@+id/tvBMCCR" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkKP"
-                    android:layout_above="@+id/etBMCKPfill"
-                    android:layout_alignStart="@+id/QuestionMarkCS" />
+            <TextView
+                android:text="@string/KeyResources"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvBMCKR"
+                android:layout_below="@+id/etBMCCRfill"
+                android:layout_alignStart="@+id/etBMCCRfill"
+                android:layout_marginTop="16dp" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkRS"
-                    android:layout_above="@+id/etBMCRSfill"
-                    android:layout_alignStart="@+id/QuestionMarkKP" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkKR"
+                android:layout_alignTop="@+id/tvBMCKR"
+                android:layout_toEndOf="@+id/tvBMCKR"
+                android:layout_marginStart="8dp" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkCost"
-                    android:layout_above="@+id/etBMCCOSTfill"
-                    android:layout_alignStart="@+id/QuestionMarkKP" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp"
+                android:hint="@string/insertHere"
+                android:id="@+id/etBMCKRfill"
+                android:layout_below="@+id/tvBMCKR"
+                android:layout_alignStart="@+id/tvBMCKR" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:srcCompat="@drawable/question_mark"
-                    android:scaleType="centerInside"
-                    android:id="@+id/QuestionMarkCS"
-                    android:layout_alignBottom="@+id/tvBMCCS"
-                    android:layout_alignStart="@+id/QuestionMarkVP" />
+        </RelativeLayout>
 
-                <Button
-                    android:text="@string/next"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnNextIdeaBMCContent"
-                    android:layout_below="@+id/etBMCKRfill"
-                    android:background="@color/white"
-                    style="@style/Widget.AppCompat.Button.Borderless" />
-
-
-            </RelativeLayout>
-
-
-        </ScrollView>
-
-
-
-</LinearLayout>
+        <Button
+            android:text="@string/next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnNextIdeaBMCContent"
+            android:layout_below="@+id/bmc_layout"
+            android:background="@color/white"
+            style="@style/Widget.AppCompat.Button.Borderless" />
+    </RelativeLayout>
+</ScrollView>

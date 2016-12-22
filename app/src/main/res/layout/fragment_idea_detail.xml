@@ -1,12 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.example.dvidr_000.lighthauzproject.IdeaDetailFragment">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/idea_detail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:contentDescription="Idea Picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="300dp"
+                app:srcCompat="@android:drawable/ic_menu_report_image"
+                android:id="@+id/ic_idea_detail"
+                android:layout_marginTop="11dp"/>
+            <TextView
+                android:text="@string/IdeaDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/tv_idea_detail_title"
+                android:layout_below="@id/ic_idea_detail"/>
+
+            <LinearLayout
+                android:id="@+id/idea_detail_category"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/tv_idea_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="@string/Category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:id="@+id/tv_idea_detail_category" />
+
+                <TextView
+                    android:text="@string/insertHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:id="@+id/tv_idea_detail_category_text" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/ic_like_button"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/idea_detail_category"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_heart"
+                android:background="@android:color/transparent"/>
+
+            <LinearLayout
+                android:id="@+id/idea_detail_like_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:layout_below="@+id/ic_like_button">
+                <TextView
+                    android:id="@+id/tv_idea_detail_like"
+                    android:text="@string/insertHere"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_idea_detail_comment"
+                    android:text="@string/insertHere"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/idea_detail_created"
+                android:background="@drawable/border"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idea_detail_like_comment">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ic_idea_detail_prof"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/man1"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp" />
+
+                    <TextView
+                        android:text="@string/insertHere"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_idea_detail_created_text"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray"
+                    android:id="@+id/hr_idea_detail_created"/>
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_mode_edit_white_24dp"
+                        android:tint="@color/cardview_dark_background"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp" />
+                    <TextView
+                        android:gravity="center"
+                        android:text="@string/insertHere"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_idea_detail_lastedited_text" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idea_detail_created"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+                <TextView
+                    android:text="@string/Description"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/tv_idea_detail_desc" />
+
+                <TextView
+                    android:text="@string/insertHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_idea_detail_desc_text"
+                    android:layout_below="@+id/tv_idea_detail_desc"
+                    android:layout_marginTop="8dp"
+                    android:layout_alignParentStart="true" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@+id/tv_idea_detail_desc_text"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/hr_idea_detail"/>
+
+                <TextView
+                    android:text="@string/Problem"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/hr_idea_detail"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/tv_idea_detail_problem" />
+
+                <TextView
+                    android:text="@string/insertHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_idea_detail_problem"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/tv_idea_detail_problem_text" />
+
+                <TextView
+                    android:text="@string/Background"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_idea_detail_problem_text"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/tv_idea_detail_background" />
+
+                <TextView
+                    android:text="@string/insertHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_idea_detail_background"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/tv_idea_detail_background_text" />
+
+                <TextView
+                    android:text="@string/Solution"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_idea_detail_background_text"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/tv_idea_detail_solution" />
+
+                <TextView
+                    android:text="@string/insertHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_idea_detail_solution"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/tv_idea_detail_solution_text" />
+
+                <LinearLayout
+                    android:layout_below="@id/tv_idea_detail_solution_text"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:text="@string/showbmc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_weight="1"
+                        android:id="@+id/btnShowBMC" />
+                    <Button
+                        android:text="@string/showswot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_weight="1"
+                        android:id="@+id/btnShowSWOT"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/pBarIdeaDetail"
@@ -17,203 +278,5 @@
             android:layout_gravity="center_horizontal">
         </ProgressBar>
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/idea_detail_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            tools:context="com.example.dvidr_000.lighthauzproject.IdeaDetailFragment">
-
-            <TextView
-                android:text="@string/IdeaDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:id="@+id/tv_idea_detail_title"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
-
-            <ImageView
-                android:contentDescription="Idea Picture"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                app:srcCompat="@android:drawable/ic_menu_report_image"
-                android:id="@+id/ic_idea_detail"
-                android:layout_marginTop="11dp"
-                android:layout_below="@+id/tv_idea_detail_title"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:text="@string/CreatedBy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:id="@+id/tv_idea_detail_created"
-                android:layout_marginStart="48dp"
-                android:layout_alignTop="@+id/ic_idea_detail"
-                android:layout_toEndOf="@+id/ic_idea_detail" />
-
-            <TextView
-                android:text="@string/insertHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_idea_detail_created_text"
-                android:layout_below="@+id/tv_idea_detail_created"
-                android:layout_alignStart="@+id/tv_idea_detail_created"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:text="@string/LastEdited"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:textStyle="bold"
-                android:id="@+id/tv_idea_detail_lastedited"
-                android:layout_below="@+id/tv_idea_detail_created_text"
-                android:layout_alignStart="@+id/tv_idea_detail_created" />
-
-            <TextView
-                android:text="@string/insertHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_lastedited"
-                android:layout_alignStart="@+id/tv_idea_detail_lastedited"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:id="@+id/tv_idea_detail_lastedited_text" />
-
-            <TextView
-                android:text="@string/Category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_below="@+id/tv_idea_detail_lastedited_text"
-                android:layout_alignStart="@+id/tv_idea_detail_lastedited"
-                android:layout_marginTop="12dp"
-                android:id="@+id/tv_idea_detail_category" />
-
-            <TextView
-                android:text="@string/insertHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_category"
-                android:layout_alignStart="@+id/tv_idea_detail_category"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:id="@+id/tv_idea_detail_category_text" />
-
-            <TextView
-                android:text="@string/Description"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ic_idea_detail"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="16dp"
-                android:id="@+id/tv_idea_detail_desc" />
-
-            <TextView
-                android:text="@string/insertHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_idea_detail_desc_text"
-                android:layout_below="@+id/tv_idea_detail_desc"
-                android:layout_marginTop="8dp"
-                android:layout_alignParentStart="true" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_below="@+id/tv_idea_detail_desc_text"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="16dp"
-                android:id="@+id/hr_idea_detail"/>
-
-            <TextView
-                android:text="@string/Problem"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/hr_idea_detail"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="16dp"
-                android:id="@+id/tv_idea_detail_problem" />
-
-            <TextView
-                android:text="@string/insertHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_problem"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="8dp"
-                android:id="@+id/tv_idea_detail_problem_text" />
-
-            <TextView
-                android:text="@string/Background"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_problem_text"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="16dp"
-                android:id="@+id/tv_idea_detail_background" />
-
-            <TextView
-                android:text="@string/insertHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_background"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="8dp"
-                android:id="@+id/tv_idea_detail_background_text" />
-
-            <TextView
-                android:text="@string/Solution"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_background_text"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="16dp"
-                android:id="@+id/tv_idea_detail_solution" />
-
-            <TextView
-                android:text="@string/insertHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_solution"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="8dp"
-                android:id="@+id/tv_idea_detail_solution_text" />
-
-            <Button
-                android:text="@string/showbmc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_idea_detail_solution_text"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="12dp"
-                android:id="@+id/btnShowBMC" />
-
-            <Button
-                android:text="@string/showswot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnShowSWOT"
-                android:layout_alignTop="@+id/btnShowBMC"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="216dp"/>
-
-
-        </RelativeLayout>
-        </LinearLayout>
+    </LinearLayout>
     </ScrollView>

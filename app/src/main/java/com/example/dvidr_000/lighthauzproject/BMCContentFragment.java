@@ -19,7 +19,16 @@ import android.widget.Toast;
  * A simple {@link Fragment} subclass.
  */
 public class BMCContentFragment extends Fragment implements View.OnClickListener{
-
+    private EditText vp;
+    private EditText cs;
+    private EditText kp;
+    private EditText cost;
+    private EditText rs;
+    private EditText ka;
+    private EditText kr;
+    private EditText ch;
+    private EditText cr;
+    private Bundle ideaBundle;
 
     public BMCContentFragment() {
         // Required empty public constructor
@@ -29,120 +38,205 @@ public class BMCContentFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bmccontent, container, false);
 
-        ImageView q1 = (ImageView) v.findViewById(R.id.QuestionMarkVP);
-        q1.setOnClickListener(this);
+        ImageView q1;
+        ImageView q2;
+        ImageView q3;
+        ImageView q4;
+        ImageView q5;
+        ImageView q6;
+        ImageView q7;
+        ImageView q8;
+        ImageView q9;
 
-        Button nextBtn = (Button) v.findViewById(R.id.btnNextIdeaBMCContent);
+        q1 = (ImageView) v.findViewById(R.id.QuestionMarkVP);
+        q1.setOnClickListener(this);
+        q2 = (ImageView) v.findViewById(R.id.QuestionMarkChannel);
+        q2.setOnClickListener(this);
+        q3 = (ImageView) v.findViewById(R.id.QuestionMarkCost);
+        q3.setOnClickListener(this);
+        q4 = (ImageView) v.findViewById(R.id.QuestionMarkCR);
+        q4.setOnClickListener(this);
+        q5 = (ImageView) v.findViewById(R.id.QuestionMarkCS);
+        q5.setOnClickListener(this);
+        q6 = (ImageView) v.findViewById(R.id.QuestionMarkKA);
+        q6.setOnClickListener(this);
+        q7 = (ImageView) v.findViewById(R.id.QuestionMarkKP);
+        q7.setOnClickListener(this);
+        q8 = (ImageView) v.findViewById(R.id.QuestionMarkKR);
+        q8.setOnClickListener(this);
+        q9 = (ImageView) v.findViewById(R.id.QuestionMarkRS);
+        q9.setOnClickListener(this);
+
+        Button nextBtn;
+        nextBtn = (Button) v.findViewById(R.id.btnNextIdeaBMCContent);
         nextBtn.setOnClickListener(this);
 
-        String content= getActivity().getIntent().getStringExtra("EXTRA_CONTENT");
+        vp = (EditText) v.findViewById(R.id.etBMCVPfill);
+        cs = (EditText) v.findViewById(R.id.etBMCCSfill);
+        kp = (EditText) v.findViewById(R.id.etBMCKPfill);
+        cost = (EditText) v.findViewById(R.id.etBMCCOSTfill);
+        rs = (EditText) v.findViewById(R.id.etBMCRSfill);
+        ka = (EditText) v.findViewById(R.id.etBMCKAfill);
+        kr = (EditText) v.findViewById(R.id.etBMCKRfill);
+        ch = (EditText) v.findViewById(R.id.etBMCChannelfill);
+        cr = (EditText) v.findViewById(R.id.etBMCCRfill);
 
+        String content = getActivity().getIntent().getStringExtra("EXTRA_CONTENT");
+        ideaBundle = getArguments();
 
-
-        if(content.equals("CREATE_IDEA")){
+        if (content.equals("CREATE_IDEA")) {
             getActivity().setTitle("Make BMC");
+        } else {
+            vp.setText(ideaBundle.getString("VP"));
+            cs.setText(ideaBundle.getString("CS"));
+            kp.setText(ideaBundle.getString("KP"));
+            cost.setText(ideaBundle.getString("COST"));
+            rs.setText(ideaBundle.getString("RS"));
+            ka.setText(ideaBundle.getString("KA"));
+            kr.setText(ideaBundle.getString("KR"));
+            ch.setText(ideaBundle.getString("CH"));
+            cr.setText(ideaBundle.getString("CR"));
 
-            nextBtn.setOnClickListener(this);
-        }
-        else {
-            Bundle args = getArguments();
-
-            getActivity().setTitle("The BMC");
-            nextBtn.setVisibility(View.INVISIBLE);
-
-            EditText vp = (EditText) v.findViewById(R.id.etBMCVPfill);
-            EditText cs = (EditText) v.findViewById(R.id.etBMCCSfill);
-            EditText kp = (EditText) v.findViewById(R.id.etBMCKPfill);
-            EditText cost = (EditText) v.findViewById(R.id.etBMCCOSTfill);
-            EditText rs = (EditText) v.findViewById(R.id.etBMCRSfill);
-            EditText ka = (EditText) v.findViewById(R.id.etBMCKAfill);
-            EditText kr = (EditText) v.findViewById(R.id.etBMCKRfill);
-            EditText ch = (EditText) v.findViewById(R.id.etBMCChannelfill);
-            EditText cr = (EditText) v.findViewById(R.id.etBMCCRfill);
-
-            vp.setText(args.getString("VP"));
-            cs.setText(args.getString("CS"));
-            kp.setText(args.getString("KP"));
-            cost.setText(args.getString("COST"));
-            rs.setText(args.getString("RS"));
-            ka.setText(args.getString("KA"));
-            kr.setText(args.getString("KR"));
-            ch.setText(args.getString("CH"));
-            cr.setText(args.getString("CR"));
-
-            vp.setEnabled(false);
-            cs.setEnabled(false);
-            kp.setEnabled(false);
-            cost.setEnabled(false);
-            rs.setEnabled(false);
-            ka.setEnabled(false);
-            kr.setEnabled(false);
-            ch.setEnabled(false);
-            cr.setEnabled(false);
-
+            if (!content.equals("EDIT_IDEA")) {
+                getActivity().setTitle("The BMC");
+                nextBtn.setVisibility(View.INVISIBLE);
+                vp.setEnabled(false);
+                cs.setEnabled(false);
+                kp.setEnabled(false);
+                cost.setEnabled(false);
+                rs.setEnabled(false);
+                ka.setEnabled(false);
+                kr.setEnabled(false);
+                ch.setEnabled(false);
+                cr.setEnabled(false);
+            }
         }
 
-
-        // Inflate the layout for this fragment
         return v;
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId()==R.id.QuestionMarkVP){
-            AlertDialog.Builder hint = new AlertDialog.Builder(getActivity());
-            hint.setMessage("Value Proposition\n\nWhat value do you offer?")
-                    .setPositiveButton("CLOSE",new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
 
-            AlertDialog alert = hint.create();
-            alert.setTitle("Tips");
-            alert.show();
+        if(view.getId()==R.id.btnNextIdeaBMCContent) {
+            if (validate()) {
+                ideaBundle.putString("VP", vp.getText().toString());
+                ideaBundle.putString("CS", cs.getText().toString());
+                ideaBundle.putString("KP", kp.getText().toString());
+                ideaBundle.putString("COST", cost.getText().toString());
+                ideaBundle.putString("RS", rs.getText().toString());
+                ideaBundle.putString("KA", ka.getText().toString());
+                ideaBundle.putString("KR", kr.getText().toString());
+                ideaBundle.putString("CH", ch.getText().toString());
+                ideaBundle.putString("CR", cr.getText().toString());
+
+                SWOTFragment fragment = new SWOTFragment();
+                fragment.setArguments(ideaBundle);
+
+                FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
+                tr.replace(R.id.fragment_container_detail, fragment);
+                tr.addToBackStack(null);
+                tr.commit();
+            } else {
+                Toast.makeText(getContext(), R.string.EmptyField, Toast.LENGTH_SHORT).show();
+            }
         }
-        else if(view.getId()==R.id.btnNextIdeaBMCContent){
+        else {
+            AlertDialog.Builder hint = new AlertDialog.Builder(getActivity());
+            AlertDialog alert;
+            String title="";
+            switch (view.getId()){
+                case R.id.QuestionMarkVP:
+                    hint.setMessage(R.string.ValuePropositionText);
+                    title = "Value Propositions";
+                    break;
+                case R.id.QuestionMarkChannel:
+                    hint.setMessage(R.string.ChannelText);
+                    title = "Channels";
+                    break;
+                case R.id.QuestionMarkCost:
+                    hint.setMessage(R.string.CostStructureText);
+                    title = "Cost Structure";
+                    break;
+                case R.id.QuestionMarkCR:
+                    hint.setMessage(R.string.CustomerRelationshipText);
+                    title = "Customer Relationships";
+                    break;
+                case R.id.QuestionMarkCS:
+                    hint.setMessage(R.string.CustomerSegmentText);
+                    title = "Customer Segments";
+                    break;
+                case R.id.QuestionMarkKA:
+                    hint.setMessage(R.string.KeyActivitiesText);
+                    title = "Key Activities";
+                    break;
+                case R.id.QuestionMarkKP:
+                    hint.setMessage(R.string.KeyPartnersText);
+                    title = "Key Partnerships";
+                    break;
+                case R.id.QuestionMarkKR:
+                    hint.setMessage(R.string.KeyResourcesText);
+                    title = "Key Resources";
+                    break;
+                case R.id.QuestionMarkRS:
+                    hint.setMessage(R.string.RevenueStreamsText);
+                    title = "Revenue Streams";
+                    break;
 
-            Bundle args = getArguments();
-            View v = getView();
-
-            EditText vp = (EditText) v.findViewById(R.id.etBMCVPfill);
-            EditText cs = (EditText) v.findViewById(R.id.etBMCCSfill);
-            EditText kp = (EditText) v.findViewById(R.id.etBMCKPfill);
-            EditText cost = (EditText) v.findViewById(R.id.etBMCCOSTfill);
-            EditText rs = (EditText) v.findViewById(R.id.etBMCRSfill);
-            EditText ka = (EditText) v.findViewById(R.id.etBMCKAfill);
-            EditText kr = (EditText) v.findViewById(R.id.etBMCKRfill);
-            EditText ch = (EditText) v.findViewById(R.id.etBMCChannelfill);
-            EditText cr = (EditText) v.findViewById(R.id.etBMCCRfill);
-
-            args.putString("VP",vp.getText().toString());
-            args.putString("CS",cs.getText().toString());
-            args.putString("KP",kp.getText().toString());
-            args.putString("COST",cost.getText().toString());
-            args.putString("RS",rs.getText().toString());
-            args.putString("KA",ka.getText().toString());
-            args.putString("KR",kr.getText().toString());
-            args.putString("CH",ch.getText().toString());
-            args.putString("CR",cr.getText().toString());
-
-            SWOTFragment fragment = new SWOTFragment();
-            fragment.setArguments(args);
-
-            FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
-            tr.replace(R.id.fragment_container_detail,fragment);
-            tr.addToBackStack(null);
-            tr.commit();
+            }
+            hint.setPositiveButton("CLOSE",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alert = hint.create();
+            alert.setTitle(title);
+            alert.show();
         }
     }
 
-
-
-
-
+    public boolean validate(){
+        if (vp.getText().toString().isEmpty()){
+            vp.requestFocus();
+            return false;
+        }
+        else if (cs.getText().toString().isEmpty()){
+            cs.requestFocus();
+            return false;
+        }
+        else if (kp.getText().toString().isEmpty()){
+            kp.requestFocus();
+            return false;
+        }
+        else if (cost.getText().toString().isEmpty()){
+            cost.requestFocus();
+            return false;
+        }
+        else if (rs.getText().toString().isEmpty()){
+            rs.requestFocus();
+            return false;
+        }
+        else if (ka.getText().toString().isEmpty()){
+            ka.requestFocus();
+            return false;
+        }
+        else if (kr.getText().toString().isEmpty()){
+            kr.requestFocus();
+            return false;
+        }
+        else if (ch.getText().toString().isEmpty()){
+            ch.requestFocus();
+            return false;
+        }
+        else if (cr.getText().toString().isEmpty()){
+            cr.requestFocus();
+            return false;
+        }
+        return true;
+    }
 
 }

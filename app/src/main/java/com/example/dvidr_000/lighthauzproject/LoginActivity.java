@@ -46,35 +46,11 @@ public class LoginActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(getApplicationContext());
         pb = (ProgressBar) findViewById(R.id.pBarLogin);
-
         email = (EditText) findViewById(R.id.etEmail);
         password = (EditText) findViewById(R.id.etPassword);
 
-        ArrayList<User> users = (ArrayList) User.getUsers();
-
-        User newUser;
-
-        newUser = new User("david@lighthauz.com","david","David Long","01/01/1970");
-        newUser.setInterest("Food & Beverage");
-        imgRes = R.drawable.man1;
-        newUser.setProfilePic(imgRes);
-        users.add(newUser);
-
-        newUser = new User("bryan@lighthauz.com","bryan","Bryan Tyler","01/01/1970");
-        newUser.setInterest("Restaurant");
-        imgRes = R.drawable.man2;
-        newUser.setProfilePic(imgRes);
-        users.add(newUser);
-
-        newUser = new User("andrew@lighthauz.com","andrew","Andrew Jason","01/01/1970");
-        newUser.setInterest("Tech");
-        imgRes = R.drawable.man3;
-        newUser.setProfilePic(imgRes);
-        users.add(newUser);
-
         final TextView registerLink = (TextView) findViewById(R.id.tvRegister);
         final Button login = (Button) findViewById(R.id.btnLogin);
-
 
         registerLink.setOnClickListener (new View.OnClickListener()
         {
@@ -94,13 +70,10 @@ public class LoginActivity extends AppCompatActivity {
                 passwordStr = password.getText().toString().trim();
 
                 validate();
-
             }
 
         });
-
     }
-
 
     public void validate(){
         boolean fail=false;

@@ -1,57 +1,69 @@
 package com.example.dvidr_000.lighthauzproject;
 
-
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.Date;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import static com.android.volley.VolleyLog.TAG;
 
 public class DetailActivity extends AppCompatActivity {
 
-    int loginIndex = 0;
+    private FragmentTransaction tr;
+    private FragmentManager fm;
+    private SessionManager sessionManager;
+    private HashMap<String,String> user;
 
-    FragmentTransaction tr;
-    FragmentManager fm;
+    private ProgressDialog pDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        getIntent().getIntExtra("LOGIN_INDEX",loginIndex);
         String content= getIntent().getStringExtra("EXTRA_CONTENT");
-
+        sessionManager = new SessionManager(getApplicationContext());
+        user = sessionManager.getUserDetails();
         fm = getSupportFragmentManager();
         tr = fm.beginTransaction();
+        pDialog = new ProgressDialog(DetailActivity.this);
+        pDialog.setCancelable(false);
 
         switch (content){
             case "IDEA_DETAIL":
                 tr.replace(R.id.fragment_container_detail,new IdeaDetailFragment());
-                tr.addToBackStack(null);
-                tr.commit();
+                break;
+            case "EDIT_IDEA":
+                Bundle ideaBundle = getIntent().getBundleExtra("IDEA_BUNDLE");
+                IdeaInfoFragment fragment = new IdeaInfoFragment();
+                fragment.setArguments(ideaBundle);
+                tr.replace(R.id.fragment_container_detail,fragment);
                 break;
             case "CREATE_IDEA":
                 tr.replace(R.id.fragment_container_detail,new CreateIdeaFragment());
-                tr.addToBackStack(null);
-                tr.commit();
                 break;
             case "VIEW_PROFILE":
                 tr.replace(R.id.fragment_container_detail,new ViewProfileFragment());
-                tr.addToBackStack(null);
-                tr.commit();
                 break;
             case "FIRST_LOGIN":
-
                 tr.replace(R.id.fragment_container_detail,new FirstLoginFragment());
-                tr.addToBackStack(null);
-                tr.commit();
                 ActionBar actionBar = getSupportActionBar();
                 if (actionBar != null) {
                     actionBar.setHomeButtonEnabled(false); // disable the button
@@ -59,7 +71,18 @@ public class DetailActivity extends AppCompatActivity {
                     actionBar.setDisplayShowHomeEnabled(false); // remove the icon
                 }
                 break;
+            case "SET_INTEREST":
+                tr.replace(R.id.fragment_container_detail,new CategoryPickFragment());
+                break;
+            case "REQ_RECEIVED":
+                tr.replace(R.id.fragment_container_detail,new RequestReceivedFragment());
+                break;
+            case "REQ_SENT":
+                tr.replace(R.id.fragment_container_detail,new RequestSentFragment());
+                break;
         }
+        tr.addToBackStack(null);
+        tr.commit();
     }
 
     @Override
@@ -78,46 +101,105 @@ public class DetailActivity extends AppCompatActivity {
                     fm.popBackStack();
                     return true;
                 } else {
-                    Intent parentIntent = NavUtils.getParentActivityIntent(this);
-                    parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(parentIntent);
                     finish();
                     return true;
                 }
-
-
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void createIdea(Bundle idea){
+    public void createIdea(Bundle idea,String content){
         String title = idea.getString("TITLE");
         String category  = idea.getString("CATEGORY");
-        String  description = idea.getString("DESCRIPTION");
-        int  publicity=0;
-        String  background = idea.getString("BACKGROUND");
-        String  problem = idea.getString("PROBLEM");
-        String  solution = idea.getString("SOLUTION");
-        String  valueProposition = idea.getString("VP");
-        String  customerSegment = idea.getString("CS");
-        String  customerRelationship = idea.getString("CR");
-        String  channel = idea.getString("CH");
-        String  keyActivities = idea.getString("KA");
-        String  keyResources = idea.getString("KR");
-        String  keyPartner = idea.getString("KP");
-        String  costStructure = idea.getString("COST");
-        String  revenueStream = idea.getString("RS");
-        String  strength = idea.getString("STRENGTH");
-        String  weakness = idea.getString("WEAKNESS");
-        String  opportunities = idea.getString("OPPORTUNITY");
-        String  threat = idea.getString("THREAT");
+        String description = idea.getString("DESCRIPTION");
+        String publicity="2";
+        String background = idea.getString("BACKGROUND");
+        String problem = idea.getString("PROBLEM");
+        String solution = idea.getString("SOLUTION");
+        String valueProposition = idea.getString("VP");
+        String customerSegments = idea.getString("CS");
+        String customerRelationships = idea.getString("CR");
+        String channels = idea.getString("CH");
+        String keyActivities = idea.getString("KA");
+        String keyResources = idea.getString("KR");
+        String keyPartners = idea.getString("KP");
+        String costStructure = idea.getString("COST");
+        String revenueStreams = idea.getString("RS");
+        String strengths = idea.getString("STRENGTH");
+        String weaknesses = idea.getString("WEAKNESS");
+        String opportunities = idea.getString("OPPORTUNITY");
+        String threats = idea.getString("THREAT");
+        String pic = idea.getString("PIC","");
 
-        Idea newIdea = new Idea(title,category,description,new Date().getTime(),publicity,background,problem,solution,valueProposition,customerSegment,customerRelationship,channel,keyActivities,keyResources,keyPartner,costStructure,revenueStream,strength,weakness,opportunities,threat,"","");
+        pDialog.setMessage("Creating idea...");
+        pDialog.setCancelable(false);
+        pDialog.show();
 
-        Idea.getIdeas().add(newIdea);
-        User.getUsers().get(loginIndex).getIdea().add(Idea.getIdeas().size()-1);
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url="";
+        int method=0;
+        if (content.equals("CREATE_IDEA")){
+            url = "http://lighthauz.herokuapp.com/api/ideas/create";
+            method = Request.Method.POST;
+        }
+        else if (content.equals("EDIT_IDEA")){
+            String ideaId = idea.getString("IDEA_ID");
+            url = "http://lighthauz.herokuapp.com/api/ideas/update/" + ideaId;
+            method = Request.Method.PUT;
+        }
 
-        Toast.makeText(this,"New Idea Added",Toast.LENGTH_SHORT).show();
+        HashMap<String,String> params = new HashMap<>();
+        params.put("title",title);
+        params.put("category",category);
+        params.put("author",user.get(SessionManager.KEY_USERNAME));
+        params.put("description",description);
+        params.put("visibility",publicity);
+        params.put("background",background);
+        params.put("problem",problem);
+        params.put("solution",solution);
+        params.put("extraLink","");
+        if (!pic.isEmpty())params.put("pic",pic);
+        params.put("strengths",strengths);
+        params.put("weaknesses",weaknesses);
+        params.put("opportunities",opportunities);
+        params.put("threats",threats);
+        params.put("valueProposition",valueProposition);
+        params.put("customerSegments",customerSegments);
+        params.put("customerRelationships",customerRelationships);
+        params.put("channels",channels);
+        params.put("keyActivities",keyActivities);
+        params.put("keyResources",keyResources);
+        params.put("keyPartners",keyPartners);
+        params.put("costStructure",costStructure);
+        params.put("revenueStreams",revenueStreams);
+
+        JsonObjectRequest req = new JsonObjectRequest(method, url,new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        VolleyLog.d(response.toString());
+
+                        try{
+                            String msg = response.getString("message");
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+                        pDialog.dismiss();
+                        finish();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                pDialog.dismiss();
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req, tag_json);
 
     }
 

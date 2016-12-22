@@ -15,11 +15,11 @@ import android.widget.Button;
  */
 public class BMCFragment extends Fragment implements View.OnClickListener{
 
+    private Bundle ideaBundle;
 
     public BMCFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,22 +28,17 @@ public class BMCFragment extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_bmc, container, false);
 
         getActivity().setTitle("Make BMC");
+        ideaBundle = getArguments();
 
         Button nextBtn = (Button) v.findViewById(R.id.btnNextIdeaBMC);
-
         nextBtn.setOnClickListener(this);
-
-
         return v;
     }
 
     public void onClick(View view) {
         if(view.getId()==R.id.btnNextIdeaBMC){
-
-            Bundle args = getArguments();
-
             BMCContentFragment fragment = new BMCContentFragment();
-            fragment.setArguments(args);
+            fragment.setArguments(ideaBundle);
 
             FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
             tr.replace(R.id.fragment_container_detail,fragment);
@@ -51,6 +46,4 @@ public class BMCFragment extends Fragment implements View.OnClickListener{
             tr.commit();
         }
     }
-
-
 }

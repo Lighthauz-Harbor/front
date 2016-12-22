@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -35,6 +37,8 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
 
     private RecyclerView recView;
     private MyAdapter adapter;
+    private TextView notice;
+    private ProgressBar pb;
     private String idStr;
     SessionManager sessionManager;
     HashMap<String,String> user;
@@ -73,6 +77,8 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
         user = sessionManager.getUserDetails();
         idStr = user.get(SessionManager.KEY_ID);
 
+        notice = (TextView) v.findViewById(R.id.IdeaListNotice);
+        pb = (ProgressBar) v.findViewById(R.id.pBarIdeaList);
         recView = (RecyclerView) v.findViewById(R.id.rec_list_idea);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -95,6 +101,7 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
     }
 
     public void request(){
+        pb.setVisibility(View.VISIBLE);
 
         // Tag used to cancel the request
         String tag_json = "json_object_req";
@@ -106,30 +113,35 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        VolleyLog.d(response.toString());
                         JSONArray myArray;
                         ideas.clear();
                         try{
                             myArray = response.getJSONArray("ideas");
-                            for(int i=0;i<myArray.length();i++){
-
-                                JSONObject idea = myArray.getJSONObject(i);
-                                Idea newIdea = new Idea(idea.getString("id"),idea.getString("title"));
-                                ideas.add(newIdea);
+                            if (myArray.length()==0){
+                                notice.setVisibility(View.VISIBLE);
                             }
+                            else {
+                                for (int i = 0; i < myArray.length(); i++) {
 
-                            recView.setAdapter(adapter);
+                                    JSONObject idea = myArray.getJSONObject(i);
+                                    Idea newIdea = new Idea(idea.getString("id"), idea.getString("title"),idea.getString("pic"));
+                                    ideas.add(newIdea);
+                                }
+                                recView.setAdapter(adapter);
+                            }
 
                         }
                         catch (JSONException e){
                             Log.e("MYAPP", "unexpected JSON exception", e);
                         }
+                        pb.setVisibility(View.GONE);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
+                pb.setVisibility(View.GONE);
             }
         });
 

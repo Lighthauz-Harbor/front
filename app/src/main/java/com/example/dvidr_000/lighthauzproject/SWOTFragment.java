@@ -1,16 +1,16 @@
 package com.example.dvidr_000.lighthauzproject;
 
-
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 
 /**
@@ -18,79 +18,136 @@ import android.widget.EditText;
  */
 public class SWOTFragment extends Fragment implements View.OnClickListener{
 
+    private EditText strength;
+    private EditText weakness;
+    private EditText opportunity;
+    private EditText threat;
+    private Bundle ideaBundle;
+    private String content;
 
     public SWOTFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_swot, container, false);
 
-        String content= getActivity().getIntent().getStringExtra("EXTRA_CONTENT");
+        content = getActivity().getIntent().getStringExtra("EXTRA_CONTENT");
+        ideaBundle = getArguments();
 
-        Button nextBtn = (Button) v.findViewById(R.id.btnNextIdeaSWOT);
+        ImageView q1;
+        ImageView q2;
+        ImageView q3;
+        ImageView q4;
+        q1 = (ImageView) v.findViewById(R.id.QuestionMarkStrenght);
+        q1.setOnClickListener(this);
+        q2 = (ImageView) v.findViewById(R.id.QuestionMarkWeakness);
+        q2.setOnClickListener(this);
+        q3 = (ImageView) v.findViewById(R.id.QuestionMarkOpportunities);
+        q3.setOnClickListener(this);
+        q4 = (ImageView) v.findViewById(R.id.QuestionMarkThreat);
+        q4.setOnClickListener(this);
+
+        Button nextBtn;
+        nextBtn = (Button) v.findViewById(R.id.btnNextIdeaSWOT);
+        nextBtn.setOnClickListener(this);
+        strength = (EditText) v.findViewById(R.id.etStrengthFill);
+        weakness = (EditText) v.findViewById(R.id.etWeaknessfill);
+        opportunity = (EditText) v.findViewById(R.id.etOpportunitiesfill);
+        threat = (EditText) v.findViewById(R.id.etThreatfill);
 
         if(content.equals("CREATE_IDEA")){
             getActivity().setTitle(R.string.KnowYourSwot);
-
-            nextBtn.setOnClickListener(this);
         }
         else {
-            Bundle args = getArguments();
-
             getActivity().setTitle("The SWOT");
-            nextBtn.setVisibility(View.INVISIBLE);
 
-            EditText strength = (EditText) v.findViewById(R.id.etStrengthFill);
-            EditText weakness = (EditText) v.findViewById(R.id.etWeaknessfill);
-            EditText opportunity = (EditText) v.findViewById(R.id.etOpportunitiesfill);
-            EditText threat = (EditText) v.findViewById(R.id.etThreatfill);
+            strength.setText(ideaBundle.getString("STRENGTH"));
+            weakness.setText(ideaBundle.getString("WEAKNESS"));
+            opportunity.setText(ideaBundle.getString("OPPORTUNITY"));
+            threat.setText(ideaBundle.getString("THREAT"));
 
-            strength.setText(args.getString("STRENGTH"));
-            strength.setEnabled(false);
-            weakness.setText(args.getString("WEAKNESS"));
-            weakness.setEnabled(false);
-            opportunity.setText(args.getString("OPPORTUNITY"));
-            opportunity.setEnabled(false);
-            threat.setText(args.getString("THREAT"));
-            threat.setEnabled(false);
-
-
+            if (!content.equals("EDIT_IDEA")) {
+                nextBtn.setVisibility(View.INVISIBLE);
+                weakness.setEnabled(false);
+                strength.setEnabled(false);
+                opportunity.setEnabled(false);
+                threat.setEnabled(false);
+            }
         }
-
-
-
-        // Inflate the layout for this fragment
         return v;
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.btnNextIdeaSWOT){
+            if (validate()){
+                ideaBundle.putString("STRENGTH",strength.getText().toString());
+                ideaBundle.putString("WEAKNESS",weakness.getText().toString());
+                ideaBundle.putString("OPPORTUNITY",opportunity.getText().toString());
+                ideaBundle.putString("THREAT",threat.getText().toString());
 
-            Bundle args = getArguments();
-            View v = getView();
-
-            EditText strength = (EditText) v.findViewById(R.id.etStrengthFill);
-            EditText weakness = (EditText) v.findViewById(R.id.etWeaknessfill);
-            EditText opportunity = (EditText) v.findViewById(R.id.etOpportunitiesfill);
-            EditText threat = (EditText) v.findViewById(R.id.etThreatfill);
-
-            args.putString("STRENGTH",strength.getText().toString());
-            args.putString("WEAKNESS",weakness.getText().toString());
-            args.putString("OPPORTUNITY",opportunity.getText().toString());
-            args.putString("THREAT",threat.getText().toString());
-
-            ((DetailActivity)getActivity()).createIdea(args);
-
-            Intent parentIntent = NavUtils.getParentActivityIntent(getActivity());
-            parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(parentIntent);
-            getActivity().finish();
-
+                //call create idea function in DetailActivity
+                ((DetailActivity)getActivity()).createIdea(ideaBundle,content);
+            }
+            else {
+                Toast.makeText(getContext(), R.string.EmptyField, Toast.LENGTH_SHORT).show();
+            }
         }
+        else {
+            AlertDialog.Builder hint = new AlertDialog.Builder(getActivity());
+            AlertDialog alert;
+            String title="";
+            switch (view.getId()) {
+                case R.id.QuestionMarkStrenght:
+                    hint.setMessage(R.string.StrengthText);
+                    title = "Strengths";
+                    break;
+                case R.id.QuestionMarkWeakness:
+                    hint.setMessage(R.string.WeaknessText);
+                    title = "Weaknesses";
+                    break;
+                case R.id.QuestionMarkOpportunities:
+                    hint.setMessage(R.string.OpportunitiesText);
+                    title = "Opportunities";
+                    break;
+                case R.id.QuestionMarkThreat:
+                    hint.setMessage(R.string.ThreatText);
+                    title = "Threats";
+                    break;
+            }
+            hint.setPositiveButton("CLOSE", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alert = hint.create();
+            alert.setTitle(title);
+            alert.show();
+        }
+    }
+
+    public boolean validate(){
+        if (strength.getText().toString().isEmpty()){
+            strength.requestFocus();
+            return false;
+        }
+        else if (weakness.getText().toString().isEmpty()){
+            weakness.requestFocus();
+            return false;
+        }
+        else if (opportunity.getText().toString().isEmpty()){
+            opportunity.requestFocus();
+            return false;
+        }
+        else if (threat.getText().toString().isEmpty()){
+            threat.requestFocus();
+            return false;
+        }
+        return true;
     }
 }

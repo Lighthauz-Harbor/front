@@ -6,7 +6,6 @@
     android:background="@color/colorPrimary"
     tools:context="com.example.dvidr_000.lighthauzproject.IdeaInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <Button
         android:text="@string/next"
         android:layout_width="match_parent"
@@ -61,17 +60,12 @@
                 android:textColor="@color/white"
                 android:id="@+id/tvIdeaInforBusinessCategory" />
 
-            <EditText
+            <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/insertHere"
-                android:ems="10"
                 android:layout_below="@+id/tvIdeaInforBusinessCategory"
                 android:layout_alignStart="@+id/tvIdeaInforBusinessCategory"
                 android:layout_marginTop="16dp"
-                android:textSize="18sp"
-                android:textColor="@color/white"
                 android:id="@+id/etIdeaInforBusinessCategoryFill" />
 
             <TextView
@@ -114,18 +108,8 @@
                 android:layout_height="192dp"
                 app:srcCompat="@drawable/placeholder"
                 android:scaleType="fitCenter"
-                android:id="@+id/imageButton"
+                android:id="@+id/ic_idea_info"
                 android:layout_below="@+id/tvAddPhoto"
-                android:layout_alignStart="@+id/tvAddPhoto"
-                android:layout_marginTop="11dp" />
-
-            <ImageButton
-                android:layout_width="192dp"
-                android:layout_height="192dp"
-                app:srcCompat="@drawable/placeholder"
-                android:scaleType="fitCenter"
-                android:id="@+id/imageButton2"
-                android:layout_below="@+id/imageButton"
                 android:layout_alignStart="@+id/tvAddPhoto"
                 android:layout_marginTop="11dp" />
 

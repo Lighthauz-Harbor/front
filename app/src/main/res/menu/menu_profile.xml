@@ -3,16 +3,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menuContact"
+        android:visible="false"
         android:enabled="true"
         android:title="@string/contact"
-        android:icon="@drawable/ic_message_white_24dp"
+        android:icon="@drawable/ic_email_white_24dp"
         app:showAsAction="ifRoom"
         >
     </item>
     <item android:id="@+id/menuAddUser"
+        android:visible="false"
         android:enabled="true"
         android:title="@string/addUser"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_person_add_white_24dp">
     </item>
+    <item android:id="@+id/menuRemoveUser"
+        android:enabled="true"
+        android:visible="false"
+        android:title="@string/removeUser"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_delete_white_24dp">
+    </item>
+    <item android:id="@+id/menuUpdateProfile"
+        android:enabled="true"
+        android:visible="false"
+        android:title="@string/Save"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_mode_edit_white_24dp">
+    </item>
+    <item android:id="@+id/menuReportUser"
+        android:enabled="true"
+        android:visible="true"
+        android:title="@string/report"
+        android:icon="@drawable/report">
+    </item>
+
 </menu>

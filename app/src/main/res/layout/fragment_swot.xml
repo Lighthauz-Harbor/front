@@ -1,154 +1,151 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:fillViewport="true"
     tools:context="com.example.dvidr_000.lighthauzproject.SWOTFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <Button
-        android:text="@string/next"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/btnNextIdeaSWOT"
-        android:background="@color/white"
-        style="@style/Widget.AppCompat.Button.Borderless" />
+        android:layout_height="wrap_content">
+        <Button
+            android:text="@string/next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/swot_layout"
+            android:id="@+id/btnNextIdeaSWOT"
+            android:background="@color/white"
+            style="@style/Widget.AppCompat.Button.Borderless" />
 
-    <TextView
-        android:text="@string/Strength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="34dp"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:id="@+id/tvStrength" />
+        <RelativeLayout
+            android:id="@+id/swot_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+            <TextView
+                android:text="@string/Strength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvStrength" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/insertHere"
-        android:ems="10"
-        android:textColor="@color/white"
-        android:layout_marginTop="15dp"
-        android:id="@+id/etStrengthFill"
-        android:layout_below="@+id/tvStrength"
-        android:layout_alignStart="@+id/tvStrength" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkStrenght"
+                android:layout_alignTop="@+id/tvStrength"
+                android:layout_toEndOf="@+id/tvStrength"
+                android:layout_marginStart="8dp"/>
 
-    <TextView
-        android:text="@string/Weakness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etStrengthFill"
-        android:layout_alignStart="@+id/etStrengthFill"
-        android:layout_marginTop="12dp"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:id="@+id/tvWeakness" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"
+                android:id="@+id/etStrengthFill"
+                android:layout_below="@+id/tvStrength" />
 
-    <TextView
-        android:text="@string/Opportunities"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etWeaknessfill"
-        android:layout_alignStart="@+id/etWeaknessfill"
-        android:layout_marginTop="19dp"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:id="@+id/tvOpportunites" />
+            <TextView
+                android:text="@string/Weakness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etStrengthFill"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvWeakness" />
 
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkWeakness"
+                android:layout_alignTop="@+id/tvWeakness"
+                android:layout_toEndOf="@+id/tvWeakness"
+                android:layout_marginStart="8dp"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/insertHere"
-        android:ems="10"
-        android:textColor="@color/white"
-        android:layout_marginTop="19dp"
-        android:id="@+id/etOpportunitiesfill"
-        android:layout_below="@+id/tvOpportunites"
-        android:layout_alignStart="@+id/tvOpportunites" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"
+                android:id="@+id/etWeaknessfill"
+                android:layout_below="@+id/tvWeakness" />
 
-    <TextView
-        android:text="@string/Threat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etOpportunitiesfill"
-        android:layout_alignStart="@+id/etOpportunitiesfill"
-        android:layout_marginTop="19dp"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:id="@+id/tvThreat" />
+            <TextView
+                android:text="@string/Opportunities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etWeaknessfill"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvOpportunites" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/insertHere"
-        android:ems="10"
-        android:textColor="@color/white"
-        android:layout_marginTop="19dp"
-        android:id="@+id/etThreatfill"
-        android:layout_below="@+id/tvThreat"
-        android:layout_alignStart="@+id/tvThreat" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkOpportunities"
+                android:layout_alignTop="@+id/tvOpportunites"
+                android:layout_toEndOf="@+id/tvOpportunites"
+                android:layout_marginStart="8dp" />
 
-    <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        app:srcCompat="@drawable/question_mark"
-        android:scaleType="centerInside"
-        android:id="@+id/QuestionMarkWeakness"
-        android:layout_alignTop="@+id/tvWeakness"
-        android:layout_toEndOf="@+id/QuestionMarkStrenght" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"
+                android:id="@+id/etOpportunitiesfill"
+                android:layout_below="@+id/tvOpportunites" />
 
-    <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        app:srcCompat="@drawable/question_mark"
-        android:scaleType="centerInside"
-        android:id="@+id/QuestionMarkOpportunities"
-        android:layout_alignTop="@+id/tvOpportunites"
-        android:layout_toEndOf="@+id/QuestionMarkWeakness"
-        android:layout_marginStart="13dp" />
+            <TextView
+                android:text="@string/Threat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etOpportunitiesfill"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tvThreat" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/insertHere"
-        android:ems="10"
-        android:textColor="@color/white"
-        android:layout_marginTop="16dp"
-        android:id="@+id/etWeaknessfill"
-        android:layout_below="@+id/tvWeakness"
-        android:layout_alignStart="@+id/tvWeakness" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkThreat"
+                android:layout_alignTop="@+id/tvThreat"
+                android:layout_toEndOf="@+id/tvThreat"
+                android:layout_marginStart="8dp"/>
 
-    <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        app:srcCompat="@drawable/question_mark"
-        android:scaleType="centerInside"
-        android:id="@+id/QuestionMarkStrenght"
-        android:layout_alignTop="@+id/tvStrength"
-        android:layout_toEndOf="@+id/tvWeakness" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/insertHere"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"
+                android:id="@+id/etThreatfill"
+                android:layout_below="@+id/tvThreat" />
 
-    <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        app:srcCompat="@drawable/question_mark"
-        android:scaleType="centerInside"
-        android:id="@+id/QuestionMarkThreat"
-        android:layout_alignTop="@+id/tvThreat"
-        android:layout_alignEnd="@+id/tvWeakness" />
-
-
-</RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

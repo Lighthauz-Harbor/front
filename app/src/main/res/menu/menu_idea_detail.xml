@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menuReport"
+    <item android:id="@+id/menuReportIdea"
         android:enabled="true"
         android:title="@string/report"
-        android:icon="@drawable/report"
-
-        >
+        android:icon="@drawable/report">
     </item>
     <item android:id="@+id/menuSuggestion"
+        android:visible="false"
         android:enabled="true"
         android:title="@string/suggestion"
-        app:showAsAction="always"
-
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_whatshot_white_24dp">
+    </item>
+    <item android:id="@+id/menuEditIdea"
+        android:visible="false"
+        android:enabled="true"
+        android:title="@string/EditIdea"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_mode_edit_white_24dp">
+    </item>
+    <item android:id="@+id/menuDeleteIdea"
+        android:visible="false"
+        android:enabled="true"
+        android:title="@string/DeleteIdea"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_delete_white_24dp">
     </item>
 
 

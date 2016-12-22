@@ -3,25 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dvidr_000.lighthauzproject.SuggestionFragment">
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="com.example.dvidr_000.lighthauzproject.IdeaListFragment">
-
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/rec_list_suggestion"
-            >
-
-        </android.support.v7.widget.RecyclerView>
-
-
-
-    </RelativeLayout>
-
+        android:id="@+id/rec_list_suggestion">
+    </android.support.v7.widget.RecyclerView>
+    <ProgressBar
+        android:id="@+id/pBarSuggestion"
+        android:visibility="gone"
+        android:progressDrawable="@drawable/loading_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+    </ProgressBar>
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/suggestionNotice"
+        android:text="@string/EmptySuggestion"/>
 </FrameLayout>

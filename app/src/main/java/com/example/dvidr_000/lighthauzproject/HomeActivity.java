@@ -1,6 +1,7 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
+import android.content.Intent;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,10 +16,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class HomeActivity extends AppCompatActivity {
 
     private int pos;
     SessionManager sessionManager;
+    private HashMap<String,String> user;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -29,11 +33,25 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==R.id.menuLogout){
-            requestLogout();
-            sessionManager.logoutUser();
-            finish();
+        switch (item.getItemId()){
+            case R.id.menuLogout:
+                requestLogout();
+                sessionManager.logoutUser();
+                finish();
+                break;
+            case R.id.menuSetInterest:
+                Intent in = new Intent(HomeActivity.this,DetailActivity.class);
+                in.putExtra("EXTRA_CONTENT","SET_INTEREST");
+                startActivity(in);
+                break;
+            case R.id.menuProfile:
+                Intent intent = new Intent(HomeActivity.this,DetailActivity.class);
+                intent.putExtra("EXTRA_CONTENT","VIEW_PROFILE");
+                intent.putExtra("USER_ID",user.get(SessionManager.KEY_ID));
+                startActivity(intent);
+                break;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -44,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         sessionManager = new SessionManager(getApplicationContext());
+        user = sessionManager.getUserDetails();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_home,new NewsFeedFragment()).commit();
         pos = 1;
@@ -86,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
                                 }
                                 break;
                         }
-                        return false;
+                        return true;
                     }
                 });
     }

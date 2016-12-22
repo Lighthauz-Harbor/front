@@ -1,9 +1,14 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,23 +17,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -38,7 +49,9 @@ import static com.android.volley.VolleyLog.TAG;
  */
 public class IdeaDetailFragment extends Fragment implements View.OnClickListener{
 
+    private AlertDialog alertDialog;
     private ProgressBar pb;
+    private ProgressDialog pDialog;
     private RelativeLayout layout;
     private TextView title;
     private TextView desc;
@@ -48,7 +61,15 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private TextView background;
     private TextView solution;
     private TextView lastEdited;
+    private TextView likes;
+    private TextView comments;
     private ImageView pic;
+    private ImageView profPic;
+    private ImageButton likeBtn;
+    private Dialog reportDialog;
+    private EditText reportTitle;
+    private EditText reportMessage;
+    private Button reportSubmit;
 
     private String idStr;
     private String titleStr;
@@ -57,6 +78,10 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private String problemStr;
     private String backgroundStr;
     private String solutionStr;
+    private boolean likeStatus;
+    private int likeCount;
+    private String reportTitleStr;
+    private String reportMessageStr;
 
     private String valueProposition;
     private String customerSegments;
@@ -73,7 +98,6 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private String threats;
     private String extraLink;
     private String picStr;
-
     private int visibility;
     private Long timestamp;
 
@@ -82,7 +106,16 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private String email;
     private String profilePicStr;
 
+    private SessionManager sessionManager;
+    private HashMap<String,String> user;
+    private Bundle ideaBundle;
 
+    private MenuItem menuEditIdea;
+    private MenuItem menuSuggestion;
+    private MenuItem menuReport;
+    private MenuItem menuDeleteIdea;
+
+    private List<User> likers;
 
     public IdeaDetailFragment() {
         // Required empty public constructor
@@ -91,6 +124,10 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
         inflater.inflate(R.menu.menu_idea_detail, menu);
+        menuEditIdea = (MenuItem) menu.findItem(R.id.menuEditIdea);
+        menuSuggestion = (MenuItem) menu.findItem(R.id.menuSuggestion);
+        menuReport =(MenuItem) menu.findItem(R.id.menuReportIdea);
+        menuDeleteIdea =(MenuItem) menu.findItem(R.id.menuDeleteIdea);
 
     }
 
@@ -101,9 +138,22 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         View v = inflater.inflate(R.layout.fragment_idea_detail, container, false);
         setHasOptionsMenu(true);
 
+        likers = new ArrayList<>();
+        sessionManager = new SessionManager(getContext());
+        user = sessionManager.getUserDetails();
         getActivity().setTitle("Idea Details");
-        idStr = getActivity().getIntent().getStringExtra("IDEA_ID");
 
+        try {
+            idStr = getArguments().getString("IDEA_ID");
+        }
+        catch (Exception e){
+            idStr = getActivity().getIntent().getStringExtra("IDEA_ID");
+        }
+
+        ideaBundle = new Bundle();
+
+        pDialog = new ProgressDialog(getContext());
+        pDialog.setCancelable(false);
         layout = (RelativeLayout) v.findViewById(R.id.idea_detail_layout);
         layout.setVisibility(View.GONE);
         pb = (ProgressBar) v.findViewById(R.id.pBarIdeaDetail);
@@ -115,21 +165,160 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         background = (TextView) v.findViewById(R.id.tv_idea_detail_background_text);
         solution = (TextView) v.findViewById(R.id.tv_idea_detail_solution_text);
         lastEdited = (TextView) v.findViewById(R.id.tv_idea_detail_lastedited_text);
+        likes = (TextView) v.findViewById(R.id.tv_idea_detail_like);
+        comments = (TextView) v.findViewById(R.id.tv_idea_detail_comment);
         pic = (ImageView) v.findViewById(R.id.ic_idea_detail);
-
+        profPic = (ImageView) v.findViewById(R.id.ic_idea_detail_prof);
         Button showBMC = (Button) v.findViewById(R.id.btnShowBMC);
         Button showSWOT = (Button) v.findViewById(R.id.btnShowSWOT);
+        likeBtn = (ImageButton) v.findViewById(R.id.ic_like_button);
+
+        reportDialog = new Dialog(getContext());
+        reportDialog.setContentView(R.layout.dialog_report);
+        reportTitle = (EditText) reportDialog.findViewById(R.id.et_report_title);
+        reportMessage = (EditText) reportDialog.findViewById(R.id.et_report_message);
+        reportSubmit = (Button) reportDialog.findViewById(R.id.btn_submit_dialog_report);
 
         showBMC.setOnClickListener(this);
         showSWOT.setOnClickListener(this);
         createdBy.setOnClickListener(this);
+        profPic.setOnClickListener(this);
+        likeBtn.setOnClickListener(this);
+        likes.setOnClickListener(this);
+        reportSubmit.setOnClickListener(this);
 
-        setDetails(v);
+        AlertDialog.Builder removeDialog = new AlertDialog.Builder(getActivity());
+        removeDialog.setMessage(R.string.ConfirmRemoveIdea)
+                .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.Yes,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        JSONArray list = new JSONArray();
+                        list.put(idStr);
+                        deleteIdea(list);
+                        dialogInterface.dismiss();
+                    }
+                });
+        alertDialog = removeDialog.create();
+        alertDialog.setTitle("Confirm");
+
+        getLike();
+        setDetails();
 
         return v;
     }
 
-    public void setDetails(View v){
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnShowBMC:
+
+                BMCContentFragment fragment1 = new BMCContentFragment();
+                fragment1.setArguments(ideaBundle);
+
+                FragmentTransaction tr1 = getActivity().getSupportFragmentManager().beginTransaction();
+                tr1.replace(R.id.fragment_container_detail,fragment1);
+                tr1.addToBackStack(null);
+                tr1.commit();
+                break;
+            case R.id.btnShowSWOT:
+
+                SWOTFragment fragment = new SWOTFragment();
+                fragment.setArguments(ideaBundle);
+
+                FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
+                tr.replace(R.id.fragment_container_detail,fragment);
+                tr.addToBackStack(null);
+                tr.commit();
+                break;
+            case R.id.ic_idea_detail_prof:
+            case R.id.tv_idea_detail_created_text:
+                Bundle args = new Bundle();
+                args.putString("USER_ID",userId);
+
+                ViewProfileFragment fragment2 = new ViewProfileFragment();
+                fragment2.setArguments(args);
+
+                FragmentTransaction tr2 = getActivity().getSupportFragmentManager().beginTransaction();
+                tr2.replace(R.id.fragment_container_detail,fragment2);
+                tr2.addToBackStack(null);
+                tr2.commit();
+                break;
+            case R.id.ic_like_button:
+                if (likeStatus){
+                like("unlike");
+            }
+                else {
+                    like("like");
+                }
+                break;
+            case R.id.tv_idea_detail_like:
+                Bundle args3 = new Bundle();
+                args3.putString("IDEA_ID",idStr);
+
+                LikeListFragment fragment3 = new LikeListFragment();
+                fragment3.setArguments(args3);
+
+                FragmentTransaction tr3 = getActivity().getSupportFragmentManager().beginTransaction();
+                tr3.replace(R.id.fragment_container_detail,fragment3);
+                tr3.addToBackStack(null);
+                tr3.commit();
+                break;
+            case R.id.btn_submit_dialog_report:
+                reportTitleStr = reportTitle.getText().toString().trim();
+                reportMessageStr = reportMessage.getText().toString().trim();
+                if (reportTitleStr.isEmpty()){
+                    Toast.makeText(getContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+                else if (reportMessageStr.isEmpty()){
+                    Toast.makeText(getContext(), "Message cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    submitReport();
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuReportIdea:
+                reportDialog.show();
+                break;
+            case R.id.menuSuggestion:
+                Bundle args = new Bundle();
+                args.putString("CATEGORY",categoryStr);
+
+                SuggestionFragment fragment = new SuggestionFragment();
+                fragment.setArguments(args);
+
+                FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
+                tr.replace(R.id.fragment_container_detail,fragment);
+                tr.addToBackStack(null);
+                tr.commit();
+                break;
+            case R.id.menuEditIdea:
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
+                intent.putExtra("EXTRA_CONTENT","EDIT_IDEA");
+                intent.putExtra("IDEA_BUNDLE",ideaBundle);
+                startActivity(intent);
+                break;
+            case R.id.menuDeleteIdea:
+                alertDialog.show();
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void setDetails(){
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
@@ -140,8 +329,6 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        VolleyLog.d(response.toString());
-
                         try{
                             JSONObject ideaObj = response.getJSONObject("idea");
                             JSONObject author = response.getJSONObject("author");
@@ -183,11 +370,45 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                             background.setText(backgroundStr);
                             solution.setText(solutionStr);
                             MyAdapter.imageLoader(picStr,pic);
+                            MyAdapter.imageLoader(profilePicStr,profPic);
                             lastEdited.setText(MyAdapter.setDate(timestamp));
                             createdBy.setText(name);
 
                             pb.setVisibility(View.GONE);
                             layout.setVisibility(View.VISIBLE);
+                            if (userId.equals(user.get(SessionManager.KEY_ID))){
+                                menuEditIdea.setVisible(true);
+                                menuSuggestion.setVisible(true);
+                                menuDeleteIdea.setVisible(true);
+
+                                ideaBundle.putString("IDEA_ID",idStr);
+                                ideaBundle.putString("PIC",picStr);
+                                ideaBundle.putString("TITLE",titleStr);
+                                ideaBundle.putString("CATEGORY",categoryStr);
+                                ideaBundle.putString("DESCRIPTION",descStr);
+                                ideaBundle.putString("BACKGROUND",backgroundStr);
+                                ideaBundle.putString("PROBLEM",problemStr);
+                                ideaBundle.putString("SOLUTION",solutionStr);
+                                ideaBundle.putString("EXTRA_LINK",extraLink);
+                                ideaBundle.putInt("VISIBILITY",visibility);
+
+                            }
+                            else {
+                            }
+                            ideaBundle.putString("VP",valueProposition);
+                            ideaBundle.putString("CS",customerSegments);
+                            ideaBundle.putString("KP",keyPartners);
+                            ideaBundle.putString("COST",costStructure);
+                            ideaBundle.putString("RS",revenueStreams);
+                            ideaBundle.putString("KA",keyActivities);
+                            ideaBundle.putString("KR",keyResources);
+                            ideaBundle.putString("CH",channels);
+                            ideaBundle.putString("CR",customerRelationships);
+                            ideaBundle.putString("STRENGTH",strengths);
+                            ideaBundle.putString("WEAKNESS",weaknesses);
+                            ideaBundle.putString("OPPORTUNITY",opportunities);
+                            ideaBundle.putString("THREAT",threats);
+
                         }
                         catch (JSONException e){
                             Log.e("MYAPP", "unexpected JSON exception", e);
@@ -201,83 +422,221 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
             }
         });
 
-// Adding request to request queue
+        // Adding request to request queue
         MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
 
     }
 
-    @Override
-    public void onClick(View view) {
+    public void deleteIdea(JSONArray list){
+        pDialog.setMessage("Deleting...");
+        pDialog.show();
 
-        Bundle args = new Bundle();
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/api/ideas/delete";
 
-        switch (view.getId()){
-            case R.id.btnShowBMC:
-                args.putString("VP",valueProposition);
-                args.putString("CS",customerSegments);
-                args.putString("KP",keyPartners);
-                args.putString("COST",costStructure);
-                args.putString("RS",revenueStreams);
-                args.putString("KA",keyActivities);
-                args.putString("KR",keyResources);
-                args.putString("CH",channels);
-                args.putString("CR",customerRelationships);
+        JSONObject obj = new JSONObject();
 
-                BMCContentFragment fragment1 = new BMCContentFragment();
-                fragment1.setArguments(args);
-
-                FragmentTransaction tr1 = getActivity().getSupportFragmentManager().beginTransaction();
-                tr1.replace(R.id.fragment_container_detail,fragment1);
-                tr1.addToBackStack(null);
-                tr1.commit();
-                break;
-            case R.id.btnShowSWOT:
-
-
-                args.putString("STRENGTH",strengths);
-                args.putString("WEAKNESS",weaknesses);
-                args.putString("OPPORTUNITY",opportunities);
-                args.putString("THREAT",threats);
-
-                SWOTFragment fragment = new SWOTFragment();
-                fragment.setArguments(args);
-
-                FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
-                tr.replace(R.id.fragment_container_detail,fragment);
-                tr.addToBackStack(null);
-                tr.commit();
-                break;
-            case R.id.tv_idea_detail_created_text:
-                args.putString("USER_ID",userId);
-
-                ViewProfileFragment fragment2 = new ViewProfileFragment();
-                fragment2.setArguments(args);
-
-                FragmentTransaction tr2 = getActivity().getSupportFragmentManager().beginTransaction();
-                tr2.replace(R.id.fragment_container_detail,fragment2);
-                tr2.addToBackStack(null);
-                tr2.commit();
-                break;
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menuReport:
-                Toast.makeText(getActivity(),"Reported",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.menuSuggestion:
-                FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
-                tr.replace(R.id.fragment_container_detail,new SuggestionFragment());
-                tr.addToBackStack(null);
-                tr.commit();
-                break;
-
+        try {
+            obj.putOpt("ids",list);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return super.onOptionsItemSelected(item);
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,obj,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String msg = response.getString("message");
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+                        pDialog.dismiss();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                pDialog.dismiss();
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
+    public void like(final String like){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/api/" + like;
 
+        HashMap<String,String> params = new HashMap<>();
+        params.put("userId",user.get(SessionManager.KEY_ID));
+        params.put("ideaId",idStr);
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String msg = response.getString("fail");
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                int mStatusCode = response.statusCode;
+                if (mStatusCode==HttpURLConnection.HTTP_OK){
+                    Log.d(TAG,"Success");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String likeStr;
+                            if (like.equals("like")){
+                                likeBtn.setImageResource(R.drawable.ic_heart_red);
+                                likeCount++;
+                                likeStatus=true;
+                            }
+                            else {
+                                likeBtn.setImageResource(R.drawable.ic_heart);
+                                likeCount--;
+                                likeStatus=false;
+                            }
+
+                            likeStr = likeCount + " likes";
+                            likes.setText(likeStr);
+                        }
+                    });
+
+                }
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
+
+    public void getLike(){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/api/like/list/"+idStr;
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        VolleyLog.d(response.toString());
+                        JSONArray myArray;
+                        likers.clear();
+                        if (response.isNull("fail")) {
+                            try {
+                                myArray = response.getJSONArray("list");
+                                if (myArray.length()==0){
+                                }
+                                else {
+                                    for (int i = 0; i < myArray.length(); i++) {
+                                        String userId = myArray.getJSONObject(i).getString("id");
+                                        String name = myArray.getJSONObject(i).getString("name");
+                                        String profilePic = myArray.getJSONObject(i).getString("profilePic");
+
+                                        User newUser = new User(userId, name, profilePic);
+                                        likers.add(newUser);
+                                    }
+                                }
+
+                                likeCount = likers.size();
+                                String likeStr =  likeCount+ " likes";
+                                likes.setText(likeStr);
+                                likeStatus=false;
+
+                                for (int i=0;i<likers.size();i++){
+                                    if (likers.get(i).getId().equals(user.get(SessionManager.KEY_ID))){
+                                        likeStatus=true;
+                                        likeBtn.setImageResource(R.drawable.ic_heart_red);
+                                        break;
+                                    }
+                                }
+
+                            } catch (JSONException e) {
+                                Log.e("MYAPP", "unexpected JSON exception", e);
+                            }
+                        }
+                        else {
+                            try {
+                                String msg = response.getString("fail");
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                Log.e("MYAPP", "unexpected JSON exception", e);
+                            }
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                pDialog.dismiss();
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
+
+    public void submitReport(){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/api/reports/create";
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("authorId",user.get(SessionManager.KEY_ID));
+        params.put("targetId",idStr);
+        params.put("title",reportTitleStr);
+        params.put("message",reportMessageStr);
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String msg = response.getString("message");
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            reportDialog.dismiss();
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
 }
