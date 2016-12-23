@@ -185,6 +185,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         profPic.setOnClickListener(this);
         likeBtn.setOnClickListener(this);
         likes.setOnClickListener(this);
+        comments.setOnClickListener(this);
         reportSubmit.setOnClickListener(this);
 
         AlertDialog.Builder removeDialog = new AlertDialog.Builder(getActivity());
@@ -206,8 +207,11 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                 });
         alertDialog = removeDialog.create();
         alertDialog.setTitle("Confirm");
+        likes.setText("likes");
+        comments.setText("comments");
 
         getLike();
+        getComment();
         setDetails();
 
         return v;
@@ -268,6 +272,18 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                 tr3.replace(R.id.fragment_container_detail,fragment3);
                 tr3.addToBackStack(null);
                 tr3.commit();
+                break;
+            case R.id.tv_idea_detail_comment:
+                Bundle args4 = new Bundle();
+                args4.putString("IDEA_ID",idStr);
+
+                CommentFragment fragment4 = new CommentFragment();
+                fragment4.setArguments(args4);
+
+                FragmentTransaction tr4 = getActivity().getSupportFragmentManager().beginTransaction();
+                tr4.replace(R.id.fragment_container_detail,fragment4);
+                tr4.addToBackStack(null);
+                tr4.commit();
                 break;
             case R.id.btn_submit_dialog_report:
                 reportTitleStr = reportTitle.getText().toString().trim();
@@ -596,6 +612,48 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 pDialog.dismiss();
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
+
+    public void getComment(){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/api/comment/list/"+idStr;
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray myArray;
+                        if (response.isNull("fail")) {
+                            try {
+                                myArray = response.getJSONArray("list");
+                                String commentStr = myArray.length() + " comments";
+                                comments.setText(commentStr);
+
+                            } catch (JSONException e) {
+                                Log.e("MYAPP", "unexpected JSON exception", e);
+                            }
+                        }
+                        else {
+                            try {
+                                String msg = response.getString("fail");
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                Log.e("MYAPP", "unexpected JSON exception", e);
+                            }
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
             }
         });
 

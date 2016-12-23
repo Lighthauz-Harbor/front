@@ -1,7 +1,6 @@
 package com.example.dvidr_000.lighthauzproject;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import com.android.volley.toolbox.ImageLoader;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -61,6 +61,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     }
 
     public MyAdapter(Context c, List<CategoryPickFragment.Category> listData, String content){
+        inflater = LayoutInflater.from(c);
+        this.content=content;
+        this.listData=listData;
+    }
+
+    public MyAdapter(String content, Context c, List<CommentFragment.Comment> listData){
         inflater = LayoutInflater.from(c);
         this.content=content;
         this.listData=listData;
@@ -132,13 +138,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 container.setTag(tag);
 
             }
+            else if (content.equals("COMMENT_LIST")){
+                name = (TextView)itemView.findViewById(R.id.tv_title_comment);
+                icon = (ImageView)itemView.findViewById(R.id.ic_list_comment);
+                datetime = (TextView)itemView.findViewById(R.id.tv_time_comment);
+                description = (TextView)itemView.findViewById(R.id.tv_text_comment);
+                container = itemView.findViewById(R.id.card_item_comment);
+                name.setOnClickListener(this);
+                icon.setOnClickListener(this);
+            }
             else {
                 name = (TextView)itemView.findViewById(R.id.tv_title_list_simple);
                 icon = (ImageView)itemView.findViewById(R.id.ic_list_simple);
                 container = itemView.findViewById(R.id.card_item_simple);
             }
-
-
 
             container.setOnClickListener(this);
         }
@@ -169,10 +182,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             inside.addView(view1);
         }
         else if (content.equals("CATEGORY_LIST")){
-            view = inflater.inflate(R.layout.list_category, parent, false);
+            view = inflater.inflate(R.layout.list_title_checkbox, parent, false);
         }
         else if (content.equals("USER_HORIZONTAL")||content.equals("IDEA_HORIZONTAL")){
             view = inflater.inflate(R.layout.list_simple_horizontal, parent, false);
+        }
+        else if (content.equals("COMMENT_LIST")){
+            view = inflater.inflate(R.layout.list_comment, parent, false);
         }
         else {
             view = inflater.inflate(R.layout.list_simple, parent, false);
@@ -243,6 +259,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 holder.check.setChecked(category.isSelected());
 
                 break;
+            case "COMMENT_LIST":
+                CommentFragment.Comment comment = (CommentFragment.Comment) listData.get(position);
+                holder.name.setText(comment.getName());
+                holder.description.setText(comment.getText());
+                holder.datetime.setText(setDate(comment.getTimestamp()));
+                imageLoader(comment.getProfilePic(),holder.icon);
+                break;
         }
 
     }
@@ -270,7 +293,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             dateString = "Yesterday at " + df.format("HH:mm", date).toString();
         }
         else if (date.getDate()-now.getDate()==0){
-            if (date.getHours()-now.getHours()==0){
+            if (now.getHours()-date.getHours()==0){
                 if (date.getMinutes()-now.getMinutes()==0){
                     dateString = "Just now";
                 }

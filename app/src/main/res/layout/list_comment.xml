@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/list_news_root"
+    android:id="@+id/list_comment_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/card_item_news"
+        android:id="@+id/card_item_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -27,13 +27,13 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/ic_list_news"
+                android:id="@+id/ic_list_comment"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:scaleType="fitCenter"/>
 
             <TextView
-                android:id="@+id/tv_title_list_news"
+                android:id="@+id/tv_title_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -43,35 +43,29 @@
                 android:text="@string/insertHere"/>
 
             <TextView
-                android:id="@+id/tv_event_list_news"
+                android:id="@+id/tv_time_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/cardview_dark_background"
-                android:layout_toEndOf="@+id/tv_title_list_news"
-                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@+id/tv_title_comment"
+                android:layout_marginStart="8dp"
+                android:textSize="12sp"
+                android:textColor="@color/lightGrey"
                 android:text="@string/insertHere"/>
 
             <TextView
-                android:id="@+id/tv_time_list_news"
+                android:id="@+id/tv_text_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/lightGrey"
-                android:layout_below="@+id/tv_title_list_news"
-                android:layout_alignStart="@id/tv_title_list_news"
+                android:layout_below="@+id/tv_title_comment"
+                android:layout_alignStart="@id/tv_title_comment"
+                android:textColor="@color/cardview_dark_background"
                 android:text="@string/insertHere"/>
 
-            <FrameLayout
-                android:id="@+id/wrapper_content_news"
-                android:background="@drawable/border"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ic_list_news"
-                android:layout_alignStart="@+id/ic_list_news"
-                android:layout_marginTop="16dp">
 
-            </FrameLayout>
+
+
+
         </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 </LinearLayout>

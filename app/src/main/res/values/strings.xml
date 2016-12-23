@@ -107,6 +107,7 @@ entrepreneurial tool. It allows you to describe, design, challenge, invent, and 
     <string name="EmptyIdea">No ideas found</string>
     <string name="EmptyRequest">You don\'t have any requests</string>
     <string name="EmptyLike">No one has liked this idea</string>
+    <string name="EmptyComment">No one has commented on this idea</string>
     <string name="EmptySuggestion">No suggestions available</string>
     <string name="ConfirmRemoveUser">Are you sure want to remove this user from your connection?</string>
     <string name="ConfirmRemoveIdea">Are you sure want to delete this Idea?</string>
@@ -117,6 +118,7 @@ entrepreneurial tool. It allows you to describe, design, challenge, invent, and 
     <string name="EditIdea">Edit Idea</string>
     <string name="DeleteIdea">Delete Idea</string>
     <string name="Save">Save</string>
+    <string name="EnterComment">Enter comment</string>
 
     <string name="StrengthText">What advantages does your organization have?\n\nWhat do you do better than anyone else?\n\nWhat do people in your market see as your strengths?\n\nWhat factors mean that you \"get the sale\"?</string>
     <string name="WeaknessText">What could you improve?\n\nWhat should you avoid?\n\nWhat are people in your market likely to see as weaknesses?\n\nWhat factors lose you sales?</string>
