@@ -47,7 +47,7 @@ public class BackgroundFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         if(view.getId()==R.id.btnNextIdeaBackground){
             if (validate()){
-                ideaBundle.putString("BACKGROUND",background.getText().toString());
+                ideaBundle.putString("BACKGROUND",background.getText().toString().trim());
 
                 ProblemFragment fragment = new ProblemFragment();
                 fragment.setArguments(ideaBundle);

@@ -119,15 +119,11 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menuContact:
-                /*Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, "Text");
-                startActivity(Intent.createChooser(intent, "Choose an Email client :"));*/
-
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                startActivity(intent);
-                startActivity(Intent.createChooser(intent, "asd"));
+                String[] address = {emailStr};
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, address);
+                startActivity(Intent.createChooser(intent, "Choose an Email client :"));
                 break;
             case R.id.menuAddUser:
                 addUser(user.get(SessionManager.KEY_ID),idStr);
@@ -276,9 +272,9 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
-        String url = "http://lighthauz.herokuapp.com/api/users/get/id/";
+        String url = "http://lighthauz.herokuapp.com/api/users/get/" + idStr;
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url + idStr ,null,
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -318,9 +314,9 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
-        String url = "http://lighthauz.herokuapp.com/api/connections/is-connected/";
+        String url = "http://lighthauz.herokuapp.com/api/connections/is-connected/" + user1 + "/" + user2;
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url + user1 + "/" + user2 ,null,
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONObject>() {
 
                     @Override

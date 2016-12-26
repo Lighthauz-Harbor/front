@@ -4,34 +4,30 @@ package com.example.dvidr_000.lighthauzproject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
-import android.util.Base64InputStream;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -39,19 +35,12 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.google.common.io.ByteSource;
-import com.google.common.io.ByteStreams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,8 +56,11 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
 
     private EditText title;
     private Spinner category;
+    private CheckBox cbPrivate;
     private EditText description;
+    private EditText extraLink;
     private ImageButton img;
+    private ImageView q1;
     private ProgressDialog pDialog;
     private String imgStr="";
     private List<String> categoryList;
@@ -96,16 +88,20 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
         pDialog.setCancelable(false);
         title = (EditText) v.findViewById(R.id.etIdeaInfoBusinessNameFill);
         description = (EditText) v.findViewById(R.id.etIdeaInfoDescriptionFill);
+        extraLink = (EditText) v.findViewById(R.id.etIdeaInfoExtraLink);
         img = (ImageButton) v.findViewById(R.id.ic_idea_info);
         img.setOnClickListener(this);
         Button nextBtn = (Button) v.findViewById(R.id.btnNextIdeaInfo);
         nextBtn.setOnClickListener(this);
+        cbPrivate = (CheckBox) v.findViewById(R.id.checkBox_idea_info_private);
+        q1 = (ImageView) v.findViewById(R.id.QuestionMarkPrivate);
+        q1.setOnClickListener(this);
 
         categoryList = new ArrayList<>();
         categoryDefault = "Select category";
         categoryList.add(categoryDefault);
         requestCategoryList();
-        category = (Spinner) v.findViewById(R.id.etIdeaInforBusinessCategoryFill);
+        category = (Spinner) v.findViewById(R.id.etIdeaInfoBusinessCategoryFill);
         categoryAdapter = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,categoryList);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(categoryAdapter);
@@ -122,9 +118,16 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
                         ideaBundle = new Bundle();
                     }
 
-                    ideaBundle.putString("TITLE",title.getText().toString());
+                    ideaBundle.putString("TITLE",title.getText().toString().trim());
                     ideaBundle.putString("CATEGORY",category.getSelectedItem().toString());
-                    ideaBundle.putString("DESCRIPTION",description.getText().toString());
+                    ideaBundle.putString("DESCRIPTION",description.getText().toString().trim());
+                    ideaBundle.putString("EXTRA_LINK",extraLink.getText().toString().trim());
+                    if (cbPrivate.isChecked()){
+                        ideaBundle.putString("VISIBILITY","1");
+                    }
+                    else {
+                        ideaBundle.putString("VISIBILITY","2");
+                    }
 
                     if (!imgStr.isEmpty()){
                         ideaBundle.putString("PIC",imgStr);
@@ -145,6 +148,21 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
             case R.id.ic_idea_info:
                 pickImage();
                 break;
+            case R.id.QuestionMarkPrivate:
+                AlertDialog.Builder hint = new AlertDialog.Builder(getActivity());
+                AlertDialog alert;
+                String title = "Tip";;
+                hint.setMessage(R.string.VisibilityGuide);
+                hint.setPositiveButton("CLOSE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert = hint.create();
+                alert.setTitle(title);
+                alert.show();
+                break;
 
         }
 
@@ -153,16 +171,21 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
     public void setDetails(){
         title.setText(ideaBundle.getString("TITLE"));
         description.setText(ideaBundle.getString("DESCRIPTION"));
-        String categoryStr = ideaBundle.getString("CATEGORY");
+        extraLink.setText(ideaBundle.getString("EXTRA_LINK"));
+        String categoryStr = ideaBundle.getString("OLD_CATEGORY");
         for (int i=0;i<categoryList.size();i++){
             if (categoryList.get(i).equals(categoryStr))category.setSelection(i);
+        }
+        int visibility = ideaBundle.getInt("visibility");
+        if (visibility==1){
+            cbPrivate.setChecked(true);
         }
         imgStr = ideaBundle.getString("PIC");
         MyAdapter.imageLoader(imgStr,img);
     }
 
     public boolean validate(){
-        if (title.getText().toString().isEmpty()){
+        if (title.getText().toString().trim().isEmpty()){
             title.requestFocus();
             return false;
         }
@@ -170,7 +193,7 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
             category.performClick();
             return false;
         }
-        else if (description.getText().toString().isEmpty()){
+        else if (description.getText().toString().trim().isEmpty()){
             description.requestFocus();
             return false;
         }

@@ -101,6 +101,7 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
     }
 
     public void request(){
+        notice.setVisibility(View.GONE);
         pb.setVisibility(View.VISIBLE);
 
         // Tag used to cancel the request

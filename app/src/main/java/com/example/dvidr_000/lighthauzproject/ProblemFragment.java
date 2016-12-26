@@ -47,7 +47,7 @@ public class ProblemFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.btnNextIdeaProblem) {
             if (validate()){
-                ideaBundle.putString("PROBLEM",problem.getText().toString());
+                ideaBundle.putString("PROBLEM",problem.getText().toString().trim());
 
                 SolutionFragment fragment = new SolutionFragment();
                 fragment.setArguments(ideaBundle);

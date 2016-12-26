@@ -46,7 +46,7 @@ public class SolutionFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         if(view.getId()==R.id.btnNextIdeaSolution){
             if (validate()){
-                ideaBundle.putString("SOLUTION",solution.getText().toString());
+                ideaBundle.putString("SOLUTION",solution.getText().toString().trim());
 
                 BMCFragment fragment = new BMCFragment();
                 fragment.setArguments(ideaBundle);

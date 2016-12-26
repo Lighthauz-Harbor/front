@@ -85,10 +85,10 @@ public class SWOTFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         if(view.getId()==R.id.btnNextIdeaSWOT){
             if (validate()){
-                ideaBundle.putString("STRENGTH",strength.getText().toString());
-                ideaBundle.putString("WEAKNESS",weakness.getText().toString());
-                ideaBundle.putString("OPPORTUNITY",opportunity.getText().toString());
-                ideaBundle.putString("THREAT",threat.getText().toString());
+                ideaBundle.putString("STRENGTH",strength.getText().toString().trim());
+                ideaBundle.putString("WEAKNESS",weakness.getText().toString().trim());
+                ideaBundle.putString("OPPORTUNITY",opportunity.getText().toString().trim());
+                ideaBundle.putString("THREAT",threat.getText().toString().trim());
 
                 //call create idea function in DetailActivity
                 ((DetailActivity)getActivity()).createIdea(ideaBundle,content);

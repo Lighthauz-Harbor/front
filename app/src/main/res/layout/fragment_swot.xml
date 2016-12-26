@@ -13,15 +13,16 @@
             android:text="@string/next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/swot_layout"
+            android:layout_alignParentBottom="true"
             android:id="@+id/btnNextIdeaSWOT"
             android:background="@color/white"
             style="@style/Widget.AppCompat.Button.Borderless" />
 
         <RelativeLayout
             android:id="@+id/swot_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnNextIdeaSWOT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="16dp">
             <TextView
                 android:text="@string/Strength"

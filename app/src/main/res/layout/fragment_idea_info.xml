@@ -11,37 +11,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/btnNextIdeaInfo"
         android:background="@color/white"
         style="@style/Widget.AppCompat.Button.Borderless" />
+
     <ScrollView
         android:layout_above="@id/btnNextIdeaInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
+            android:layout_margin="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
             <TextView
                 android:text="@string/BusinessName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
                 android:textSize="20sp"
                 android:textColor="@color/white"
                 android:id="@+id/tvIdeaInfoBusinessName" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
+                android:maxLength="50"
                 android:hint="@string/insertHere"
-                android:ems="10"
                 android:layout_below="@+id/tvIdeaInfoBusinessName"
                 android:layout_alignStart="@+id/tvIdeaInfoBusinessName"
                 android:layout_marginTop="16dp"
@@ -58,46 +57,93 @@
                 android:layout_marginTop="16dp"
                 android:textSize="20sp"
                 android:textColor="@color/white"
-                android:id="@+id/tvIdeaInforBusinessCategory" />
+                android:id="@+id/tvIdeaInfoBusinessCategory" />
 
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvIdeaInforBusinessCategory"
-                android:layout_alignStart="@+id/tvIdeaInforBusinessCategory"
-                android:layout_marginTop="16dp"
-                android:id="@+id/etIdeaInforBusinessCategoryFill" />
+                android:layout_alignTop="@+id/tvIdeaInfoBusinessCategory"
+                android:layout_toEndOf="@+id/tvIdeaInfoBusinessCategory"
+                android:layout_marginStart="16dp"
+                android:id="@+id/etIdeaInfoBusinessCategoryFill" />
 
             <TextView
                 android:text="@string/BusinessDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/etIdeaInforBusinessCategoryFill"
-                android:layout_alignStart="@+id/etIdeaInforBusinessCategoryFill"
+                android:layout_below="@+id/etIdeaInfoBusinessCategoryFill"
                 android:layout_marginTop="16dp"
                 android:textSize="20sp"
                 android:textColor="@color/white"
-                android:id="@+id/tvIdeaInforBusinessDescription" />
+                android:id="@+id/tvIdeaInfoBusinessDescription" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
                 android:hint="@string/insertHere"
-                android:ems="10"
-                android:layout_below="@+id/tvIdeaInforBusinessDescription"
-                android:layout_alignStart="@+id/tvIdeaInforBusinessDescription"
+                android:layout_below="@+id/tvIdeaInfoBusinessDescription"
                 android:layout_marginTop="16dp"
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:id="@+id/etIdeaInfoDescriptionFill" />
 
             <TextView
-                android:text="@string/addphoto"
+                android:text="@string/ExtraLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/etIdeaInfoDescriptionFill"
-                android:layout_alignStart="@+id/etIdeaInfoDescriptionFill"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:id="@+id/tvIdeaInfoExtraLink" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:hint="@string/insertHere"
+                android:layout_below="@+id/tvIdeaInfoExtraLink"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:id="@+id/etIdeaInfoExtraLink" />
+
+            <TextView
+                android:text="@string/PrivateIdeaQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etIdeaInfoExtraLink"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:id="@+id/tvIdeaInfoPrivateIdea" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/question_mark"
+                android:scaleType="centerInside"
+                android:id="@+id/QuestionMarkPrivate"
+                android:layout_alignTop="@+id/tvIdeaInfoPrivateIdea"
+                android:layout_toEndOf="@+id/tvIdeaInfoPrivateIdea"
+                android:layout_marginStart="4dp" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox_idea_info_private"
+                app:buttonTint="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tvIdeaInfoPrivateIdea"
+                android:layout_toEndOf="@+id/tvIdeaInfoPrivateIdea"
+                android:layout_marginTop="-3dp"
+                android:layout_marginStart="32dp"/>
+
+            <TextView
+                android:text="@string/addphoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvIdeaInfoPrivateIdea"
                 android:paddingTop="16dp"
                 android:textSize="20sp"
                 android:textColor="@color/white"
@@ -110,10 +156,8 @@
                 android:scaleType="fitCenter"
                 android:id="@+id/ic_idea_info"
                 android:layout_below="@+id/tvAddPhoto"
-                android:layout_alignStart="@+id/tvAddPhoto"
                 android:layout_marginTop="11dp" />
 
         </RelativeLayout>
     </ScrollView>
-
 </RelativeLayout>

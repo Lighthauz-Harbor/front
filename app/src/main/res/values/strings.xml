@@ -80,13 +80,10 @@
     <string name="newsNewIdea">posted a new idea.</string>
     <string name="newsUpdateIdea">updated an idea.</string>
 
-
     <string name="showbmc">Show BMC</string>
     <string name="showswot">Show SWOT</string>
 
-<string name="BMCInfo2">Business Model Canvas is a
-strategic management and
-entrepreneurial tool. It allows you to describe, design, challenge, invent, and pivot your business model.</string>
+    <string name="BMCInfo2">Business model canvas is a framework created by combining multiple blocks that each of them could represents our business idea.</string>
 
     <string name="DisplayName">Display Name</string>
     <string name="ViewMore">View More</string>
@@ -119,22 +116,24 @@ entrepreneurial tool. It allows you to describe, design, challenge, invent, and 
     <string name="DeleteIdea">Delete Idea</string>
     <string name="Save">Save</string>
     <string name="EnterComment">Enter comment</string>
+    <string name="FilterBy">Filter by</string>
+    <string name="ExtraLink">Extra link</string>
+    <string name="PrivateIdeaQ">Private idea</string>
+    <string name="PrivateIdeaNotice">This idea is private.\nOnly connected users are allowed to view.</string>
+    <string name="VisibilityGuide">If this feature is enabled, your idea details will only be visible to your connections.</string>
 
-    <string name="StrengthText">What advantages does your organization have?\n\nWhat do you do better than anyone else?\n\nWhat do people in your market see as your strengths?\n\nWhat factors mean that you \"get the sale\"?</string>
-    <string name="WeaknessText">What could you improve?\n\nWhat should you avoid?\n\nWhat are people in your market likely to see as weaknesses?\n\nWhat factors lose you sales?</string>
-    <string name="OpportunitiesText">What good opportunities can you spot?\n\nWhat interesting trends are you aware of?</string>
-    <string name="ThreatText">What obstacles do you face?\n\nWhat are your competitors doing?\n\nCould any of your weaknesses seriously threaten your business?</string>
-    <string name="RevenueStreamsText">Represents the cash a company generates from each Customer Segment (costs must be subtracted from revenues to create earnings).\n•	For what value are your customers really willing to pay?\n•	For what do they currently pay?\n•	How are they currently paying?\n•	How would they prefer to pay?\n•	How much does each Revenue Stream contribute to overall revenues?</string>
-    <string name="CostStructureText">Describes all costs incurred to operate a business model.\n•	What are the most important costs inherent in your business model?\n•	Which Key Resources are most expensive?\n•	Which Key Activities are most expensive?</string>
-    <string name="KeyPartnersText">Describes the network of suppliers and partners that make the business model work.\n•	Who are your Key Partners?\n•	Who are your key suppliers?\n•	Which Key Resources are you acquiring from partners?\n•	Which Key Activities do partners perform?</string>
-    <string name="KeyActivitiesText">Describes the most important things a company must do to make its business model work.\nThese are the most important actions a company must take to operate successfully. Like Key Resources, they are required to create and offer a Value Proposition, reach markets, maintain Customer Relationships, and earn revenues. </string>
-    <string name="KeyResourcesText">Describes the most important assets required to make a business model work.\nThese resources allow an enterprise to create and offer a Value Proposition, reach markets, maintain relationships with Customer Segments, and earn revenues. </string>
-    <string name="CustomerRelationshipText">Describes the types of relationships a company establishes with specific Customer Segments.\n•	What type of relationship does each of your Customer Segments expect you to establish and maintain with them?\n•	Which ones have you established? How costly are they?\n•	How are they integrated with the rest of your business model?</string>
-    <string name="ChannelText">Describes how a company communicates with and reaches its Customer Segments to deliver a Value Proposition.\n•	Through which Channels do your Customer Segments want to be reached?\n•	How are you reaching them now?\n•	How are your Channels integrated?\n•	Which ones work best?\n•	Which ones are most cost-efficient? How are you integrating them with customer routines?</string>
-    <string name="ValuePropositionText">Describes the bundle of products and services that create value for a specific Customer Segment.\n•	What value do we deliver to the customer?\n•	Which one of our customer\’s problems are we helping to solve? Which customer needs are we satisfying?\n•	What bundles of products and services are we offering to each Customer Segment?</string>
-    <string name="CustomerSegmentText">Defines the different groups of people or organizations an enterprise aims to reach and serve.\n•	For whom are you creating value?\n•	Who are your most important customers?</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="StrengthText">What is your idea\'s strength?\n\nWhat makes your idea superior than other?\n\nWhat people in your market see as your strengths?</string>
+    <string name="WeaknessText">What is the weakness of your idea?\n\nWhat factors that could make you lose your sales?\n\nWhat are people in your market likely to see as weaknesses?</string>
+    <string name="OpportunitiesText">What kind of opportunities that you see for your idea?\n\nWhat kind of trend that "booming" right now?\n\nWhat kind of needs that you spot on?</string>
+    <string name="ThreatText">Who is your competitor?\n\nWhat obstacles that you face?</string>
+    <string name="RevenueStreamsText">From where will you get profit?</string>
+    <string name="CostStructureText">Which Key Resources are most expensive?\n\nWhich Key Activities are most expensive?\n\nWhat is the most important cost that our business model need?</string>
+    <string name="KeyPartnersText">Who are the most important partners that you need?\n\nWho is your key supplier?</string>
+    <string name="KeyActivitiesText">What kind of activities that crucial to do?\n\nHow to reach your customer segment?\n\nHow to get more revenue stream?</string>
+    <string name="KeyResourcesText">What are key resources that you need for our value proposition?</string>
+    <string name="CustomerRelationshipText">Type of relationship that company want to create with their customer? for example: customer service, online service , and etc</string>
+    <string name="ChannelText">How does the company reach the customer? example for entrepreneur : online store, store front\n\nHow do you delivery the item?\n\nHow do you handle after sales?</string>
+    <string name="ValuePropositionText">What value that will help user?\n\nWhat is the value that user willing to pay?\n\nWhat kind of service that you provide?\n\nWhat is special value that others don\'t have?</string>
+    <string name="CustomerSegmentText">Who will buy your value?\n\nWho are the most important customers?</string>
 </resources>
 

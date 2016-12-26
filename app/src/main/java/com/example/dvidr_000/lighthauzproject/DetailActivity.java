@@ -111,8 +111,9 @@ public class DetailActivity extends AppCompatActivity {
     public void createIdea(Bundle idea,String content){
         String title = idea.getString("TITLE");
         String category  = idea.getString("CATEGORY");
+        String oldCategory  = idea.getString("OLD_CATEGORY","");
         String description = idea.getString("DESCRIPTION");
-        String publicity="2";
+        String publicity= idea.getString("VISIBILITY");
         String background = idea.getString("BACKGROUND");
         String problem = idea.getString("PROBLEM");
         String solution = idea.getString("SOLUTION");
@@ -130,6 +131,7 @@ public class DetailActivity extends AppCompatActivity {
         String opportunities = idea.getString("OPPORTUNITY");
         String threats = idea.getString("THREAT");
         String pic = idea.getString("PIC","");
+        String extraLink = idea.getString("EXTRA_LINK");
 
         pDialog.setMessage("Creating idea...");
         pDialog.setCancelable(false);
@@ -138,18 +140,23 @@ public class DetailActivity extends AppCompatActivity {
         // Tag used to cancel the request
         String tag_json = "json_object_req";
         String url="";
+        String ideaId="";
+        String defaultPic= "http://res.cloudinary.com/lighthauz-harbor/image/upload/v1479742560/default-idea-pic_wq1dzc.png";
+        HashMap<String,String> params = new HashMap<>();
         int method=0;
         if (content.equals("CREATE_IDEA")){
             url = "http://lighthauz.herokuapp.com/api/ideas/create";
             method = Request.Method.POST;
         }
         else if (content.equals("EDIT_IDEA")){
-            String ideaId = idea.getString("IDEA_ID");
+            ideaId = idea.getString("IDEA_ID");
             url = "http://lighthauz.herokuapp.com/api/ideas/update/" + ideaId;
             method = Request.Method.PUT;
+            params.put("oldCategory",oldCategory);
+            params.put("oldAuthor",user.get(SessionManager.KEY_USERNAME));
         }
 
-        HashMap<String,String> params = new HashMap<>();
+        params.put("id",ideaId);
         params.put("title",title);
         params.put("category",category);
         params.put("author",user.get(SessionManager.KEY_USERNAME));
@@ -158,8 +165,9 @@ public class DetailActivity extends AppCompatActivity {
         params.put("background",background);
         params.put("problem",problem);
         params.put("solution",solution);
-        params.put("extraLink","");
+        params.put("extraLink",extraLink);
         if (!pic.isEmpty())params.put("pic",pic);
+        else params.put("pic",defaultPic);
         params.put("strengths",strengths);
         params.put("weaknesses",weaknesses);
         params.put("opportunities",opportunities);

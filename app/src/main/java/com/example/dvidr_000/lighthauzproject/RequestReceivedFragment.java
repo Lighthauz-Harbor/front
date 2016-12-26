@@ -127,10 +127,10 @@ public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemC
                 startActivity(intent1);
                 break;
             case R.id.btn_accept_dialog_req:
-                userAction("accept",idStr,selectedUserId);
+                userAction("accept",selectedUserId,idStr);
                 break;
             case R.id.btn_reject_dialog_req:
-                userAction("reject",idStr,selectedUserId);
+                userAction("remove",selectedUserId,idStr);
                 break;
         }
     }
@@ -200,7 +200,7 @@ public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemC
         params.put("fromId",user1);
         params.put("toId",user2);
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT, url,new JSONObject(params),
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(params),
                 new Response.Listener<JSONObject>() {
 
                     @Override

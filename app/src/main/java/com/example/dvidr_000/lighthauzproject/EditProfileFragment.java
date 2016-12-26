@@ -245,7 +245,7 @@ public class EditProfileFragment extends Fragment {
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
-        String url = "http://lighthauz.herokuapp.com/api/users/get/id/";
+        String url = "http://lighthauz.herokuapp.com/api/users/get/";
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url + idStr ,null,
                 new Response.Listener<JSONObject>() {

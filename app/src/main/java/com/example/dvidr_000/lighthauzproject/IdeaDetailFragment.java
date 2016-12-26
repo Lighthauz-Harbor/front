@@ -5,10 +5,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,9 +55,12 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private AlertDialog alertDialog;
     private ProgressBar pb;
     private ProgressDialog pDialog;
+    private TextView notice;
     private RelativeLayout layout;
+    private RelativeLayout ideaBody;
     private TextView title;
     private TextView desc;
+    private TextView link;
     private TextView category;
     private TextView createdBy;
     private TextView problem;
@@ -112,7 +118,6 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
 
     private MenuItem menuEditIdea;
     private MenuItem menuSuggestion;
-    private MenuItem menuReport;
     private MenuItem menuDeleteIdea;
 
     private List<User> likers;
@@ -126,7 +131,6 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         inflater.inflate(R.menu.menu_idea_detail, menu);
         menuEditIdea = (MenuItem) menu.findItem(R.id.menuEditIdea);
         menuSuggestion = (MenuItem) menu.findItem(R.id.menuSuggestion);
-        menuReport =(MenuItem) menu.findItem(R.id.menuReportIdea);
         menuDeleteIdea =(MenuItem) menu.findItem(R.id.menuDeleteIdea);
 
     }
@@ -152,14 +156,18 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
 
         ideaBundle = new Bundle();
 
+        notice = (TextView) v.findViewById(R.id.IdeaDetailNotice);
         pDialog = new ProgressDialog(getContext());
         pDialog.setCancelable(false);
         layout = (RelativeLayout) v.findViewById(R.id.idea_detail_layout);
         layout.setVisibility(View.GONE);
+        ideaBody = (RelativeLayout) v.findViewById(R.id.idea_detail_body);
+        ideaBody.setVisibility(View.GONE);
         pb = (ProgressBar) v.findViewById(R.id.pBarIdeaDetail);
         title = (TextView) v.findViewById(R.id.tv_idea_detail_title);
         desc = (TextView) v.findViewById(R.id.tv_idea_detail_desc_text);
         category = (TextView) v.findViewById(R.id.tv_idea_detail_category_text);
+        link = (TextView) v.findViewById(R.id.tv_idea_detail_extra_link);
         createdBy = (TextView) v.findViewById(R.id.tv_idea_detail_created_text);
         problem = (TextView) v.findViewById(R.id.tv_idea_detail_problem_text);
         background = (TextView) v.findViewById(R.id.tv_idea_detail_background_text);
@@ -173,7 +181,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         Button showSWOT = (Button) v.findViewById(R.id.btnShowSWOT);
         likeBtn = (ImageButton) v.findViewById(R.id.ic_like_button);
 
-        reportDialog = new Dialog(getContext());
+        reportDialog = new Dialog(getContext(),R.style.CustomDialogTheme);
         reportDialog.setContentView(R.layout.dialog_report);
         reportTitle = (EditText) reportDialog.findViewById(R.id.et_report_title);
         reportMessage = (EditText) reportDialog.findViewById(R.id.et_report_message);
@@ -338,9 +346,9 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
-        String url = "http://lighthauz.herokuapp.com/api/ideas/get/";
+        String url = "http://lighthauz.herokuapp.com/api/ideas/get/" + idStr;
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url + idStr ,null,
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -377,10 +385,22 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                             email = author.getString("email");
                             profilePicStr = author.getString("profilePic");
 
+                            if (!userId.equals(user.get(SessionManager.KEY_ID))){
+                                if (visibility==1){
+                                    isConnected(user.get(SessionManager.KEY_ID),userId);
+                                }
+                                else {
+                                    ideaBody.setVisibility(View.VISIBLE);
+                                }
+                            }
+                            else {
+                                ideaBody.setVisibility(View.VISIBLE);
+                            }
+
+
                             title.setText(titleStr);
                             desc.setText(descStr);
                             category.setText(categoryStr);
-                            createdBy.setText(titleStr);
                             lastEdited.setText("-");
                             problem.setText(problemStr);
                             background.setText(backgroundStr);
@@ -389,6 +409,12 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                             MyAdapter.imageLoader(profilePicStr,profPic);
                             lastEdited.setText(MyAdapter.setDate(timestamp));
                             createdBy.setText(name);
+
+                            link.setMovementMethod(LinkMovementMethod.getInstance());
+                            String text = "<a href=\""+ extraLink + "\">"+ extraLink + "</a>";
+                            link.setText(Html.fromHtml(text));
+                            link.setVisibility(View.VISIBLE);
+                            link.setClickable(true);
 
                             pb.setVisibility(View.GONE);
                             layout.setVisibility(View.VISIBLE);
@@ -400,7 +426,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                                 ideaBundle.putString("IDEA_ID",idStr);
                                 ideaBundle.putString("PIC",picStr);
                                 ideaBundle.putString("TITLE",titleStr);
-                                ideaBundle.putString("CATEGORY",categoryStr);
+                                ideaBundle.putString("OLD_CATEGORY",categoryStr);
                                 ideaBundle.putString("DESCRIPTION",descStr);
                                 ideaBundle.putString("BACKGROUND",backgroundStr);
                                 ideaBundle.putString("PROBLEM",problemStr);
@@ -441,6 +467,45 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         // Adding request to request queue
         MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
 
+    }
+
+    public void isConnected(final String user1, final String user2){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+
+        String url = "http://lighthauz.herokuapp.com/api/connections/is-connected/"+ user1 + "/" + user2;
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        VolleyLog.d(response.toString());
+
+                        try{
+                            if(response.getBoolean("connected")){
+                                ideaBody.setVisibility(View.VISIBLE);
+                                notice.setVisibility(View.GONE);
+                            }
+                            else {
+                                ideaBody.setVisibility(View.GONE);
+                                notice.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        catch (JSONException e){
+                            Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+
+// Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void deleteIdea(JSONArray list){

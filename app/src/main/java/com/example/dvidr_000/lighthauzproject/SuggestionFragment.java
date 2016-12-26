@@ -81,7 +81,6 @@ public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickC
     }
 
     public void getSuggestion(){
-        Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
         notice.setVisibility(View.GONE);
         pb.setVisibility(View.VISIBLE);
 
