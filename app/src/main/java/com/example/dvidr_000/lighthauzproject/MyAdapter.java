@@ -14,12 +14,8 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -119,9 +115,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 container = itemView.findViewById(R.id.card_item_plain);
             }
             else if (content.equals("CATEGORY_LIST")) {
-                title = (TextView) itemView.findViewById(R.id.tv_title_list_category);
-                check = (CheckBox) itemView.findViewById(R.id.checkBox_list_category);
-                container = itemView.findViewById(R.id.list_category_root);
+                title = (TextView) itemView.findViewById(R.id.tv_title_list_text_checkbox);
+                check = (CheckBox) itemView.findViewById(R.id.checkBox_list_text_checkbox);
+                container = itemView.findViewById(R.id.list_text_checkbox_root);
+                check.setOnClickListener(this);
+            }
+            else if (content.equals("COLLAB_INVITE")) {
+                name = (TextView) itemView.findViewById(R.id.tv_title_list_simple_checkbox);
+                icon = (ImageView)itemView.findViewById(R.id.ic_list_simple_checkbox);
+                check = (CheckBox) itemView.findViewById(R.id.checkBox_list_simple_checkbox);
+                container = itemView.findViewById(R.id.list_simple_checkbox_root);
                 check.setOnClickListener(this);
             }
             else if (content.equals("USER_HORIZONTAL")||content.equals("IDEA_HORIZONTAL")){
@@ -185,7 +188,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             inside.addView(view1);
         }
         else if (content.equals("CATEGORY_LIST")){
-            view = inflater.inflate(R.layout.list_title_checkbox, parent, false);
+            view = inflater.inflate(R.layout.list_text_checkbox, parent, false);
+        }
+        else if (content.equals("COLLAB_INVITE")){
+            view = inflater.inflate(R.layout.list_simple_checkbox, parent, false);
         }
         else if (content.equals("USER_HORIZONTAL")||content.equals("IDEA_HORIZONTAL")){
             view = inflater.inflate(R.layout.list_simple_horizontal, parent, false);
@@ -205,14 +211,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         switch(content){
             case "IDEA_HORIZONTAL":
             case "IDEA":
-
                 Idea idea =  (Idea) listData.get(position);
                 holder.name.setText(idea.getTitle());
                 imageLoader(idea.getPic(),holder.icon);
                 break;
 
             case "IDEA_DETAIL":
-
                 Idea idea1 =  (Idea) listData.get(position);
                 holder.title.setText(idea1.getTitle());
                 holder.description.setText(idea1.getDescription());
@@ -220,6 +224,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 imageLoader(idea1.getPic(),holder.contentPic);
                 break;
 
+            case "COLLAB_INVITE":
             case "USER_HORIZONTAL":
             case "USER":
                 User user1 =  (User) listData.get(position);
@@ -228,7 +233,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 break;
 
             case "NEWS":
-
                 String url;
                 String type;
 
@@ -270,7 +274,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 imageLoader(comment.getProfilePic(),holder.icon);
                 break;
         }
-
     }
 
     public List getListData() {

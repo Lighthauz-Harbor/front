@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +87,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                     }
                 }
                 if (list.length()==0){
-                    Toast.makeText(getContext(), R.string.EmptyCategory, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.EmptySelection, Toast.LENGTH_SHORT).show();
                 }
                 else postCategory(list);
             }
@@ -202,13 +204,11 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         params.put("userId",user.get(SessionManager.KEY_ID));
         JSONObject obj = new JSONObject(params);
 
-
         try {
             obj.putOpt("categories",list);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,url,obj,
                 new Response.Listener<JSONObject>() {
@@ -217,7 +217,6 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                         VolleyLog.d(response.toString());
                         try{
                             if (response.isNull("fail")){
-                                proceed();
                             }
                             else {
                                 Toast.makeText(getContext(),response.getString("fail") , Toast.LENGTH_SHORT).show();
@@ -231,25 +230,42 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
 
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error.getMessage().contains("OK")){
-                    pDialog.dismiss();
-                    proceed();
-                }
-            }
-        });
 
-// Adding request to request queue
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d(TAG, "Error: " + error.getMessage());
+                }
+            }) {
+
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    int mStatusCode = response.statusCode;
+                    if (mStatusCode== HttpURLConnection.HTTP_OK){
+                        Log.d(TAG,"Success");
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                    pDialog.dismiss();
+                                    proceed();
+
+                            }
+                        });
+
+                    }
+                    return super.parseNetworkResponse(response);
+                }
+            };
+
+        // Adding request to request queue
         MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     @Override
     public void onItemClick(int p, View view) {
         switch (view.getId()){
-            case R.id.checkBox_list_category:
+            case R.id.checkBox_list_simple_checkbox:
 
-            case R.id.list_category_root:
+            case R.id.list_simple_checkbox_root:
                 Category data = (Category) adapter.getListData().get(p);
                 if (data.isSelected()) {
                     data.setSelected(false);
@@ -266,8 +282,6 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         startActivity(in);
         getActivity().finish();
     }
-
-
 
     public class Category{
         private String name;

@@ -71,7 +71,7 @@ public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickC
             recView = (RecyclerView) rootView.findViewById(R.id.rec_list_suggestion);
             recView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-            getSuggestion();
+            getSuggestion(1);
 
             adapter = new MyAdapter(users, getActivity(),"USER");
             adapter.setItemClickCallback(this);
@@ -80,18 +80,29 @@ public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickC
         return rootView;
     }
 
-    public void getSuggestion(){
+    public void getSuggestion(final int route){
         notice.setVisibility(View.GONE);
         pb.setVisibility(View.VISIBLE);
 
         // Tag used to cancel the request
         String tag_json = "json_object_req";
-        String url = "http://lighthauz.herokuapp.com/api/recommend/ideas/partners";
-        HashMap<String,String> params = new HashMap<>();
-        params.put("userId",user.get(SessionManager.KEY_ID));
-        params.put("category",category);
+        String url="";
+        JSONObject obj = new JSONObject();
+        try {
+            if (route==1){
+                url = "http://lighthauz.herokuapp.com/api/recommend/ideas/partners";
+                obj.put("userId",user.get(SessionManager.KEY_ID));
+            }
+            else if (route==2) {
+                url = "http://lighthauz.herokuapp.com/api/category/recommend/users/";
+                obj.put("num", 4);
+            }
+            obj.put("category",category);
+        } catch (JSONException e){
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,url,new JSONObject(params),
+        }
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,url,obj,
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -119,8 +130,13 @@ public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickC
                                 }
                             }
                             else {
-                                notice.setText(response.getString("fail"));
-                                notice.setVisibility(View.VISIBLE);
+                                if (route==1){
+                                    getSuggestion(2);
+                                }
+                                else {
+                                    notice.setText(response.getString("fail"));
+                                    notice.setVisibility(View.VISIBLE);
+                                }
                             }
 
                         }

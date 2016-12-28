@@ -1,6 +1,7 @@
 package com.example.dvidr_000.lighthauzproject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -31,6 +32,7 @@ public class DetailActivity extends AppCompatActivity {
     private HashMap<String,String> user;
 
     private ProgressDialog pDialog;
+    private String newIdeaId;
 
 
     @Override
@@ -64,12 +66,7 @@ public class DetailActivity extends AppCompatActivity {
                 break;
             case "FIRST_LOGIN":
                 tr.replace(R.id.fragment_container_detail,new FirstLoginFragment());
-                ActionBar actionBar = getSupportActionBar();
-                if (actionBar != null) {
-                    actionBar.setHomeButtonEnabled(false); // disable the button
-                    actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
-                    actionBar.setDisplayShowHomeEnabled(false); // remove the icon
-                }
+                disableUpBtn();
                 break;
             case "SET_INTEREST":
                 tr.replace(R.id.fragment_container_detail,new CategoryPickFragment());
@@ -79,6 +76,10 @@ public class DetailActivity extends AppCompatActivity {
                 break;
             case "REQ_SENT":
                 tr.replace(R.id.fragment_container_detail,new RequestSentFragment());
+                break;
+            case "COLLAB_INVITE":
+                tr.replace(R.id.fragment_container_detail,new CollabInviteFragment());
+                disableUpBtn();
                 break;
         }
         tr.addToBackStack(null);
@@ -108,9 +109,18 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void createIdea(Bundle idea,String content){
+    public void disableUpBtn(){
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false); // disable the button
+            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+        }
+    }
+
+    public void createIdea(Bundle idea, final String content){
         String title = idea.getString("TITLE");
-        String category  = idea.getString("CATEGORY");
+        final String category  = idea.getString("CATEGORY");
         String oldCategory  = idea.getString("OLD_CATEGORY","");
         String description = idea.getString("DESCRIPTION");
         String publicity= idea.getString("VISIBILITY");
@@ -190,12 +200,20 @@ public class DetailActivity extends AppCompatActivity {
 
                         try{
                             String msg = response.getString("message");
+                            newIdeaId = response.getString("id");
                             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                         }
                         catch (JSONException e){
                             Log.e("MYAPP", "unexpected JSON exception", e);
                         }
                         pDialog.dismiss();
+                        if (content.equals("CREATE_IDEA")) {
+                            Intent in = new Intent(getApplicationContext(), DetailActivity.class);
+                            in.putExtra("EXTRA_CONTENT", "COLLAB_INVITE");
+                            in.putExtra("CATEGORY", category);
+                            in.putExtra("IDEA_ID", newIdeaId);
+                            startActivity(in);
+                        }
                         finish();
                     }
                 }, new Response.ErrorListener() {

@@ -131,11 +131,13 @@ public class RegisterActivity extends AppCompatActivity {
         if (passwordStr.isEmpty()){
             fail=true;
             msg="Please enter password";
-        } else if(passwordStr.length()<8 && passwordStr.length()>12)
+        }
+        else if(passwordStr.length()<8 || passwordStr.length()>12)
         {
             fail=true;
             msg="Invalid Password";
-        }else if(!passwordStr.equals(confirmStr)){
+        }
+        else if(!passwordStr.equals(confirmStr)){
             fail=true;
             msg="Passwords don't match";
         }
@@ -143,9 +145,9 @@ public class RegisterActivity extends AppCompatActivity {
         if (emailStr.isEmpty()) {
             fail =true;
             msg="Please enter email";
-        } else {
-            fail= !android.util.Patterns.EMAIL_ADDRESS.matcher(emailStr).matches();
-            if(fail)msg="Invalid email";
+        } else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(emailStr).matches()){
+            fail= true;
+            msg="Invalid email";
         }
 
         return fail;

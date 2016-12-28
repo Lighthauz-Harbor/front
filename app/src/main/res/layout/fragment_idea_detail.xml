@@ -255,6 +255,7 @@
                     android:id="@+id/tv_idea_detail_solution_text" />
 
                 <LinearLayout
+                    android:id="@+id/idea_detail_btn_layout"
                     android:layout_below="@id/tv_idea_detail_solution_text"
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
@@ -273,8 +274,33 @@
                         android:layout_weight="1"
                         android:id="@+id/btnShowSWOT"/>
                 </LinearLayout>
-            </RelativeLayout>
 
+                <TextView
+                    android:text="@string/Collaborators"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/idea_detail_btn_layout"
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/tv_idea_detail_partners" />
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/tv_idea_detail_partners"
+                    android:layout_alignTop="@id/tv_idea_detail_partners"
+                    android:layout_marginStart="8dp"
+                    android:id="@+id/tv_idea_detail_partners_count" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tv_idea_detail_partners"
+                    android:id="@+id/rec_list_idea_detail_partners">
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
         </RelativeLayout>
 
         <ProgressBar

@@ -5,11 +5,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -38,6 +39,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IdeaDetailFragment extends Fragment implements View.OnClickListener{
+public class IdeaDetailFragment extends Fragment implements View.OnClickListener, MyAdapter.ItemClickCallback{
 
     private AlertDialog alertDialog;
     private ProgressBar pb;
@@ -76,6 +78,9 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private EditText reportTitle;
     private EditText reportMessage;
     private Button reportSubmit;
+    private RecyclerView recViewPartner;
+    private MyAdapter adapterPartner;
+    private TextView partnerCount;
 
     private String idStr;
     private String titleStr;
@@ -121,6 +126,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private MenuItem menuDeleteIdea;
 
     private List<User> likers;
+    private List<User> partners;
 
     public IdeaDetailFragment() {
         // Required empty public constructor
@@ -129,9 +135,9 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
         inflater.inflate(R.menu.menu_idea_detail, menu);
-        menuEditIdea = (MenuItem) menu.findItem(R.id.menuEditIdea);
-        menuSuggestion = (MenuItem) menu.findItem(R.id.menuSuggestion);
-        menuDeleteIdea =(MenuItem) menu.findItem(R.id.menuDeleteIdea);
+        menuEditIdea = menu.findItem(R.id.menuEditIdea);
+        menuSuggestion = menu.findItem(R.id.menuSuggestion);
+        menuDeleteIdea = menu.findItem(R.id.menuDeleteIdea);
 
     }
 
@@ -155,6 +161,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         }
 
         ideaBundle = new Bundle();
+        partners = new ArrayList<>();
 
         notice = (TextView) v.findViewById(R.id.IdeaDetailNotice);
         pDialog = new ProgressDialog(getContext());
@@ -180,6 +187,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         Button showBMC = (Button) v.findViewById(R.id.btnShowBMC);
         Button showSWOT = (Button) v.findViewById(R.id.btnShowSWOT);
         likeBtn = (ImageButton) v.findViewById(R.id.ic_like_button);
+        partnerCount = (TextView) v.findViewById(R.id.tv_idea_detail_partners_count);
 
         reportDialog = new Dialog(getContext(),R.style.CustomDialogTheme);
         reportDialog.setContentView(R.layout.dialog_report);
@@ -218,8 +226,18 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         likes.setText("likes");
         comments.setText("comments");
 
+        LinearLayoutManager layout = new LinearLayoutManager(getContext());
+        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        recViewPartner = (RecyclerView) v.findViewById(R.id.rec_list_idea_detail_partners);
+        recViewPartner.setLayoutManager(layout);
+
+        adapterPartner = new MyAdapter(partners, getActivity(), "USER_HORIZONTAL");
+        adapterPartner.setItemClickCallback(this);
+
         getLike();
         getComment();
+        getPartners();
         setDetails();
 
         return v;
@@ -340,6 +358,11 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(int p, View view) {
+
     }
 
     public void setDetails(){
@@ -626,7 +649,6 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        VolleyLog.d(response.toString());
                         JSONArray myArray;
                         likers.clear();
                         if (response.isNull("fail")) {
@@ -749,6 +771,62 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                         }
                         catch (JSONException e){
                             Log.e("MYAPP", "unexpected JSON exception", e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+
+        // Adding request to request queue
+        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+    }
+
+    public void getPartners(){
+        // Tag used to cancel the request
+        String tag_json = "json_object_req";
+        String url = "http://lighthauz.herokuapp.com/api/ideas/partners/"+idStr;
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        VolleyLog.d(response.toString());
+                        JSONArray myArray;
+                        if (response.isNull("fail")) {
+                            try {
+                                myArray = response.getJSONArray("partners");
+                                if (myArray.length()==0){
+                                }
+                                else {
+                                    for (int i = 0; i < myArray.length(); i++) {
+                                        String userId = myArray.getJSONObject(i).getString("id");
+                                        String name = myArray.getJSONObject(i).getString("name");
+                                        String bio = myArray.getJSONObject(i).getString("bio");
+                                        String profilePic = myArray.getJSONObject(i).getString("profilePic");
+
+                                        User newUser = new User(userId, name, profilePic);
+                                        partners.add(newUser);
+                                    }
+                                    recViewPartner.setAdapter(adapterPartner);
+                                }
+                                partnerCount.setText(Integer.toString(myArray.length()));
+
+                            } catch (JSONException e) {
+                                Log.e("MYAPP", "unexpected JSON exception", e);
+                            }
+                        }
+                        else {
+                            try {
+                                String msg = response.getString("fail");
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                Log.e("MYAPP", "unexpected JSON exception", e);
+                            }
                         }
 
                     }

@@ -18,6 +18,8 @@
     <string name="firstIntro">Since this is your first time using the app, we need your help to tell us your interests.\n\n </string>
     <string name="SetInterest">Set Interest</string>
     <string name="chooseCategoryTip">You can choose more than one category to represent your interests.</string>
+    <string name="CollabInviteTip">Invite people to collaborate in the business idea. An invitation email will be sent to them.</string>
+    <string name="ConfirmSkipCollabInvite">Are you sure want to skip this step? You won\'t be able to invite partners for this idea in the future.</string>
     <string name="RequestsReceived">Requests Received</string>
     <string name="RequestsSent">Requests Sent</string>
     <string name="newIdeaInstruction">Step by step add new idea:\n
@@ -28,6 +30,7 @@
 	3. Arrange SWOT</string>
     <string name="next">Next</string>
     <string name="submit">Submit</string>
+    <string name="skip">Skip</string>
     <string name="insertHere">Insert Here</string>
     <string name="backToLogin">Back to Login</string>
     <string name="getStarted">Get Started</string>
@@ -95,6 +98,7 @@
     <string name="MyIdeas">My Ideas</string>
     <string name="profilePicture">Profile Picture</string>
     <string name="Profile">Profile</string>
+    <string name="Collaborators">Collaborators</string>
 
     <string name="byTitle">by title</string>
     <string name="byCategory">by category</string>
@@ -111,7 +115,7 @@
     <string name="Yes">Yes</string>
     <string name="No">No</string>
     <string name="Close">Close</string>
-    <string name="EmptyCategory">You must choose at least one category</string>
+    <string name="EmptySelection">You must choose at least one.</string>
     <string name="EditIdea">Edit Idea</string>
     <string name="DeleteIdea">Delete Idea</string>
     <string name="Save">Save</string>
@@ -135,5 +139,8 @@
     <string name="ChannelText">How does the company reach the customer? example for entrepreneur : online store, store front\n\nHow do you delivery the item?\n\nHow do you handle after sales?</string>
     <string name="ValuePropositionText">What value that will help user?\n\nWhat is the value that user willing to pay?\n\nWhat kind of service that you provide?\n\nWhat is special value that others don\'t have?</string>
     <string name="CustomerSegmentText">Who will buy your value?\n\nWho are the most important customers?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
 
