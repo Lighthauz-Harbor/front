@@ -1,5 +1,8 @@
 package com.example.dvidr_000.lighthauzproject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +13,7 @@ import java.util.Vector;
  * Created by richentra on 07-Nov-16.
  */
 
-public class User {
+public class User implements Parcelable{
     private String id;
     private String email;
     private String password;
@@ -127,5 +130,15 @@ public class User {
 
     public void setProfilePic(int profilePic) {
         this.profilePic = profilePic;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 }

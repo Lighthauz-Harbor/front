@@ -55,7 +55,7 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClickCallback, View.OnClickListener{
 
     private ProgressBar pb;
     private TextView name;
@@ -63,6 +63,8 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
     private TextView email;
     private TextView connectionCount;
     private TextView ideaCount;
+    private TextView viewMoreConn;
+    private TextView viewMoreIdea;
     private ImageView profilePic;
     private RelativeLayout layout;
     private MenuItem menuAdd;
@@ -92,8 +94,8 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
     private SessionManager sessionManager;
     private HashMap<String,String> user;
 
-    private List<User> users;
-    private List<Idea> ideas;
+    private ArrayList<User> users;
+    private ArrayList<Idea> ideas;
 
     public ViewProfileFragment() {
         // Required empty public constructor
@@ -159,6 +161,10 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         email = (TextView) v.findViewById(R.id.tvUserProfileEmailFill);
         connectionCount = (TextView) v.findViewById(R.id.tvUserProfileConnectionsCount);
         ideaCount = (TextView) v.findViewById(R.id.tvUserProfileIdeasCount);
+        viewMoreConn = (TextView) v.findViewById(R.id.tvUserProfileViewMoreConnections);
+        viewMoreConn.setOnClickListener(this);
+        viewMoreIdea = (TextView) v.findViewById(R.id.tvUserProfileViewMoreIdeas);
+        viewMoreIdea.setOnClickListener(this);
         profilePic = (ImageView) v.findViewById(R.id.ic_view_profile);
         layout = (RelativeLayout) v.findViewById(R.id.view_profile_layout);
         sessionManager = new SessionManager(getContext());
@@ -167,6 +173,13 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         ideas = new ArrayList<>();
 
         getActivity().setTitle("User Profile");
+        setHasOptionsMenu(true);
+        try {
+            idStr = getArguments().getString("USER_ID");
+        }
+        catch (Exception e){
+            idStr = getActivity().getIntent().getStringExtra("USER_ID");
+        }
 
         AlertDialog.Builder removeDialog = new AlertDialog.Builder(getActivity());
         removeDialog.setMessage(R.string.ConfirmRemoveUser)
@@ -191,31 +204,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         reportTitle = (EditText) reportDialog.findViewById(R.id.et_report_title);
         reportMessage = (EditText) reportDialog.findViewById(R.id.et_report_message);
         reportSubmit = (Button) reportDialog.findViewById(R.id.btn_submit_dialog_report);
-        reportSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reportTitleStr = reportTitle.getText().toString().trim();
-                reportMessageStr = reportMessage.getText().toString().trim();
-                if (reportTitleStr.isEmpty()){
-                    Toast.makeText(getContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
-                }
-                else if (reportMessageStr.isEmpty()){
-                    Toast.makeText(getContext(), "Message cannot be empty", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    submitReport();
-                }
-            }
-        });
-
-        try {
-            idStr = getArguments().getString("USER_ID");
-        }
-        catch (Exception e){
-            idStr = getActivity().getIntent().getStringExtra("USER_ID");
-        }
-
-        setHasOptionsMenu(true);
+        reportSubmit.setOnClickListener(this);
 
         requestProfile();
 
@@ -230,14 +219,47 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         recViewIdea = (RecyclerView) v.findViewById(R.id.rec_list_users_idea);
         recViewIdea.setLayoutManager(layout2);
 
-        adapterConnection = new MyAdapter(users, getActivity(), "USER_HORIZONTAL");
-        adapterConnection.setItemClickCallback(this);
-
-        adapterIdea = new MyAdapter(ideas, "IDEA_HORIZONTAL", getActivity());
-        adapterIdea.setItemClickCallback(this);
-
-        // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_submit_dialog_report:
+                reportTitleStr = reportTitle.getText().toString().trim();
+                reportMessageStr = reportMessage.getText().toString().trim();
+                if (reportTitleStr.isEmpty()){
+                    Toast.makeText(getContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+                else if (reportMessageStr.isEmpty()){
+                    Toast.makeText(getContext(), "Message cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    submitReport();
+                }
+                break;
+            case R.id.tvUserProfileViewMoreConnections:
+                Bundle args = new Bundle();
+                args.putParcelableArrayList("USERS",users);
+                FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
+                ViewMoreConnFragment fragment = new ViewMoreConnFragment();
+                fragment.setArguments(args);
+                tr.replace(R.id.fragment_container_detail,fragment);
+                tr.addToBackStack(null);
+                tr.commit();
+                break;
+
+            case R.id.tvUserProfileViewMoreIdeas:
+                Bundle args1 = new Bundle();
+                args1.putParcelableArrayList("IDEAS",ideas);
+                FragmentTransaction tr1 = getActivity().getSupportFragmentManager().beginTransaction();
+                ViewMoreIdeaFragment fragment1 = new ViewMoreIdeaFragment();
+                fragment1.setArguments(args1);
+                tr1.replace(R.id.fragment_container_detail,fragment1);
+                tr1.addToBackStack(null);
+                tr1.commit();
+                break;
+        }
     }
 
     @Override
@@ -452,6 +474,13 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
                                     Idea newIdea = new Idea(idea.getString("id"), idea.getString("title"),idea.getString("pic"));
                                     ideas.add(newIdea);
                                 }
+                                int toIndex;
+                                if (ideas.size()>5){
+                                    toIndex=5;
+                                }
+                                else toIndex=ideas.size();
+                                adapterIdea = new MyAdapter(new ArrayList<>(ideas.subList(0,toIndex)), "IDEA_HORIZONTAL", getActivity());
+                                adapterIdea.setItemClickCallback(ViewProfileFragment.this);
                                 recViewIdea.setAdapter(adapterIdea);
                             }
                             ideaCount.setText(Integer.toString(myArray.length()));
@@ -500,6 +529,13 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
                                     User newUser = new User(userId, name, profilePic);
                                     users.add(newUser);
                                 }
+                                int toIndex;
+                                if (users.size()>5){
+                                    toIndex=5;
+                                }
+                                else toIndex=users.size();
+                                adapterConnection = new MyAdapter(new ArrayList<>(users.subList(0,toIndex)), getActivity(), "USER_HORIZONTAL");
+                                adapterConnection.setItemClickCallback(ViewProfileFragment.this);
                                 recViewConnection.setAdapter(adapterConnection);
                             }
                             connectionCount.setText(Integer.toString(myArray.length()));

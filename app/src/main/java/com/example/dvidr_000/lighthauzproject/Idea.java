@@ -1,5 +1,8 @@
 package com.example.dvidr_000.lighthauzproject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +12,7 @@ import java.util.List;
  * Created by richentra on 11-Nov-16.
  */
 
-public class Idea {
+public class Idea implements Parcelable{
 
     private String id;
     private String title;
@@ -289,4 +292,14 @@ public class Idea {
     public String getExtraLink() {return extraLink;}
 
     public void setExtraLink(String extraLink) {this.extraLink = extraLink;}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+    }
 }
