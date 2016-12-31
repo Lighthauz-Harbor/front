@@ -52,26 +52,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         this.content=content;
     }
 
-    public MyAdapter(Context c, String content, List<NewsFeedFragment.News> listData){
+    public MyAdapter(Context c, String content, List<News> listData){
         this.context=c;
         inflater = LayoutInflater.from(c);
         this.listData = listData;
         this.content=content;
     }
 
-    public MyAdapter(Context c, List<CategoryPickFragment.Category> listData, String content){
+    public MyAdapter(Context c, List<Category> listData, String content){
         inflater = LayoutInflater.from(c);
         this.content=content;
         this.listData=listData;
     }
 
-    public MyAdapter(String content, Context c, List<CommentFragment.Comment> listData){
+    public MyAdapter(String content, Context c, List<Comment> listData){
         inflater = LayoutInflater.from(c);
         this.content=content;
         this.listData=listData;
     }
 
-    public void swap(List<NewsFeedFragment.News> data){
+    public void swap(List<News> data){
         this.listData=data;
         notifyDataSetChanged();
     }
@@ -236,7 +236,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 String url;
                 String type;
 
-                NewsFeedFragment.News news = (NewsFeedFragment.News) listData.get(position);
+                News news = (News) listData.get(position);
 
                 holder.name.setText(news.getName());
                 holder.title.setText(news.getTitle());
@@ -261,13 +261,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
                 break;
             case "CATEGORY_LIST":
-                CategoryPickFragment.Category category = (CategoryPickFragment.Category) listData.get(position);
+                Category category = (Category) listData.get(position);
                 holder.title.setText(category.getName());
                 holder.check.setChecked(category.isSelected());
 
                 break;
             case "COMMENT_LIST":
-                CommentFragment.Comment comment = (CommentFragment.Comment) listData.get(position);
+                Comment comment = (Comment) listData.get(position);
                 holder.name.setText(comment.getName());
                 holder.description.setText(comment.getText());
                 holder.datetime.setText(setDate(comment.getTimestamp()));
