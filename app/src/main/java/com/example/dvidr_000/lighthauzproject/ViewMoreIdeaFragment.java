@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewMoreIdeaFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class ViewMoreIdeaFragment extends Fragment implements DataAdapter.ItemClickCallback{
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private SessionManager sessionManager;
     private HashMap<String,String> user;
     private List<Idea> ideas;
@@ -53,7 +53,7 @@ public class ViewMoreIdeaFragment extends Fragment implements MyAdapter.ItemClic
         recView = (RecyclerView) v.findViewById(R.id.rec_list_view_more_idea);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new MyAdapter(ideas, "IDEA", getActivity());
+        adapter = new DataAdapter(ideas, "IDEA", getActivity());
         adapter.setItemClickCallback(this);
         recView.setAdapter(adapter);
 

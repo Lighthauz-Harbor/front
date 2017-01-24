@@ -181,7 +181,7 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
             cbPrivate.setChecked(true);
         }
         imgStr = ideaBundle.getString("PIC");
-        MyAdapter.imageLoader(imgStr,img);
+        DataAdapter.imageLoader(imgStr,img);
     }
 
     public boolean validate(){
@@ -317,7 +317,7 @@ public class IdeaInfoFragment extends Fragment implements View.OnClickListener{
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
 }

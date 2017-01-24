@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -33,16 +33,16 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class IdeaListFragment extends Fragment implements DataAdapter.ItemClickCallback{
 
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private TextView notice;
     private ProgressBar pb;
     private String idStr;
     SessionManager sessionManager;
     HashMap<String,String> user;
-    ArrayList<Idea> ideas;
+    List<Idea> ideas;
 
 
     public IdeaListFragment() {
@@ -52,7 +52,7 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
     @Override
     public void onResume() {
 
-        request();
+        requestIdeas();
         super.onResume();
     }
 
@@ -82,7 +82,7 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
         recView = (RecyclerView) v.findViewById(R.id.rec_list_idea);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new MyAdapter(ideas, "IDEA", getActivity());
+        adapter = new DataAdapter(ideas, "IDEA", getActivity());
         adapter.setItemClickCallback(this);
 
         // Inflate the layout for this fragment
@@ -100,7 +100,7 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
         startActivity(intent);
     }
 
-    public void request(){
+    public void requestIdeas(){
         notice.setVisibility(View.GONE);
         pb.setVisibility(View.VISIBLE);
 
@@ -147,6 +147,6 @@ public class IdeaListFragment extends Fragment implements MyAdapter.ItemClickCal
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 }

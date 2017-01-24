@@ -1,9 +1,7 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
-import android.content.ClipData;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -36,10 +33,10 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class SuggestionFragment extends Fragment implements DataAdapter.ItemClickCallback{
 
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private TextView notice;
     private ProgressBar pb;
     private SessionManager sessionManager;
@@ -73,7 +70,7 @@ public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickC
 
             getSuggestion(1);
 
-            adapter = new MyAdapter(users, getActivity(),"USER");
+            adapter = new DataAdapter(users, getActivity(),"USER");
             adapter.setItemClickCallback(this);
 
         // Inflate the layout for this fragment
@@ -155,7 +152,7 @@ public class SuggestionFragment extends Fragment implements MyAdapter.ItemClickC
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     @Override

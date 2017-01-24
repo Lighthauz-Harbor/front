@@ -3,7 +3,6 @@ package com.example.dvidr_000.lighthauzproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,9 +36,9 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class CategoryPickFragment extends Fragment implements DataAdapter.ItemClickCallback{
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private List<Category> categoryList;
     private List<String> selectedList;
     private SessionManager sessionManager;
@@ -73,11 +72,10 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
             @Override
             public void onClick(View view) {
                 JSONArray list = new JSONArray();
-                List<Category> catList = adapter.getListData();
                 Category c;
 
-                for (int i=0;i<catList.size();i++){
-                    c = catList.get(i);
+                for (int i=0;i<categoryList.size();i++){
+                    c = categoryList.get(i);
                     if (c.isSelected()){
                         try {
                             list.put(c.getName());
@@ -86,6 +84,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                         }
                     }
                 }
+
                 if (list.length()==0){
                     Toast.makeText(getContext(), R.string.EmptySelection, Toast.LENGTH_SHORT).show();
                 }
@@ -95,7 +94,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
 
         requestCategoryPref();
 
-        adapter = new MyAdapter(getActivity(),categoryList,"CATEGORY_LIST");
+        adapter = new DataAdapter(getActivity(),categoryList,"CATEGORY_LIST");
         adapter.setItemClickCallback(this);
 
         // Inflate the layout for this fragment
@@ -145,7 +144,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void requestCategoryList(){
@@ -189,7 +188,7 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void postCategory(JSONArray list){
@@ -245,8 +244,10 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                    pDialog.dismiss();
-                                    proceed();
+                                pDialog.dismiss();
+                                Intent in = new Intent(getActivity(),HomeActivity.class);
+                                startActivity(in);
+                                getActivity().finish();
 
                             }
                         });
@@ -257,32 +258,22 @@ public class CategoryPickFragment extends Fragment implements MyAdapter.ItemClic
             };
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     @Override
     public void onItemClick(int p, View view) {
         switch (view.getId()){
-            case R.id.checkBox_list_simple_checkbox:
-
-            case R.id.list_simple_checkbox_root:
-                Category data = (Category) adapter.getListData().get(p);
-                if (data.isSelected()) {
-                    data.setSelected(false);
+            case R.id.checkBox_list_text_checkbox:
+            case R.id.list_text_checkbox_root:
+                if (categoryList.get(p).isSelected()) {
+                    categoryList.get(p).setSelected(false);
                 } else {
-                    data.setSelected(true);
+                    categoryList.get(p).setSelected(true);
                 }
                 adapter.notifyDataSetChanged();
                 break;
         }
     }
-
-    public void proceed(){
-        Intent in = new Intent(getActivity(),HomeActivity.class);
-        startActivity(in);
-        getActivity().finish();
-    }
-
-
 
 }

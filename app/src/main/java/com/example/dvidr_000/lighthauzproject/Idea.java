@@ -37,10 +37,7 @@ public class Idea implements Parcelable{
     private String  opportunities;
     private String  threat;
     private String  extraLink;
-    private Long createDate;
     private Long lastEdited;
-
-    private static List<Idea> ideas = new ArrayList<>();
 
     public Idea(String id, String title, String description, String pic, String category){
         this.id=id;
@@ -60,7 +57,7 @@ public class Idea implements Parcelable{
             String title,
             String category,
             String  description,
-            Long createDate,
+            Long lastEdited,
              int  publicity,
              String  background,
              String  problem,
@@ -100,13 +97,9 @@ public class Idea implements Parcelable{
         this.setStrength(strength);
         this.setSolution(solution);
         this.setRevenueStream(revenueStream);
-        this.createDate=createDate;
+        this.lastEdited=lastEdited;
         this.extraLink=extraLink;
         this.pic=pic;
-    }
-
-    public static List<Idea> getIdeas() {
-        return ideas;
     }
 
     public String getId() {return id;}
@@ -116,10 +109,6 @@ public class Idea implements Parcelable{
     public String getPic() {return pic;}
 
     public void setPic(String pic) {this.pic = pic;}
-
-    public Long getCreateDate() {
-        return createDate;
-    }
 
     public Long getLastEdited() {
         return lastEdited;

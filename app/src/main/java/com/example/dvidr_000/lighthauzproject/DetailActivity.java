@@ -78,7 +78,7 @@ public class DetailActivity extends AppCompatActivity {
                 tr.replace(R.id.fragment_container_detail,new RequestSentFragment());
                 break;
             case "COLLAB_INVITE":
-                tr.replace(R.id.fragment_container_detail,new CollabInviteFragment());
+                tr.replace(R.id.fragment_container_detail,new InvitePartnersFragment());
                 disableUpBtn();
                 break;
         }
@@ -225,7 +225,7 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(req, tag_json);
 
     }
 

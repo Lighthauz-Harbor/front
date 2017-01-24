@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -40,9 +39,9 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommentFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class CommentFragment extends Fragment implements DataAdapter.ItemClickCallback{
     private RecyclerView recView;
-    public MyAdapter adapter;
+    public DataAdapter adapter;
     private TextView notice;
     private ProgressBar pb;
     private SessionManager sessionManager;
@@ -99,7 +98,7 @@ public class CommentFragment extends Fragment implements MyAdapter.ItemClickCall
             }
         });
 
-        adapter = new MyAdapter("COMMENT_LIST", getActivity(),comments);
+        adapter = new DataAdapter("COMMENT_LIST", getActivity(),comments);
         adapter.setItemClickCallback(this);
         return v;
     }
@@ -185,7 +184,7 @@ public class CommentFragment extends Fragment implements MyAdapter.ItemClickCall
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public boolean validate(){
@@ -250,7 +249,7 @@ public class CommentFragment extends Fragment implements MyAdapter.ItemClickCall
         };
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
 }

@@ -1,28 +1,19 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -41,9 +32,9 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ConnectionFragment extends Fragment implements MyAdapter.ItemClickCallback, View.OnClickListener{
+public class ConnectionFragment extends Fragment implements DataAdapter.ItemClickCallback, View.OnClickListener{
     private RecyclerView recView;
-    public MyAdapter adapter;
+    public DataAdapter adapter;
     private TextView notice;
     private ProgressBar pb;
     private SessionManager sessionManager;
@@ -60,7 +51,7 @@ public class ConnectionFragment extends Fragment implements MyAdapter.ItemClickC
     @Override
     public void onResume() {
         notice.setVisibility(View.GONE);
-        requestList();
+        requestConnections();
         super.onResume();
     }
 
@@ -86,14 +77,14 @@ public class ConnectionFragment extends Fragment implements MyAdapter.ItemClickC
         recView = (RecyclerView) v.findViewById(R.id.rec_list_connection);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        requestList();
+        requestConnections();
 
-        adapter = new MyAdapter(users, getActivity(), "USER");
+        adapter = new DataAdapter(users, getActivity(), "USER");
         adapter.setItemClickCallback(this);
         return v;
     }
 
-    public void requestList(){
+    public void requestConnections(){
         pb.setVisibility(View.VISIBLE);
 
         // Tag used to cancel the request
@@ -141,7 +132,7 @@ public class ConnectionFragment extends Fragment implements MyAdapter.ItemClickC
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     @Override

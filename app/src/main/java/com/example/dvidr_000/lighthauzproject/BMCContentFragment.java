@@ -28,6 +28,7 @@ public class BMCContentFragment extends Fragment implements View.OnClickListener
     private EditText kr;
     private EditText ch;
     private EditText cr;
+    private Button nextBtn;
     private Bundle ideaBundle;
 
     public BMCContentFragment() {
@@ -41,36 +42,25 @@ public class BMCContentFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bmccontent, container, false);
 
-        ImageView q1;
-        ImageView q2;
-        ImageView q3;
-        ImageView q4;
-        ImageView q5;
-        ImageView q6;
-        ImageView q7;
-        ImageView q8;
-        ImageView q9;
-
-        q1 = (ImageView) v.findViewById(R.id.QuestionMarkVP);
+        ImageView q1 = (ImageView) v.findViewById(R.id.QuestionMarkVP);
         q1.setOnClickListener(this);
-        q2 = (ImageView) v.findViewById(R.id.QuestionMarkChannel);
+        ImageView q2 = (ImageView) v.findViewById(R.id.QuestionMarkChannel);
         q2.setOnClickListener(this);
-        q3 = (ImageView) v.findViewById(R.id.QuestionMarkCost);
+        ImageView q3 = (ImageView) v.findViewById(R.id.QuestionMarkCost);
         q3.setOnClickListener(this);
-        q4 = (ImageView) v.findViewById(R.id.QuestionMarkCR);
+        ImageView q4 = (ImageView) v.findViewById(R.id.QuestionMarkCR);
         q4.setOnClickListener(this);
-        q5 = (ImageView) v.findViewById(R.id.QuestionMarkCS);
+        ImageView q5 = (ImageView) v.findViewById(R.id.QuestionMarkCS);
         q5.setOnClickListener(this);
-        q6 = (ImageView) v.findViewById(R.id.QuestionMarkKA);
+        ImageView q6 = (ImageView) v.findViewById(R.id.QuestionMarkKA);
         q6.setOnClickListener(this);
-        q7 = (ImageView) v.findViewById(R.id.QuestionMarkKP);
+        ImageView q7 = (ImageView) v.findViewById(R.id.QuestionMarkKP);
         q7.setOnClickListener(this);
-        q8 = (ImageView) v.findViewById(R.id.QuestionMarkKR);
+        ImageView q8 = (ImageView) v.findViewById(R.id.QuestionMarkKR);
         q8.setOnClickListener(this);
-        q9 = (ImageView) v.findViewById(R.id.QuestionMarkRS);
+        ImageView q9 = (ImageView) v.findViewById(R.id.QuestionMarkRS);
         q9.setOnClickListener(this);
 
-        Button nextBtn;
         nextBtn = (Button) v.findViewById(R.id.btnNextIdeaBMCContent);
         nextBtn.setOnClickListener(this);
 
@@ -86,41 +76,13 @@ public class BMCContentFragment extends Fragment implements View.OnClickListener
 
         String content = getActivity().getIntent().getStringExtra("EXTRA_CONTENT");
         ideaBundle = getArguments();
-
-        if (content.equals("CREATE_IDEA")) {
-            getActivity().setTitle("Make BMC");
-        } else {
-            vp.setText(ideaBundle.getString("VP"));
-            cs.setText(ideaBundle.getString("CS"));
-            kp.setText(ideaBundle.getString("KP"));
-            cost.setText(ideaBundle.getString("COST"));
-            rs.setText(ideaBundle.getString("RS"));
-            ka.setText(ideaBundle.getString("KA"));
-            kr.setText(ideaBundle.getString("KR"));
-            ch.setText(ideaBundle.getString("CH"));
-            cr.setText(ideaBundle.getString("CR"));
-
-            if (!content.equals("EDIT_IDEA")) {
-                getActivity().setTitle("The BMC");
-                nextBtn.setVisibility(View.INVISIBLE);
-                vp.setEnabled(false);
-                cs.setEnabled(false);
-                kp.setEnabled(false);
-                cost.setEnabled(false);
-                rs.setEnabled(false);
-                ka.setEnabled(false);
-                kr.setEnabled(false);
-                ch.setEnabled(false);
-                cr.setEnabled(false);
-            }
-        }
+        setDetails(content);
 
         return v;
     }
 
     @Override
     public void onClick(View view) {
-
         if(view.getId()==R.id.btnNextIdeaBMCContent) {
             if (validate()) {
                 ideaBundle.putString("VP", vp.getText().toString());
@@ -196,6 +158,36 @@ public class BMCContentFragment extends Fragment implements View.OnClickListener
             alert = hint.create();
             alert.setTitle(title);
             alert.show();
+        }
+    }
+
+    public void setDetails(String content){
+        if (content.equals("CREATE_IDEA")) {
+            getActivity().setTitle("Make BMC");
+        } else {
+            vp.setText(ideaBundle.getString("VP"));
+            cs.setText(ideaBundle.getString("CS"));
+            kp.setText(ideaBundle.getString("KP"));
+            cost.setText(ideaBundle.getString("COST"));
+            rs.setText(ideaBundle.getString("RS"));
+            ka.setText(ideaBundle.getString("KA"));
+            kr.setText(ideaBundle.getString("KR"));
+            ch.setText(ideaBundle.getString("CH"));
+            cr.setText(ideaBundle.getString("CR"));
+
+            if (!content.equals("EDIT_IDEA")) {
+                getActivity().setTitle("The BMC");
+                nextBtn.setVisibility(View.INVISIBLE);
+                vp.setEnabled(false);
+                cs.setEnabled(false);
+                kp.setEnabled(false);
+                cost.setEnabled(false);
+                rs.setEnabled(false);
+                ka.setEnabled(false);
+                kr.setEnabled(false);
+                ch.setEnabled(false);
+                cr.setEnabled(false);
+            }
         }
     }
 

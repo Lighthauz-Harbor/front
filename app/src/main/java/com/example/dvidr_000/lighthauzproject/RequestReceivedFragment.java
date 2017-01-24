@@ -40,9 +40,9 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemClickCallback,View.OnClickListener{
+public class RequestReceivedFragment extends Fragment implements DataAdapter.ItemClickCallback,View.OnClickListener{
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private SessionManager sessionManager;
     private HashMap<String,String> user;
     private List<User> users;
@@ -59,7 +59,6 @@ public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemC
     private TextView notice;
     private ProgressBar pb;
     private ProgressDialog pDialog;
-    private AlertDialog alertDialog;
 
     public RequestReceivedFragment() {
         // Required empty public constructor
@@ -89,7 +88,7 @@ public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemC
 
         requestList();
 
-        adapter = new MyAdapter(users, getActivity(), "USER");
+        adapter = new DataAdapter(users, getActivity(), "USER");
         adapter.setItemClickCallback(this);
 
         myDialog = new Dialog(getContext(),R.style.CustomDialogTheme);
@@ -113,7 +112,7 @@ public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemC
         selectedUserId = selected.getId();
         name.setText(selected.getName());
         bio.setText(selected.getBio());
-        MyAdapter.imageLoader(selected.getProfPic(),pic);
+        DataAdapter.imageLoader(selected.getProfPic(),pic);
         myDialog.show();
     }
 
@@ -186,7 +185,7 @@ public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemC
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void userAction(String action, String user1, String user2){
@@ -230,6 +229,6 @@ public class RequestReceivedFragment extends Fragment implements MyAdapter.ItemC
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 }

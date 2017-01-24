@@ -1,8 +1,6 @@
 package com.example.dvidr_000.lighthauzproject;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,13 +11,13 @@ import com.android.volley.toolbox.Volley;
  * Created by richentra on 24-Nov-16.
  */
 
-public class MySingleton {
-    private static MySingleton mInstance;
+public class AppSingleton {
+    private static AppSingleton mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static Context mCtx;
 
-    private MySingleton(Context context) {
+    private AppSingleton(Context context) {
         mCtx = context;
         mRequestQueue = getRequestQueue();
         if (mImageLoader == null) {
@@ -28,9 +26,9 @@ public class MySingleton {
         }
     }
 
-    public static synchronized MySingleton getInstance(Context context) {
+    public static synchronized AppSingleton getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new MySingleton(context);
+            mInstance = new AppSingleton(context);
         }
         return mInstance;
     }

@@ -1,6 +1,5 @@
 package com.example.dvidr_000.lighthauzproject;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -8,7 +7,6 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -47,11 +45,11 @@ public class VerificationActivity extends AppCompatActivity {
             }
         });
 
-        request();
+        verifRequest();
 
     }
 
-    protected void request(){
+    protected void verifRequest(){
         String tag_json = "json_object_req";
 
         final String URL = "https://lighthauz.herokuapp.com/user/auth/generate-verif/";
@@ -78,7 +76,6 @@ public class VerificationActivity extends AppCompatActivity {
                             }
                             else {
                                 feedback = response.getString("message");
-
                             }
 
                             notice.setText(feedback);
@@ -97,6 +94,6 @@ public class VerificationActivity extends AppCompatActivity {
         });
 
         // add the request object to the queue to be executed
-        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req,tag_json);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(req,tag_json);
     }
 }

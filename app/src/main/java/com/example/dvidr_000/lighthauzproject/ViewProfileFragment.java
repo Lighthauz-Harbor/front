@@ -1,13 +1,10 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,9 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,18 +31,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -55,7 +45,7 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClickCallback, View.OnClickListener{
+public class ViewProfileFragment extends Fragment implements DataAdapter.ItemClickCallback, View.OnClickListener{
 
     private ProgressBar pb;
     private TextView name;
@@ -74,9 +64,9 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
     private AlertDialog alertDialog;
     private ProgressDialog pDialog;
     private RecyclerView recViewConnection;
-    private MyAdapter adapterConnection;
+    private DataAdapter adapterConnection;
     private RecyclerView recViewIdea;
-    private MyAdapter adapterIdea;
+    private DataAdapter adapterIdea;
     private Dialog reportDialog;
     private EditText reportTitle;
     private EditText reportMessage;
@@ -287,7 +277,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         name.setText(nameStr);
         about.setText(aboutStr);
         email.setText(emailStr);
-        MyAdapter.imageLoader(profilePicStr,profilePic);
+        DataAdapter.imageLoader(profilePicStr,profilePic);
     }
 
     public void requestProfile(){
@@ -329,7 +319,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void isConnected(final String user1, final String user2){
@@ -367,7 +357,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void addUser(String user1, String user2){
@@ -402,7 +392,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void removeUser(String user1, String user2){
@@ -445,7 +435,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void requestIdeas(){
@@ -479,7 +469,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
                                     toIndex=5;
                                 }
                                 else toIndex=ideas.size();
-                                adapterIdea = new MyAdapter(new ArrayList<>(ideas.subList(0,toIndex)), "IDEA_HORIZONTAL", getActivity());
+                                adapterIdea = new DataAdapter(new ArrayList<>(ideas.subList(0,toIndex)), "IDEA_HORIZONTAL", getActivity());
                                 adapterIdea.setItemClickCallback(ViewProfileFragment.this);
                                 recViewIdea.setAdapter(adapterIdea);
                             }
@@ -499,7 +489,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void requestConnections(){
@@ -534,7 +524,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
                                     toIndex=5;
                                 }
                                 else toIndex=users.size();
-                                adapterConnection = new MyAdapter(new ArrayList<>(users.subList(0,toIndex)), getActivity(), "USER_HORIZONTAL");
+                                adapterConnection = new DataAdapter(new ArrayList<>(users.subList(0,toIndex)), getActivity(), "USER_HORIZONTAL");
                                 adapterConnection.setItemClickCallback(ViewProfileFragment.this);
                                 recViewConnection.setAdapter(adapterConnection);
                             }
@@ -553,7 +543,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void submitReport(){
@@ -590,7 +580,7 @@ public class ViewProfileFragment extends Fragment implements MyAdapter.ItemClick
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
 }

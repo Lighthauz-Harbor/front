@@ -1,6 +1,5 @@
 package com.example.dvidr_000.lighthauzproject;
 
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -21,7 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.android.volley.VolleyLog.TAG;
@@ -31,13 +29,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private ProgressBar pb;
     private String msg="";
-    private Integer imgRes;
     private EditText email;
     private EditText password;
     private String emailStr;
     private String passwordStr;
 
-    SessionManager sessionManager;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void validate(){
+    protected void validate(){
         boolean fail=false;
         msg="";
 
@@ -98,14 +95,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if(!fail){
-            request();
+            loginRequest();
         } else {
             Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    protected void request(){
+    protected void loginRequest(){
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
@@ -153,11 +150,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // add the request object to the queue to be executed
-        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req,tag_json);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(req,tag_json);
 
     }
 
-    public void requestCategoryPref(){
+    protected void requestCategoryPref(){
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
@@ -202,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(req, tag_json);
     }
 
 

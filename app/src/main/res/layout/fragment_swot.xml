@@ -20,9 +20,8 @@
 
         <RelativeLayout
             android:id="@+id/swot_layout"
-            android:layout_above="@+id/btnNextIdeaSWOT"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="16dp">
             <TextView
                 android:text="@string/Strength"
@@ -144,6 +143,7 @@
                 android:hint="@string/insertHere"
                 android:textColor="@color/white"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 android:id="@+id/etThreatfill"
                 android:layout_below="@+id/tvThreat" />
 

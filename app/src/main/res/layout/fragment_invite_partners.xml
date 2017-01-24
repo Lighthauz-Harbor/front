@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dvidr_000.lighthauzproject.CollabInviteFragment">
+    tools:context="com.example.dvidr_000.lighthauzproject.InvitePartnersFragment">
 
     <TextView
-        android:id="@+id/tvCollabInvite"
+        android:id="@+id/tvInvitePartners"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -13,7 +13,7 @@
         android:text="@string/CollabInviteTip" />
 
     <ProgressBar
-        android:id="@+id/pBarCollabInvite"
+        android:id="@+id/pBarInvitePartners"
         android:visibility="gone"
         android:progressDrawable="@drawable/loading_spinner"
         android:layout_width="wrap_content"
@@ -26,14 +26,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
         android:layout_centerInParent="true"
-        android:id="@+id/CollabInviteNotice"
+        android:id="@+id/InvitePartnersNotice"
         android:text="@string/EmptySuggestion"/>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/tvCollabInvite"
+        android:layout_below="@id/tvInvitePartners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rec_list_collab_invite">
+        android:id="@+id/rec_list_invite_partners">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/lightGrey"
-            android:id="@+id/btnSkipCollabInvite" />
+            android:id="@+id/btnSkipInvitePartners" />
         <Button
             android:text="@string/submit"
             android:layout_width="0dp"
@@ -56,6 +56,6 @@
             android:layout_weight="2"
             android:background="@color/colorPrimary"
             android:textColor="@color/white"
-            android:id="@+id/btnNextCollabInvite" />
+            android:id="@+id/btnNextInvitePartners" />
     </LinearLayout>
 </RelativeLayout>

@@ -23,7 +23,7 @@ import static com.android.volley.VolleyLog.TAG;
  * Created by richentra on 12-Nov-16.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
+public class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyHolder> {
 
     private List listData;
     private LayoutInflater inflater;
@@ -40,32 +40,32 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         this.itemClickCallback = itemClickCallback;
     }
 
-    public MyAdapter(List<Idea> listData, String content, Context c){
+    public DataAdapter(List<Idea> listData, String content, Context c){
         inflater = LayoutInflater.from(c);
         this.listData = listData;
         this.content=content;
     }
 
-    public MyAdapter(List<User> listData, Context c, String content){
+    public DataAdapter(List<User> listData, Context c, String content){
         inflater = LayoutInflater.from(c);
         this.listData = listData;
         this.content=content;
     }
 
-    public MyAdapter(Context c, String content, List<News> listData){
+    public DataAdapter(Context c, String content, List<News> listData){
         this.context=c;
         inflater = LayoutInflater.from(c);
         this.listData = listData;
         this.content=content;
     }
 
-    public MyAdapter(Context c, List<Category> listData, String content){
+    public DataAdapter(Context c, List<Category> listData, String content){
         inflater = LayoutInflater.from(c);
         this.content=content;
         this.listData=listData;
     }
 
-    public MyAdapter(String content, Context c, List<Comment> listData){
+    public DataAdapter(String content, Context c, List<Comment> listData){
         inflater = LayoutInflater.from(c);
         this.content=content;
         this.listData=listData;
@@ -120,7 +120,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 container = itemView.findViewById(R.id.list_text_checkbox_root);
                 check.setOnClickListener(this);
             }
-            else if (content.equals("COLLAB_INVITE")) {
+            else if (content.equals("INVITE_PARTNERS")) {
                 name = (TextView) itemView.findViewById(R.id.tv_title_list_simple_checkbox);
                 icon = (ImageView)itemView.findViewById(R.id.ic_list_simple_checkbox);
                 check = (CheckBox) itemView.findViewById(R.id.checkBox_list_simple_checkbox);
@@ -169,7 +169,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     }
 
     @Override
-    public MyAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DataAdapter.MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
         if(content.equals("NEWS")){
@@ -190,7 +190,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         else if (content.equals("CATEGORY_LIST")){
             view = inflater.inflate(R.layout.list_text_checkbox, parent, false);
         }
-        else if (content.equals("COLLAB_INVITE")){
+        else if (content.equals("INVITE_PARTNERS")){
             view = inflater.inflate(R.layout.list_simple_checkbox, parent, false);
         }
         else if (content.equals("USER_HORIZONTAL")||content.equals("IDEA_HORIZONTAL")){
@@ -207,7 +207,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MyAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(DataAdapter.MyHolder holder, int position) {
         switch(content){
             case "IDEA_HORIZONTAL":
             case "IDEA":
@@ -224,7 +224,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
                 imageLoader(idea1.getPic(),holder.contentPic);
                 break;
 
-            case "COLLAB_INVITE":
+            case "INVITE_PARTNERS":
             case "USER_HORIZONTAL":
             case "USER":
                 User user1 =  (User) listData.get(position);
@@ -326,7 +326,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
     public static void imageLoader(String url,final ImageView img){
 
-        ImageLoader imageLoader = MySingleton.getInstance(context).getImageLoader();
+        ImageLoader imageLoader = AppSingleton.getInstance(context).getImageLoader();
 
 // If you are using normal ImageView
         imageLoader.get(url, new ImageLoader.ImageListener() {

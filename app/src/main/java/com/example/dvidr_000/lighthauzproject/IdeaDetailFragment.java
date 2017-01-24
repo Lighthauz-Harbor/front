@@ -39,7 +39,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IdeaDetailFragment extends Fragment implements View.OnClickListener, MyAdapter.ItemClickCallback{
+public class IdeaDetailFragment extends Fragment implements View.OnClickListener, DataAdapter.ItemClickCallback{
 
     private AlertDialog alertDialog;
     private ProgressBar pb;
@@ -79,45 +78,15 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
     private EditText reportMessage;
     private Button reportSubmit;
     private RecyclerView recViewPartner;
-    private MyAdapter adapterPartner;
+    private DataAdapter adapterPartner;
     private TextView partnerCount;
 
     private String idStr;
-    private String titleStr;
-    private String descStr;
     private String categoryStr;
-    private String problemStr;
-    private String backgroundStr;
-    private String solutionStr;
     private boolean likeStatus;
     private int likeCount;
-    private String reportTitleStr;
-    private String reportMessageStr;
 
-    private String valueProposition;
-    private String customerSegments;
-    private String customerRelationships;
-    private String channels;
-    private String costStructure;
-    private String revenueStreams;
-    private String keyActivities;
-    private String keyResources;
-    private String keyPartners;
-    private String strengths;
-    private String weaknesses;
-    private String opportunities;
-    private String threats;
-    private String extraLink;
-    private String picStr;
-    private int visibility;
-    private Long timestamp;
-
-    private String name;
-    private String userId;
-    private String email;
-    private String profilePicStr;
-
-    private SessionManager sessionManager;
+    private User ideaOwner;
     private HashMap<String,String> user;
     private Bundle ideaBundle;
 
@@ -148,8 +117,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         View v = inflater.inflate(R.layout.fragment_idea_detail, container, false);
         setHasOptionsMenu(true);
 
-        likers = new ArrayList<>();
-        sessionManager = new SessionManager(getContext());
+        SessionManager sessionManager = new SessionManager(getContext());
         user = sessionManager.getUserDetails();
         getActivity().setTitle("Idea Details");
 
@@ -161,6 +129,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         }
 
         ideaBundle = new Bundle();
+        likers = new ArrayList<>();
         partners = new ArrayList<>();
 
         notice = (TextView) v.findViewById(R.id.IdeaDetailNotice);
@@ -204,25 +173,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         comments.setOnClickListener(this);
         reportSubmit.setOnClickListener(this);
 
-        AlertDialog.Builder removeDialog = new AlertDialog.Builder(getActivity());
-        removeDialog.setMessage(R.string.ConfirmRemoveIdea)
-                .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton(R.string.Yes,new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        JSONArray list = new JSONArray();
-                        list.put(idStr);
-                        deleteIdea(list);
-                        dialogInterface.dismiss();
-                    }
-                });
-        alertDialog = removeDialog.create();
-        alertDialog.setTitle("Confirm");
+
         likes.setText("likes");
         comments.setText("comments");
 
@@ -232,7 +183,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         recViewPartner = (RecyclerView) v.findViewById(R.id.rec_list_idea_detail_partners);
         recViewPartner.setLayoutManager(layout);
 
-        adapterPartner = new MyAdapter(partners, getActivity(), "USER_HORIZONTAL");
+        adapterPartner = new DataAdapter(partners, getActivity(), "USER_HORIZONTAL");
         adapterPartner.setItemClickCallback(this);
 
         getLike();
@@ -269,7 +220,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
             case R.id.ic_idea_detail_prof:
             case R.id.tv_idea_detail_created_text:
                 Bundle args = new Bundle();
-                args.putString("USER_ID",userId);
+                args.putString("USER_ID",ideaOwner.getId());
 
                 ViewProfileFragment fragment2 = new ViewProfileFragment();
                 fragment2.setArguments(args);
@@ -281,8 +232,8 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.ic_like_button:
                 if (likeStatus){
-                like("unlike");
-            }
+                    like("unlike");
+                }
                 else {
                     like("like");
                 }
@@ -312,8 +263,8 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                 tr4.commit();
                 break;
             case R.id.btn_submit_dialog_report:
-                reportTitleStr = reportTitle.getText().toString().trim();
-                reportMessageStr = reportMessage.getText().toString().trim();
+                String reportTitleStr = reportTitle.getText().toString().trim();
+                String reportMessageStr = reportMessage.getText().toString().trim();
                 if (reportTitleStr.isEmpty()){
                     Toast.makeText(getContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
                 }
@@ -321,7 +272,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(getContext(), "Message cannot be empty", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    submitReport();
+                    submitReport(reportTitleStr,reportMessageStr);
                 }
                 break;
         }
@@ -352,6 +303,25 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.menuDeleteIdea:
+                AlertDialog.Builder removeDialog = new AlertDialog.Builder(getActivity());
+                removeDialog.setMessage("Are you sure want to delete " + ideaBundle.getString("TITLE"))
+                        .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setPositiveButton(R.string.Yes,new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                JSONArray list = new JSONArray();
+                                list.put(idStr);
+                                deleteIdea(list);
+                                dialogInterface.dismiss();
+                            }
+                        });
+                alertDialog = removeDialog.create();
+                alertDialog.setTitle("Confirm");
                 alertDialog.show();
                 break;
 
@@ -362,7 +332,14 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onItemClick(int p, View view) {
-
+        Bundle args = new Bundle();
+        args.putString("USER_ID",partners.get(p).getId());
+        FragmentTransaction tr = getActivity().getSupportFragmentManager().beginTransaction();
+        ViewProfileFragment fragment = new ViewProfileFragment();
+        fragment.setArguments(args);
+        tr.replace(R.id.fragment_container_detail,fragment);
+        tr.addToBackStack(null);
+        tr.commit();
     }
 
     public void setDetails(){
@@ -379,34 +356,35 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                         try{
                             JSONObject ideaObj = response.getJSONObject("idea");
                             JSONObject author = response.getJSONObject("author");
-                            titleStr = ideaObj.getString("title");
+                            String titleStr = ideaObj.getString("title");
                             categoryStr = response.getString("category");
-                            descStr = ideaObj.getString("description");
-                            timestamp = response.getLong("timestamp");
-                            backgroundStr = ideaObj.getString("background");
-                            problemStr = ideaObj.getString("problem");
-                            solutionStr = ideaObj.getString("solution");
-                            valueProposition = ideaObj.getString("valueProposition");
-                            customerSegments = ideaObj.getString("customerSegments");
-                            customerRelationships = ideaObj.getString("customerRelationships");
-                            channels = ideaObj.getString("channels");
-                            keyActivities = ideaObj.getString("keyActivities");
-                            keyResources = ideaObj.getString("keyResources");
-                            keyPartners = ideaObj.getString("keyPartners");
-                            costStructure = ideaObj.getString("costStructure");
-                            revenueStreams = ideaObj.getString("revenueStreams");
-                            strengths = ideaObj.getString("strengths");
-                            weaknesses = ideaObj.getString("weaknesses");
-                            opportunities = ideaObj.getString("opportunities");
-                            threats = ideaObj.getString("threats");
-                            extraLink = ideaObj.getString("extraLink");
-                            picStr = ideaObj.getString("pic");
-                            visibility = response.getInt("visibility");
+                            String descStr = ideaObj.getString("description");
+                            Long timestamp = response.getLong("timestamp");
+                            String backgroundStr = ideaObj.getString("background");
+                            String problemStr = ideaObj.getString("problem");
+                            String solutionStr = ideaObj.getString("solution");
+                            String valueProposition = ideaObj.getString("valueProposition");
+                            String customerSegments = ideaObj.getString("customerSegments");
+                            String customerRelationships = ideaObj.getString("customerRelationships");
+                            String channels = ideaObj.getString("channels");
+                            String keyActivities = ideaObj.getString("keyActivities");
+                            String keyResources = ideaObj.getString("keyResources");
+                            String keyPartners = ideaObj.getString("keyPartners");
+                            String costStructure = ideaObj.getString("costStructure");
+                            String revenueStreams = ideaObj.getString("revenueStreams");
+                            String strengths = ideaObj.getString("strengths");
+                            String weaknesses = ideaObj.getString("weaknesses");
+                            String opportunities = ideaObj.getString("opportunities");
+                            String threats = ideaObj.getString("threats");
+                            String extraLink = ideaObj.getString("extraLink");
+                            String picStr = ideaObj.getString("pic");
+                            int visibility = response.getInt("visibility");
 
-                            userId = author.getString("id");
-                            name = author.getString("name");
-                            email = author.getString("email");
-                            profilePicStr = author.getString("profilePic");
+                            String userId = author.getString("id");
+                            String name = author.getString("name");
+                            String email = author.getString("email");
+                            String profilePicStr = author.getString("profilePic");
+                            ideaOwner = new User(userId,name,profilePicStr);
 
                             if (!userId.equals(user.get(SessionManager.KEY_ID))){
                                 if (visibility==1){
@@ -428,9 +406,9 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
                             problem.setText(problemStr);
                             background.setText(backgroundStr);
                             solution.setText(solutionStr);
-                            MyAdapter.imageLoader(picStr,pic);
-                            MyAdapter.imageLoader(profilePicStr,profPic);
-                            lastEdited.setText(MyAdapter.setDate(timestamp));
+                            DataAdapter.imageLoader(picStr,pic);
+                            DataAdapter.imageLoader(profilePicStr,profPic);
+                            lastEdited.setText(DataAdapter.setDate(timestamp));
                             createdBy.setText(name);
 
                             link.setMovementMethod(LinkMovementMethod.getInstance());
@@ -488,7 +466,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
 
     }
 
@@ -528,7 +506,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void deleteIdea(JSONArray list){
@@ -572,7 +550,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void like(final String like){
@@ -636,7 +614,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         };
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void getLike(){
@@ -703,7 +681,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void getComment(){
@@ -745,10 +723,10 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
-    public void submitReport(){
+    public void submitReport(String reportTitleStr,String reportMessageStr){
         // Tag used to cancel the request
         String tag_json = "json_object_req";
         String url = "http://lighthauz.herokuapp.com/api/reports/create";
@@ -782,7 +760,7 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void getPartners(){
@@ -838,6 +816,6 @@ public class IdeaDetailFragment extends Fragment implements View.OnClickListener
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 }

@@ -7,12 +7,10 @@ import android.text.InputType;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -83,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
 
             }else {
-                request();
+                registerRequest();
             }
             }
 
@@ -115,7 +113,6 @@ public class RegisterActivity extends AppCompatActivity {
         nameStr = name.getText().toString().trim();
         confirmStr = confirm.getText().toString().trim();
         dobStr = dob.getText().toString().trim();
-
 
         if(dobStr.isEmpty()){
             fail=true;
@@ -153,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
         return fail;
     }
 
-    protected void request(){
+    protected void registerRequest(){
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
@@ -199,7 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         // add the request object to the queue to be executed
-        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(req,tag_json);
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(req,tag_json);
     }
 
 }

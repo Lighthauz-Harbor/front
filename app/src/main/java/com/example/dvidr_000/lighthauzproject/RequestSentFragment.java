@@ -1,8 +1,6 @@
 package com.example.dvidr_000.lighthauzproject;
 
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,9 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,9 +32,9 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RequestSentFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class RequestSentFragment extends Fragment implements DataAdapter.ItemClickCallback{
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private SessionManager sessionManager;
     private HashMap<String,String> user;
     private List<User> users;
@@ -73,7 +68,7 @@ public class RequestSentFragment extends Fragment implements MyAdapter.ItemClick
 
         requestList();
 
-        adapter = new MyAdapter(users, getActivity(), "USER");
+        adapter = new DataAdapter(users, getActivity(), "USER");
         adapter.setItemClickCallback(this);
         return v;
     }
@@ -143,7 +138,7 @@ public class RequestSentFragment extends Fragment implements MyAdapter.ItemClick
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
 }

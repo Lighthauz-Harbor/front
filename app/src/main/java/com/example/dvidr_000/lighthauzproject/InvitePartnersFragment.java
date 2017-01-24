@@ -38,9 +38,9 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClickCallback, View.OnClickListener{
+public class InvitePartnersFragment extends Fragment implements DataAdapter.ItemClickCallback, View.OnClickListener{
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private List<User> users;
     private boolean[] selected;
     private SessionManager sessionManager;
@@ -52,7 +52,7 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
     private String category;
     private String ideaId;
 
-    public CollabInviteFragment() {
+    public InvitePartnersFragment() {
         // Required empty public constructor
     }
 
@@ -60,7 +60,7 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_collab_invite, container, false);
+        View v = inflater.inflate(R.layout.fragment_invite_partners, container, false);
 
         sessionManager = new SessionManager(getContext());
         user = sessionManager.getUserDetails();
@@ -69,18 +69,18 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
         ideaId = getActivity().getIntent().getStringExtra("IDEA_ID");
         category = getActivity().getIntent().getStringExtra("CATEGORY");
         users = new ArrayList<>();
-        pb = (ProgressBar) v.findViewById(R.id.pBarCollabInvite);
-        notice = (TextView) v.findViewById(R.id.CollabInviteNotice);
+        pb = (ProgressBar) v.findViewById(R.id.pBarInvitePartners);
+        notice = (TextView) v.findViewById(R.id.InvitePartnersNotice);
         pDialog = new ProgressDialog(getContext());
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(false);
-        recView = (RecyclerView) v.findViewById(R.id.rec_list_collab_invite);
+        recView = (RecyclerView) v.findViewById(R.id.rec_list_invite_partners);
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        Button next = (Button) v.findViewById(R.id.btnNextCollabInvite);
+        Button next = (Button) v.findViewById(R.id.btnNextInvitePartners);
         next.setOnClickListener(this);
 
-        Button skip = (Button) v.findViewById(R.id.btnSkipCollabInvite);
+        Button skip = (Button) v.findViewById(R.id.btnSkipInvitePartners);
         skip.setOnClickListener(this);
 
         AlertDialog.Builder removeDialog = new AlertDialog.Builder(getActivity());
@@ -103,7 +103,7 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
 
         getSuggestion(1);
 
-        adapter = new MyAdapter(users,getActivity(),"COLLAB_INVITE");
+        adapter = new DataAdapter(users,getActivity(),"INVITE_PARTNERS");
         adapter.setItemClickCallback(this);
 
         // Inflate the layout for this fragment
@@ -113,7 +113,7 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btnNextCollabInvite:
+            case R.id.btnNextInvitePartners:
                 JSONArray list = new JSONArray();
 
                 for (int i=0;i<selected.length;i++){
@@ -130,7 +130,7 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
                 }
                 else invitePartners(list);
                 break;
-            case R.id.btnSkipCollabInvite:
+            case R.id.btnSkipInvitePartners:
                 alertDialog.show();
                 break;
         }
@@ -235,7 +235,7 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void invitePartners(JSONArray list){
@@ -286,6 +286,6 @@ public class CollabInviteFragment extends Fragment implements MyAdapter.ItemClic
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 }

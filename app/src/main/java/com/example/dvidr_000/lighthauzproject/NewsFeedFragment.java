@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -34,10 +33,10 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class NewsFeedFragment extends Fragment implements DataAdapter.ItemClickCallback{
 
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private List<News> news;
     private ProgressBar pb;
     private int previousTotal=0;
@@ -133,7 +132,7 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
         requestNews(previousTotal,retrieve);
 
 
-        adapter = new MyAdapter(getActivity(),"NEWS",news);
+        adapter = new DataAdapter(getActivity(),"NEWS",news);
         adapter.setItemClickCallback(this);
 
 
@@ -217,7 +216,7 @@ public class NewsFeedFragment extends Fragment implements MyAdapter.ItemClickCal
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
 }

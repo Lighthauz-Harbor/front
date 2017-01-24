@@ -25,7 +25,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -195,7 +194,7 @@ public class EditProfileFragment extends Fragment {
         }
 
         if (!newPassword.isEmpty()){
-            if(newPassword.length()<8 && newPassword.length()>12)
+            if(newPassword.length()<8 || newPassword.length()>12)
             {
                 fail=true;
                 msg="Invalid Password";
@@ -208,9 +207,9 @@ public class EditProfileFragment extends Fragment {
         if (newUsername.isEmpty()) {
             fail =true;
             msg="Please enter email";
-        } else {
-            fail= !android.util.Patterns.EMAIL_ADDRESS.matcher(newUsername).matches();
-            if(fail)msg="Invalid email";
+        } else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(newUsername).matches()){
+            fail= true;
+            msg="Invalid email";
         }
 
         return fail;
@@ -265,7 +264,7 @@ public class EditProfileFragment extends Fragment {
                             email.setText(emailStr);
                             bio.setText(bioStr);
                             dob.setText(dateFormatter.format(oldDob));
-                            MyAdapter.imageLoader(oldPic,profilePic);
+                            DataAdapter.imageLoader(oldPic,profilePic);
 
                             pb.setVisibility(View.GONE);
                             layout.setVisibility(View.VISIBLE);
@@ -283,26 +282,36 @@ public class EditProfileFragment extends Fragment {
         });
 
 // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
-    protected void updateProfile(){
+    public void updateProfile(){
         // Tag used to cancel the request
         String tag_json = "json_object_req";
 
         final String URL = "https://lighthauz.herokuapp.com/api/users/update/" + idStr;
         // Post params to be sent to the server
         HashMap<String, String> params = new HashMap<>();
+        params.put("id",idStr);
         params.put("name", newName);
         params.put("oldUsername", user.get(SessionManager.KEY_USERNAME));
         params.put("username", newUsername);
-        if (newDob!=null)params.put("dateOfBirth", newDob.toString());
-        else params.put("dateOfBirth", oldDob.toString());
         params.put("bio", newBio);
-        if (newPic!=null)params.put("profilePic", newBio);
-        params.put("password", newPassword);
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT,URL, new JSONObject(params),
+        if (newPic!=null)params.put("profilePic", newBio);
+        if(newPassword.isEmpty())params.put("password", "");
+        else params.put("password", newPassword);
+
+        JSONObject obj = new JSONObject(params);
+        try{
+            if (newDob!=null)obj.put("dateOfBirth", newDob);
+            else obj.put("dateOfBirth", oldDob);
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT,URL, obj,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -323,7 +332,7 @@ public class EditProfileFragment extends Fragment {
         });
 
         // add the request object to the queue to be executed
-        MySingleton.getInstance(getContext()).addToRequestQueue(req,tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req,tag_json);
     }
 
     public void pickImage() {

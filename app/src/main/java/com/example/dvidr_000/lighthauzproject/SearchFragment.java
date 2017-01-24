@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -39,16 +38,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.android.volley.VolleyLog.TAG;
-import static com.android.volley.VolleyLog.v;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,MyAdapter.ItemClickCallback{
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,DataAdapter.ItemClickCallback{
 
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private List<User> users;
     private List<Idea> ideas;
     private ProgressBar pb;
@@ -90,7 +88,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         categoryList.add(categoryDefault);
         requestCategoryList();
         category = (Spinner) v.findViewById(R.id.spinner_search);
-        categoryAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,categoryList);
+        categoryAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_item,categoryList);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(categoryAdapter);
 
@@ -139,11 +137,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         if(host.getCurrentTab()==0){
             searchUser(query);
-            adapter = new MyAdapter(users,getActivity(),"USER");
+            adapter = new DataAdapter(users,getActivity(),"USER");
         }
         else {
             searchIdea(query);
-            adapter = new MyAdapter(ideas,"IDEA_DETAIL",getActivity());
+            adapter = new DataAdapter(ideas,"IDEA_DETAIL",getActivity());
         }
 
         adapter.setItemClickCallback(this);
@@ -206,7 +204,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void searchIdea(String query){
@@ -220,7 +218,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         JSONArray list = new JSONArray();
         String categoryStr = category.getSelectedItem().toString();
-        if (categoryStr.equals("All")){
+        if (categoryStr.equals(categoryDefault)){
 
         }
         else {
@@ -282,7 +280,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     public void requestCategoryList(){
@@ -321,7 +319,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 
     @Override

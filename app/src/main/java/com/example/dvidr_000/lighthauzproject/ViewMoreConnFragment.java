@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,9 +19,9 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewMoreConnFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class ViewMoreConnFragment extends Fragment implements DataAdapter.ItemClickCallback{
     private RecyclerView recView;
-    private MyAdapter adapter;
+    private DataAdapter adapter;
     private SessionManager sessionManager;
     private HashMap<String,String> user;
     private List<User> users;
@@ -54,7 +53,7 @@ public class ViewMoreConnFragment extends Fragment implements MyAdapter.ItemClic
         recView = (RecyclerView) v.findViewById(R.id.rec_list_view_more_conn);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new MyAdapter(users, getActivity(), "USER");
+        adapter = new DataAdapter(users, getActivity(), "USER");
         adapter.setItemClickCallback(this);
         recView.setAdapter(adapter);
 

@@ -34,9 +34,9 @@ import static com.android.volley.VolleyLog.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LikeListFragment extends Fragment implements MyAdapter.ItemClickCallback{
+public class LikeListFragment extends Fragment implements DataAdapter.ItemClickCallback{
     private RecyclerView recView;
-    public MyAdapter adapter;
+    public DataAdapter adapter;
     private TextView notice;
     private ProgressBar pb;
     private SessionManager sessionManager;
@@ -74,7 +74,7 @@ public class LikeListFragment extends Fragment implements MyAdapter.ItemClickCal
 
         getLike();
 
-        adapter = new MyAdapter(likers, getActivity(), "USER");
+        adapter = new DataAdapter(likers, getActivity(), "USER");
         adapter.setItemClickCallback(this);
         return v;
     }
@@ -150,6 +150,6 @@ public class LikeListFragment extends Fragment implements MyAdapter.ItemClickCal
         });
 
         // Adding request to request queue
-        MySingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
+        AppSingleton.getInstance(getContext()).addToRequestQueue(req, tag_json);
     }
 }
